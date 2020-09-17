@@ -22,7 +22,7 @@ import ResidentList from "views/resident/ResidentList";
 //import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
 import OutbuildingList from "views/outbuilding/OutbuildingList";
-import Dependencia from "views/outbuilding/Dependencia.jsx";
+import OutbuildingModel from "views/outbuilding/OutbuildingModel";
 
 import Condominios from "views/condominios/ListaCondominios.jsx";
 
@@ -67,9 +67,9 @@ const dashboardRoutes = [
     redirect: true
   }, */
 
-  /**rota produtos */
+  /**rota dependencias */
   {
-    path: "/outbuilding",
+    path: "/outbuildings",
     name: "Dependencias",
     icon: "pe-7s-box2",
     component: OutbuildingList,
@@ -80,16 +80,16 @@ const dashboardRoutes = [
     path: "/dependencia/:id",
     name: "Dependencia",
     icon: "pe-7s-user",
-    component: Dependencia,
+    component: OutbuildingModel,
     layout: "/admin",
     redirect: true
   },
 
   {
-    path: "/dependencia",
+    path: "/outbuilding",
     name: "Dependencia",
     icon: "pe-7s-user",
-    component: Dependencia,
+    component: OutbuildingModel,
     layout: "/admin",
     redirect: true
   },
