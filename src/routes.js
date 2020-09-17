@@ -17,7 +17,7 @@
 */
 
 import ListaMoradores from "views/moradores/ListaMoradores.jsx"
-import Morador from 'views/moradores/Morador.jsx';
+import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
 import ListaDependencia from "views/dependencias/ListaDependencias.jsx";
 import Dependencia from "views/dependencias/Dependencia.jsx";
@@ -47,23 +47,23 @@ const dashboardRoutes = [
     layout: "/admin"
   },
 
-  {
-    path: "/morador/:id",
+ /*  {
+    path: "/ResidentRegistration/:id",
     name: "Morador",
     icon: "pe-7s-user",
-    component: Morador,
+    component: ResidentRegistration,
     layout: "/admin",
     redirect: true
   },
 
   {
-    path: "/morador",
+    path: "/ResidentRegistration",
     name: "Morador",
     icon: "pe-7s-user",
-    component: Morador,
+    component: ResidentRegistration,
     layout: "/admin",
     redirect: true
-  },
+  }, */
 
   /**rota produtos */
   {
