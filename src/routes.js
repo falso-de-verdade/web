@@ -67,7 +67,7 @@ const dashboardRoutes = [
 
   /**rota produtos */
   {
-    path: "/outbuilding",
+    path: "/outbuildings",
     name: "Dependencias",
     icon: "pe-7s-box2",
     component: OutbuildingList,

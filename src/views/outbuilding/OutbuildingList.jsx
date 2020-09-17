@@ -50,7 +50,7 @@ class OutbuildingList extends Component {
               Localizar
               </ButtonB>
 
-            <Link to={`dependencia`}>
+            <Link to={`outbuilding`}>
               <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
                 <span className="fa fa-plus"></span>
                 {' '}Nova dependência
