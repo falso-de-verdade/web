@@ -16,8 +16,8 @@
 
 */
 
-import ListaMoradores from "views/moradores/ListaMoradores.jsx"
-import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
+import ListaMoradores from "views/resident/ListaMoradores.jsx"
+//import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
 import ListaDependencia from "views/dependencias/ListaDependencias.jsx";
 import Dependencia from "views/dependencias/Dependencia.jsx";

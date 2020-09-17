@@ -28,7 +28,7 @@ import "./assets/css/pe-icon-7-stroke.css";
 
 import AdminLayout from "layouts/Admin.jsx";
 import LoginLayout from "layouts/Login.jsx";
-import ResidentRegistration from '../src/views/moradores/ResidentRegistration.jsx';
+import ResidentRegistration from '../src/views/resident/ResidentRegistration.jsx';
 
 import PrivateRoute from "components/PrivateRoute/PrivateRoute.jsx";
 
