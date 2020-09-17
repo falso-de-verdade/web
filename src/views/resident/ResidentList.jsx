@@ -13,14 +13,9 @@ import { Link, Redirect } from "react-router-dom";
 
 import * as qs from 'query-string';
 
-class ListaMoradores extends Component {
-
-
-
+class ListResident extends Component {
 
   render() {
-
-
     return (
       <div className="content">
 
@@ -53,13 +48,6 @@ class ListaMoradores extends Component {
               <span className="fa fa-search"></span>
               Localizar
               </ButtonB>
-
-            <Link to={`morador`}>
-              <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
-                <span className="fa fa-plus"></span>
-                {' '}Novo Morador
-                </ButtonB>
-            </Link>
           </Col>
 
         </Row>
@@ -76,9 +64,10 @@ class ListaMoradores extends Component {
                     <Table striped hover >
                       <thead>
                         <tr>
-                          <th>Código</th>
+                          <th>Data de entrada</th>
                           <th>Nome</th>
-                          <th>CPF</th>
+                          <th>E-mail</th>
+                          <th>Localização</th>
                           <th className="text-center">Operações</th>
                         </tr>
                       </thead>
@@ -150,4 +139,4 @@ class ListaMoradores extends Component {
   }
 }
 
-export default ListaMoradores;
+export default ListResident;

@@ -37,7 +37,7 @@ ReactDOM.render(
       <PrivateRoute path="/admin" Component={AdminLayout} />
       
       <Route path="/login" render={props => <LoginLayout {...props}/>} />
-      <Redirect from="/" to="/login" />
+      <Redirect exact from="/" to="/login" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

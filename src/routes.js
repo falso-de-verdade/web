@@ -16,7 +16,7 @@
 
 */
 
-import ListaMoradores from "views/moradores/ListaMoradores.jsx"
+import ResidentList from "views/resident/ResidentList";
 import Morador from 'views/moradores/Morador.jsx';
 
 import ListaDependencia from "views/dependencias/ListaDependencias.jsx";
@@ -40,10 +40,10 @@ const dashboardRoutes = [
 
   /**rota clientes */
   {
-    path: "/moradores",
+    path: "/residents",
     name: "Moradores",
     icon: "pe-7s-user",
-    component: ListaMoradores,
+    component: ResidentList,
     layout: "/admin"
   },
 
