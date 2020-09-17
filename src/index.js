@@ -28,6 +28,7 @@ import "./assets/css/pe-icon-7-stroke.css";
 
 import AdminLayout from "layouts/Admin.jsx";
 import LoginLayout from "layouts/Login.jsx";
+import ResidentRegistration from '../src/views/resident/ResidentRegistration.jsx';
 
 import PrivateRoute from "components/PrivateRoute/PrivateRoute.jsx";
 
@@ -35,8 +36,9 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <PrivateRoute path="/admin" Component={AdminLayout} />
-      
-      <Route path="/login" render={props => <LoginLayout {...props}/>} />
+
+      <Route path="/login" render={props => <LoginLayout {...props} />} />
+      <Route path="/ResidentRegistration" render={props => <ResidentRegistration {...props} />} />
       <Redirect exact from="/" to="/login" />
     </Switch>
   </BrowserRouter>,
