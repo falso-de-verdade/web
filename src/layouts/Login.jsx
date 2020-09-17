@@ -2,88 +2,119 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 
 import Button from 'components/CustomButton/CustomButton.jsx';
-import {
-  Row, Col, Label, Card, CardBody
-} from 'reactstrap';
-import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
+import { Row, Col } from 'reactstrap';
+import { AvForm } from 'availity-reactstrap-validation';
 
 import isLoggedIn from "variables/Variables";
 
+import InputPasswordCustom from '../components/inputs/inputCustom'
+import InputCustom from '../components/inputs/inputCustom'
+import Logo from '../assets/img/logomarca.svg'
+
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      succeeded: false,
-      email: '',
-      password: '',
+    constructor(props) {
+        super(props);
+        this.state = {
+            succeeded: false,
+            email: '',
+            password: '',
+            lembrarDados: false
+        };
     };
-  }
 
-  /**
-   * Execute the login operation after validation
-   */
-  handleLogin = () => {
-    console.log(`email: ${this.state.email}`)
-    console.log(`password: ${this.state.password}`)
-    
-    this.setState({ succeeded: true })
-  }
+    /**
+     * Execute the login operation after validation
+     */
+    handleLogin = () => {
+        console.log(`email: ${this.state.email}`)
+        console.log(`password: ${this.state.password}`)
 
-  render() {
-    if (this.state.succeeded) {
-        return <Redirect to={ {pathname: "/admin/dashboard", state: {isAuthenticated: true}} } />
-    }
+        this.setState({ succeeded: true })
+    };
 
-    const styleInput = {
-        fontSize: 12,
-        height: '38px'
-    }
+    toggleChangeLembrarDados = () => {
+        this.setState({ lembrarDados: !this.state.lembrarDados });
+    };
 
-    const styleLabel = {
-        fontSize: 11
-    }
-    return (
-          <div className="wrapper">
-            <Row>
-                <Col md={12}>
+    render() {
+        if (this.state.succeeded) {
+            return <Redirect to={{ pathname: "/admin/dashboard", state: { isAuthenticated: true } }} />
+        };
 
-                    <Card>
-                        <CardBody>
+        const styleInput = {
+            fontSize: 12,
+            height: '38px'
+        };
 
-                            <AvForm autoComplete="off" onSubmit={this.handleLogin} ref="formLogin">
-                                <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                                    <Col md={2}>
-                                        <AvGroup>
-                                            <Label for="email" style={styleLabel}>E-mail</Label>
-                                            <AvField type="text" name="email" id="email" style={styleInput}
-                                                value={this.state.email}
-                                                onChange={(e) => { this.setState({ email: e.target.value }) }} />
-                                        </AvGroup>
-                                    </Col>
-                                </Row>
-                                <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                                    <Col md={2}>
-                                        <AvGroup>
-                                            <Label for="password" style={styleLabel}>Password</Label>
-                                            <AvField type="password" name="password" id="password" style={styleInput}
-                                                onChange={(e) => { this.setState({ password: e.target.value }) }} />
-                                        </AvGroup>
-                                    </Col>
-                                </Row>
-                            </AvForm>
-                            <div className="clearfix" />
-                        </CardBody>
-                        <AvForm autoComplete="off" onSubmit={this.handleLogin} ref="formLoginSubmit">
-                            <Button bsStyle="success" fill type="submit">
-                                Sign in
-                            </Button>
+        const styleLabel = {
+            fontSize: 11
+        };
+
+        const styleContent = {
+            width: '100%',
+            maxWidth: '1120px',
+            height: '100vh',
+            margin: '0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+        };
+
+        return (
+            <div className="content" style={styleContent}>
+                <Col md={6}>
+                    <div style={{ padding: '16px', boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', backgroundColor: ' #4091ff', borderRadius: '6px' }}>
+                        <AvForm autoComplete="off" ref="formLogin" onSubmit={this.handleLogin}>
+                            <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                                <Col md={12}>
+                                    <InputCustom
+                                        type="email"
+                                        descricao="E-mail"
+                                        name="email"
+                                        id="email"
+                                        value={this.state.email}
+                                        onChange={(e) => { this.setState({ email: e.target.value }) }}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                                <Col md={12} style={{ marginTop: '-10px' }}>
+                                    <InputPasswordCustom
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        descricao="Senha"
+                                        onChange={(e) => { this.setState({ password: e.target.value }) }}
+                                    />
+                                </Col>
+                            </Row>
+                            {/*                             <Row style={{ padding: '15px' }}>
+                                <Col md={6} style={{ marginTop: '-10px' }}>
+                                    <Input
+                                        name="lembrarDados"
+                                        type="checkbox"
+                                        onChange={this.toggleChangeLembrarDados}
+                                        checked={this.state.lembrarDados}
+                                    /> Lembrar dados
+                                </Col>
+                            </Row> */}
+                            <Row style={{ padding: '15px' }}>
+                                <Col md={6}>
+                                    <Button
+                                        type="submit"
+                                        bsStyle="success" fill>
+                                        <span className="fa fa-sign-in"></span>
+                                        {' '}Entrar
+                                    </Button>
+                                </Col>
+                            </Row>
                         </AvForm>
-                    </Card>
+                    </div>
                 </Col>
-            </Row>
-        </div>
-    );
-  }
-}
+                <img src={Logo} alt="logomarca"></img>
+            </div>
+        );
+    };
+};
 
 export default Login;
