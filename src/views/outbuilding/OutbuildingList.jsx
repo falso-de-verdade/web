@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 import * as qs from 'query-string';
 
-class ListaDependencias extends Component {
+class OutbuildingList extends Component {
 
   render() {
 
@@ -71,9 +71,10 @@ class ListaDependencias extends Component {
                     <Table striped hover>
                       <thead>
                         <tr>
-                          <th>Código</th>
-                          <th>Descrição</th>
-                          <th>Lotação max</th>
+                          <th>Nome</th>
+                          <th>Disponibilidade</th>
+                          <th>Limite de pessoas</th>
+                          <th>Localização</th>
                           <th className="text-center">Operações</th>
                         </tr>
                       </thead>
@@ -81,8 +82,17 @@ class ListaDependencias extends Component {
 
 
                         <tr>
-                          <td width={80}>
-
+                          <td>
+                            Salão de Jogos
+                          </td>
+                          <td>
+                            Segunda a Sexta - 14:00 ás 20:00  
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            Bloco A
                           </td>
 
                           <td className="text-right"></td>
@@ -152,4 +162,4 @@ class ListaDependencias extends Component {
   }
 }
 
-export default ListaDependencias;
+export default OutbuildingList;

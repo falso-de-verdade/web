@@ -19,8 +19,8 @@
 import ResidentList from "views/resident/ResidentList";
 import Morador from 'views/moradores/Morador.jsx';
 
-import ListaDependencia from "views/dependencias/ListaDependencias.jsx";
-import Dependencia from "views/dependencias/Dependencia.jsx";
+import OutbuildingList from "views/outbuilding/OutbuildingList";
+import Dependencia from "views/outbuilding/Dependencia.jsx";
 
 import Condominios from "views/condominios/ListaCondominios.jsx";
 
@@ -67,10 +67,10 @@ const dashboardRoutes = [
 
   /**rota produtos */
   {
-    path: "/dependencias",
+    path: "/outbuilding",
     name: "Dependencias",
     icon: "pe-7s-box2",
-    component: ListaDependencia,
+    component: OutbuildingList,
     layout: "/admin"
   },
 
