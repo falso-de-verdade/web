@@ -22,7 +22,11 @@ class AdminNavbarLinks extends Component {
 
   constructor(props) {
     super(props);
-  }
+  };
+
+  logOut() {
+    localStorage.clear();
+  };
 
   render() {
     const notification = (
@@ -62,11 +66,6 @@ class AdminNavbarLinks extends Component {
           */}
         </Nav>
         <Nav pullRight>
-
-          <NavItem eventKey={2} href="https://tawk.to/chat/57ebf31c4a427d157427a671/default" target="_blank">
-            <span className="fa fa-phone"></span>
-            {' '}Solicitar Suporte
-          </NavItem>
           {/*
           <NavDropdown
             eventKey={2}
@@ -82,7 +81,9 @@ class AdminNavbarLinks extends Component {
             <MenuItem eventKey={2.5}>Separated link</MenuItem>
           </NavDropdown>
           */}
-          <NavItem eventKey={3} href="#">
+          <NavItem
+            href="/login"
+            onClick={() => this.logOut()}>
             <span className="fa fa-sign-out"></span>
             {' '}Log out
           </NavItem>

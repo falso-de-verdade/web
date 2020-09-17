@@ -28,7 +28,7 @@ class Login extends Component {
     handleLogin = () => {
         console.log(`email: ${this.state.email}`)
         console.log(`password: ${this.state.password}`)
-
+        localStorage.setItem('isAuthenticated', true)
         this.setState({ succeeded: true })
     };
 
