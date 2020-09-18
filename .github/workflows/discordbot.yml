@@ -11,4 +11,4 @@ jobs:
       - env:
           URL: ${{ secrets.DISCORD_BOT_WEBHOOK }}
         run: |
-          curl -H "Content-Type: application/json" -d '{"content":"Olá senhores e senhoras!\nAcabou de sair uma atualização quentinha para a produção. Vai lá checar o que há de novidades em <https://falso-de-verdade.herokuapp.com>\n\nObrigado mais uma vez ${{ github.event.head_commit.author.username }}!\nMais informações em <${}{"content":"Olá senhores e senhoras!\nAcabou de sair uma atualização quentinha para a produção. Vai lá checar o que há de novidades em <https://falso-de-verdade.herokuapp.com>\n\nObrigado mais uma vez ${{ github.event.head_commit.author.username }}!\nMais informações em <${{ github.event.head_commit.url }}>' "$URL"
+          curl -H "Content-Type: application/json" -d '{"content":"Olá senhores e senhoras!\nAcabou de sair uma atualização quentinha para a produção. Vai lá checar o que há de novidades em <https://falso-de-verdade.herokuapp.com>\n\nObrigado mais uma vez ${{ github.event.head_commit.author.username }}!\nMais informações em <${{ github.event.head_commit.url }}>"}' "$URL"
