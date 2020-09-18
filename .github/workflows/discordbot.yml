@@ -1,0 +1,14 @@
+name: discord bot
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  notificate:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          URL: ${{ secrets.DISCORD_BOT_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" -d '{"content":"Olá senhores e senhoras!\nAcabou de sair uma atualização quentinha para a produção. Vai lá checar o que há de novidades em <https://falso-de-verdade.herokuapp.com>\n\nObrigado mais uma vez ${{ github.event.head_commit.author.username }}!\nCommit: *${{ github.event.head_commit.message }}*"}' "$URL"
