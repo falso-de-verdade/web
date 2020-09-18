@@ -1,0 +1,11 @@
+name: discord bot
+
+on:
+  push:
+    - feat-discord-bot
+
+jobs:
+  notificate:
+    runs-on: ubuntu-lastet
+    steps:
+      run: echo "${{ github.event }}"
