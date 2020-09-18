@@ -2,7 +2,7 @@ name: discord bot
 
 on:
   push:
-    - feat-discord-bot
+    branches: [ feat-discord-bot ]
 
 jobs:
   notificate:
