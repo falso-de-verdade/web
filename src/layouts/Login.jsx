@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import Button from 'components/CustomButton/CustomButton.jsx';
 import { Row, Col } from 'reactstrap';
@@ -88,16 +88,6 @@ class Login extends Component {
                                     />
                                 </Col>
                             </Row>
-                            {/*                             <Row style={{ padding: '15px' }}>
-                                <Col md={6} style={{ marginTop: '-10px' }}>
-                                    <Input
-                                        name="lembrarDados"
-                                        type="checkbox"
-                                        onChange={this.toggleChangeLembrarDados}
-                                        checked={this.state.lembrarDados}
-                                    /> Lembrar dados
-                                </Col>
-                            </Row> */}
                             <Row style={{ padding: '15px' }}>
                                 <Col md={6}>
                                     <Button
@@ -106,6 +96,15 @@ class Login extends Component {
                                         <span className="fa fa-sign-in"></span>
                                         {' '}Entrar
                                     </Button>
+                                </Col>
+                                <Col md={6}>
+                                    <Link to="/manager-signup">
+                                        <Button
+                                            bsStyle="warning" fill pullRight>
+                                            <span className="fa fa-sign-up"></span>
+                                            {' '}Criar conta
+                                        </Button>
+                                    </Link>
                                 </Col>
                             </Row>
                         </AvForm>
