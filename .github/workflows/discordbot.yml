@@ -6,6 +6,6 @@ on:
 
 jobs:
   notificate:
-    runs-on: ubuntu-lastet
+    runs-on: ubuntu-latest
     steps:
       - run: echo "${{ github.event }}"
