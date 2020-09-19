@@ -17,7 +17,9 @@ import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
 import InputCustom from '../../components/inputs/inputCustom';
 import ButtonB from "components/CustomButton/CustomButton.jsx";
 
-class OutbuildingModel extends Component {
+import { ModelComponent } from "views/common";
+
+class OutbuildingModel extends ModelComponent {
 
   notificationSystem = React.createRef();
 
@@ -25,9 +27,9 @@ class OutbuildingModel extends Component {
     super(props);
 
     this.state = {
+      ...this.state,
       activeTab: '1',
       modalOpen: true,
-      outbuilding: {...props.outbuilding}
     }
   }
 
@@ -39,14 +41,7 @@ class OutbuildingModel extends Component {
     }
   }
 
-  setModelAttr(attrName) {
-    return event => {
-      this.state.outbuilding[attrName] = event.target.value;
-    }
-  }
-
   render() {
-
     const styleInputVlr = {
       height: '40px',
       borderStyle: 'solid',
@@ -105,8 +100,7 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="name" style={styleLabel}>Nome</Label>
                             <AvField type="text" name="nome" style={styleInput}
-                              onChange={this.setModelAttr('name')}
-                              value={this.state.outbuilding.name}
+                              value={this.getModelAttr('name')}
                               validate={{
                                 required: { value: true, errorMessage: 'Nome é obrigatório'}
                               }}
@@ -117,10 +111,7 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="condominium" style={styleLabel}>Condomínio</Label>
                             <AvField type="select" name="condominium" style={styleInput}
-                              //value={this.state.dadosClienteStatus}
-                              //disabled={this.state.disabledButtons}
-                              onChange={this.setModelAttr('condominium')}
-                              value={this.state.outbuilding.condominium} >
+                              value={this.getModelAttr('condominium')} >
                               <option value="0">Condomínio Rio de Pedra</option>
                               <option value="1">Condomínio da Roçinha</option>
                             </AvField>
@@ -133,8 +124,7 @@ class OutbuildingModel extends Component {
                             <Label for="maxCapacity" style={styleLabel}>Lotação Máxima</Label>
                             <AvField type="number" name="maxCapacity" id="maxCapacity" min="1"
                               style={styleInput}
-                              onChange={this.setModelAttr('maxCapacity')}
-                              value={this.state.outbuilding.maxCapacity} />
+                              value={this.getModelAttr('maxCapacity')} />
                           </AvGroup>
                         </Col>
 
@@ -142,8 +132,7 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="location" style={styleLabel}>Localização</Label>
                             <AvField type="text" name="location" id="location" style={styleInput}
-                              onChange={this.setModelAttr('location')}
-                              value={this.state.outbuilding.location}
+                              value={this.getModelAttr('location')}
                               placeholder="Ex.: Bloco B"/>
                           </AvGroup>
                         </Col>
@@ -161,9 +150,7 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="fromDay" style={styleLabel}>De</Label>
                             <AvField type="select" name="fromDay" style={styleInput}
-                              //value={this.state.dadosClienteStatus}
-                              //disabled={this.state.disabledButtons}
-                              onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
+                                value={this.getModelAttr('fromDay')} >
                               <option value="0">Domingo</option>
                               <option value="1">Segunda-feira</option>
                               <option value="2">Terça-feira</option>
@@ -178,9 +165,7 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="toDay" style={styleLabel}>Até</Label>
                             <AvField type="select" name="toDay" style={styleInput}
-                              //value={this.state.dadosClienteStatus}
-                              //disabled={this.state.disabledButtons}
-                              onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
+                                value={this.getModelAttr('toDay')} >
                               <option value="-1">Não selecionado</option>
                               <option value="0">Domingo</option>
                               <option value="1">Segunda-feira</option>
@@ -196,8 +181,7 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="fromHour" style={styleLabel}>Hora início</Label>
                             <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
-                              //disabled={this.state.disabledButtons}
-                              //value={this.state.dadosProdutoDescricao}
+                              value={this.getModelAttr('fromHour')}
                               validate={{
                                 required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
                               }} />
@@ -207,9 +191,7 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="toHour" style={styleLabel}>Hora fim</Label>
                             <AvField type="time" name="toHour" id="toHour" style={styleInput}
-                              //disabled={this.state.disabledButtons}
-                              //value={this.state.dadosProdutoDescricao}
-                              onChange={(e) => { this.setState({ dadosProdutoDescricao: e.target.value }) }}
+                              value={this.getModelAttr('toHour')}
                               validate={{
                                 required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
                               }} />
