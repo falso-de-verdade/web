@@ -26,7 +26,8 @@ class OutbuildingModel extends Component {
 
     this.state = {
       activeTab: '1',
-      modalOpen: true
+      modalOpen: true,
+      outbuilding: {...props.outbuilding}
     }
   }
 
@@ -35,6 +36,12 @@ class OutbuildingModel extends Component {
       this.setState({
         activeTab: tab
       })
+    }
+  }
+
+  setModelAttr(attrName) {
+    return event => {
+      this.state.outbuilding[attrName] = event.target.value;
     }
   }
 
@@ -98,6 +105,8 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="name" style={styleLabel}>Nome</Label>
                             <AvField type="text" name="nome" style={styleInput}
+                              onChange={this.setModelAttr('name')}
+                              value={this.state.outbuilding.name}
                               validate={{
                                 required: { value: true, errorMessage: 'Nome é obrigatório'}
                               }}
@@ -110,7 +119,8 @@ class OutbuildingModel extends Component {
                             <AvField type="select" name="condominium" style={styleInput}
                               //value={this.state.dadosClienteStatus}
                               //disabled={this.state.disabledButtons}
-                              onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
+                              onChange={this.setModelAttr('condominium')}
+                              value={this.state.outbuilding.condominium} >
                               <option value="0">Condomínio Rio de Pedra</option>
                               <option value="1">Condomínio da Roçinha</option>
                             </AvField>
@@ -123,9 +133,8 @@ class OutbuildingModel extends Component {
                             <Label for="maxCapacity" style={styleLabel}>Lotação Máxima</Label>
                             <AvField type="number" name="maxCapacity" id="maxCapacity" min="1"
                               style={styleInput}
-                            //value={this.state.dadosProdutoCodigo}
-                            //onChange={(e) => { this.setState({ dadosProdutoCodigo: e.target.value }) }}
-                            />
+                              onChange={this.setModelAttr('maxCapacity')}
+                              value={this.state.outbuilding.maxCapacity} />
                           </AvGroup>
                         </Col>
 
@@ -133,6 +142,8 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="location" style={styleLabel}>Localização</Label>
                             <AvField type="text" name="location" id="location" style={styleInput}
+                              onChange={this.setModelAttr('location')}
+                              value={this.state.outbuilding.location}
                               placeholder="Ex.: Bloco B"/>
                           </AvGroup>
                         </Col>

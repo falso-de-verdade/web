@@ -21,8 +21,7 @@ import ResidentList from "views/resident/ResidentList";
 
 //import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
-import OutbuildingList from "views/outbuilding/OutbuildingList";
-import OutbuildingModel from "views/outbuilding/OutbuildingModel";
+import { OutbuildingList, OutbuildingModel, FindOutbuilding } from "views/outbuilding";
 
 import Condominios from "views/condominios/ListaCondominios.jsx";
 
@@ -77,10 +76,10 @@ const dashboardRoutes = [
   },
 
   {
-    path: "/dependencia/:id",
+    path: "/outbuilding/:id",
     name: "Dependencia",
     icon: "pe-7s-user",
-    component: OutbuildingModel,
+    component: FindOutbuilding,
     layout: "/admin",
     redirect: true
   },

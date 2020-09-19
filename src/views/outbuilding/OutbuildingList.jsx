@@ -99,10 +99,13 @@ class OutbuildingList extends Component {
                             {
                               <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                >
-                                  <span className="fa fa-pencil"></span>
-                                </ButtonB>
+                                <Link to="/admin/outbuilding/teste">
+                                  <ButtonB 
+                                    bsStyle="success" bsSize="xs"
+                                    simple type="button" style={{ padding: '3px' }}>
+                                    <span className="fa fa-pencil"></span>
+                                  </ButtonB>
+                                </Link>
 
                                 {' '}
                                 <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
