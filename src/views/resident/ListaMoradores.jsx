@@ -35,8 +35,9 @@ class ListResident extends Component {
               <AvField type="select" name="select"
                 //value={this.state.inputLocalizarStatus}
                 onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
-                <option value="Ativo">Ativos</option>
-                <option value="Inativo">Inativos</option>
+                <option value="0">Condomínio Villa Flor</option>
+                <option value="1">Condomínio St Flor</option>
+                <option value="2">Condomínio Maré Azul VI</option>
               </AvField>
             </AvForm>
           </Col>

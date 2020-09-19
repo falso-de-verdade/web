@@ -30,18 +30,8 @@ class ListResident extends Component {
               placeholder="Localizar Morador"
             />
           </Col>
-          <Col md={2} style={{ marginBottom: '5px', paddingLeft: 0 }}>
-            <AvForm autoComplete="off" ref="formLocalizar">
-              <AvField type="select" name="select"
-                //value={this.state.inputLocalizarStatus}
-                onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
-                <option value="Ativo">Ativos</option>
-                <option value="Inativo">Inativos</option>
-              </AvField>
-            </AvForm>
-          </Col>
 
-          <Col md={6} style={{ marginBottom: '5px', paddingLeft: 0 }}>
+          <Col md={4} style={{ marginBottom: '5px', paddingLeft: 0 }}>
             <ButtonB bsStyle="info"
               //disabled={this.state.disabledButtons}
               onClick={this.localizarClientes}>

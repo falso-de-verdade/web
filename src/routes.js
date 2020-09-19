@@ -201,7 +201,6 @@ const dashboardRoutes = [
       layout: "/admin"
     },*/
   {
-    upgrade: true,
     path: "/config",
     name: "Configurações",
     icon: "pe-7s-config",

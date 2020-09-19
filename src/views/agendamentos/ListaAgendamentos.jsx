@@ -37,8 +37,6 @@ class ListaTransportadora extends Component {
     }
 
     render() {
-
-
         return (
             <div className="content">
 
@@ -55,7 +53,7 @@ class ListaTransportadora extends Component {
                         />
                     </Col>
 
-                    <Col md={8} style={{ marginBottom: '5px', paddingLeft: 0 }}>
+                    <Col md={4} style={{ marginBottom: '5px', paddingLeft: 0 }}>
                         <ButtonB
                             bsStyle="info"
                             //disabled={this.state.disabledButtons}
