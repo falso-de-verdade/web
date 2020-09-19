@@ -39,7 +39,7 @@ class ScheduleList extends Component {
                         />
                     </Col>
 
-                    <Col md={4} style={{ marginBottom: '5px', paddingLeft: 0 }}>
+                    <Col md={8} style={{ marginBottom: '5px', paddingLeft: 0 }}>
                         <ButtonB
                             bsStyle="info"
                             //disabled={this.state.disabledButtons}
@@ -66,14 +66,24 @@ class ScheduleList extends Component {
                                         <Table striped hover>
                                             <thead>
                                                 <tr>
-                                                    <th>Código</th>
                                                     <th>Dependência</th>
+                                                    <th>
+                                                        Data
+                                                    </th>
+                                                    <th>
+                                                        Horário
+                                                    </th>
+                                                    <th>
+                                                        Qtd. de ocupantes
+                                                    </th>
                                                     <th className="text-center">Operações</th>
                                                 </tr></thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Código</td>
                                                     <td>Piscina</td>
+                                                    <td>19/10/2020</td>
+                                                    <td>14:30 ás 15:30</td>
+                                                    <td>Cheio</td>
                                                     <td className="text-center" width={140}>
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
