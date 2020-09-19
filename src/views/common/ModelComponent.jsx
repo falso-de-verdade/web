@@ -1,23 +1,21 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 class ModelComponent extends Component {
-    constructor(modelName, props) {
+    constructor(props) {
         super(props);
-        this.modelName = modelName;
-
         this.state = {
-            [this.modelName]: {...props[modelName]}
-        };
+            ...props.modelData
+        }
     }
 
     setModelAttr = attrName => event => this.setRawModelAttrValue(attrName, event.target.value);
     setModelAttrValue = attrName => value => this.setRawModelAttrValue(attrName, value);
 
     setRawModelAttrValue = (attrName, value) => {
-        this.setState({ [this.modelName]: { ...this.state[this.modelName], [attrName]: value } })
+        this.setState({ [attrName]: value });
     }
 
-    getModelAttr = attrName => this.state[this.modelName][attrName]
+    getModelAttr = attrName => this.state[attrName]
 }
 
 export default ModelComponent;
