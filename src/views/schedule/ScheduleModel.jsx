@@ -6,18 +6,19 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
-import Select from 'react-select';
-import formatCnpjCpf from '../../utils/formatCNPJ';
+import DayPicker from "react-day-picker";
+import "react-day-picker/lib/style.css";
 
+import { ModelComponent } from "views/common";
 
-class ScheduleModel extends Component {
-
+class ScheduleModel extends ModelComponent {
     constructor(props) {
-        super(props);
+        super('schedule', props);
+
         this.state = {
+            ...this.state,
             activeTab: '1',
             modalOpen: true,
-            schedule: {...props.schedule}
         }
     }
 
@@ -43,66 +44,56 @@ class ScheduleModel extends Component {
                         <Card>
                             <CardBody>
 
-                                <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formAgendamento">
+                                <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formSchedule">
                                     <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                                        <Col md={2}>
+                                        <Col md={3}>
                                             <AvGroup>
-                                                <Label for="codigo" style={styleLabel}>Código</Label>
-                                                <AvField type="text" name="codigo" id="codigo" style={styleInput}
-                                                    disabled={true}
-                                                    value={this.state.dadosTransportadoraCodigo}
-                                                    onChange={(e) => { this.setState({ dadosTransportadoraCodigo: e.target.value }) }} />
-                                            </AvGroup>
-                                        </Col>
-                                        <Col md={7}>
-                                            <AvGroup>
-                                                <Label for="dependenia" style={styleLabel}>Dependência</Label>
-                                                <AvField type="text" name="dependenia" id="dependenia" style={styleInput}
-                                                    //disabled={this.state.disabledButtons}
-                                                    //value={this.state.dadosTransportadoraRazao}
-                                                    onChange={(e) => { this.setState({ dadosTransportadoraRazao: e.target.value }) }}
+                                                <Label for="outbuildingId" style={styleLabel}>Dependência</Label>
+                                                <AvField type="select" name="outbuildingId" id="outbuildingId" style={styleInput}
+                                                    value={this.getModelAttr('outbuildingId')}
                                                     validate={{
                                                         required: { value: true, errorMessage: 'Campo "Nome" obrigatório' },
+                                                    }} >
+                                                    <option value="0">Salão de jogos - Bloco B</option>
+                                                    <option value="1">Piscina</option>
+                                                </AvField>
+                                            </AvGroup>
+                                        </Col>
+                                        <Col md={6} >
+                                            <AvGroup>                                                
+                                                <DayPicker required={false} selectedDays={this.getModelAttr('day')}
+                                                    onDayClick={this.setModelAttrValue('day')} />
+                                            </AvGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
+                                        <Col style={{ marginTop: '-10px' }} md={2}>
+                                            <AvGroup>
+                                                <Label for="fromHour" style={styleLabel}>Hora início</Label>
+                                                <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
+                                                    validate={{
+                                                        required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
                                                     }} />
                                             </AvGroup>
                                         </Col>
-
-                                    </Row>
-                                    <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
-                                        <Col md={3} style={{ marginTop: '-10px' }}>
+                                        <Col style={{ marginTop: '-10px' }} md={2}>
                                             <AvGroup>
-                                                <Label for="ie" style={styleLabel}>Inscrição Estadual</Label>
-                                                <AvField type="text" name="ie" id="ie" style={styleInput}
-                                                    disabled={this.state.disabledButtons}
-                                                    value={this.state.dadosTransportadoraIE}
-                                                    onChange={(e) => { this.setState({ dadosTransportadoraIE: e.target.value }) }} />
+                                                <Label for="toHour" style={styleLabel}>Hora fim</Label>
+                                                <AvField type="time" name="toHour" id="toHour" style={styleInput}
+                                                    validate={{
+                                                        required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
+                                                    }} />
                                             </AvGroup>
                                         </Col>
                                         <Col md={3} style={{ marginTop: '-10px' }}>
                                             <AvGroup>
-                                                <Label for="antt" style={styleLabel}>Lotação máxima</Label>
-                                                <AvField type="text" name="antt" id="antt" style={styleInput}
-                                                    disabled={this.state.disabledButtons}
-                                                    value={this.state.dadosTransportadoraAntt}
-                                                    onChange={(e) => { this.setState({ dadosTransportadoraAntt: e.target.value }) }} />
-                                            </AvGroup>
-                                        </Col>
-                                        <Col md={3} style={{ marginTop: '-10px' }}>
-                                            <AvGroup>
-                                                <Label for="fone1" style={styleLabel}>Telefone 1</Label>
-                                                <AvField type="text" name="fone1" id="fone1" style={styleInput}
-                                                    disabled={this.state.disabledButtons}
-                                                    value={this.state.dadosTransportadoraFone1}
-                                                    onChange={(e) => { this.setState({ dadosTransportadoraFone1: e.target.value }) }} />
-                                            </AvGroup>
-                                        </Col>
-                                        <Col md={3} style={{ marginTop: '-10px' }}>
-                                            <AvGroup>
-                                                <Label for="fone2" style={styleLabel}>Telefone 2</Label>
-                                                <AvField type="text" name="fone2" id="fone2" style={styleInput}
-                                                    disabled={this.state.disabledButtons}
-                                                    value={this.state.dadosTransportadoraFone2}
-                                                    onChange={(e) => { this.setState({ dadosTransportadoraFone2: e.target.value }) }} />
+                                                <Label for="peopleCount" style={styleLabel}>Quantidade de ocupantes</Label>
+                                                <AvField type="number" name="peopleCount" id="peopleCount" 
+                                                    min={1}
+                                                    style={styleInput}
+                                                    value={this.getModelAttr('peopleCount')} 
+                                                    placeholder="Ocupação total">
+                                                </AvField>
                                             </AvGroup>
                                         </Col>
                                     </Row>
@@ -110,11 +101,9 @@ class ScheduleModel extends Component {
                                     <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
                                         <Col md={12} style={{ marginTop: '-10px' }}>
                                             <AvGroup>
-                                                <Label for="obs" style={styleLabel}>Anotações Diversas</Label>
-                                                <AvField type="textarea" rows={5} name="obs" id="obs"
-                                                    //disabled={this.state.disabledButtons}
-                                                    //value={this.state.dadosTransportadoraObs}
-                                                    onChange={(e) => { this.setState({ dadosTransportadoraObs: e.target.value }) }} />
+                                                <Label for="notes" style={styleLabel}>Observações</Label>
+                                                <AvField type="textarea" rows={5} name="notes" id="notes"
+                                                    value={this.getModelAttr('notes')} />
                                             </AvGroup>
                                         </Col>
                                     </Row>
@@ -122,7 +111,7 @@ class ScheduleModel extends Component {
                                 <div className="clearfix" />
                             </CardBody>
                         </Card>
-                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formNF">
+                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formSchedule">
                             <Button pullRight fill bsStyle="danger"
                                 onClick={this.retornarListaTransportadora}>
                                 Cancelar
