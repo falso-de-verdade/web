@@ -13,7 +13,7 @@ import { Link, Redirect } from "react-router-dom";
 
 import * as qs from 'query-string';
 
-class ListaTransportadora extends Component {
+class ScheduleList extends Component {
     constructor(props) {
         super(props);
 
@@ -63,7 +63,7 @@ class ListaTransportadora extends Component {
                             <span className="fa fa-search"></span>Localizar
                         </ButtonB>
 
-                        <Link to={`agendamento`}>
+                        <Link to={`schedule`}>
                             <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
                                 <span className="fa fa-plus"></span>
                                 {' '}Agendamento
@@ -157,4 +157,4 @@ class ListaTransportadora extends Component {
     }
 }
 
-export default ListaTransportadora;
+export default ScheduleList;

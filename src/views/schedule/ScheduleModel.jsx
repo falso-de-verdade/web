@@ -10,45 +10,16 @@ import Select from 'react-select';
 import formatCnpjCpf from '../../utils/formatCNPJ';
 
 
-class Transportadora extends Component {
-
-    notificationSystem = React.createRef();
+class ScheduleModel extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            listTransportadora: [],
-            dadosTransportadora: [],
-            isHidden: false,
             activeTab: '1',
-            titulo: '',
-            tituloBotaoCadAlt: '',
-            tipoCadAlt: '',
-            dadosTransportadoraID_UUID: props.match.params.id,
-            dadosTransportadoraCodigo: '',
-            dadosTransportadoraRazao: '',
-            dadosTransportadoraCNPJ: '',
-            dadosTransportadoraIE: '',
-            dadosTransportadoraAntt: '',
-            dadosTransportadoraEndereco: '',
-            dadosTransportadoraNumero: '',
-            dadosTransportadoraBairro: '',
-            dadosTransportadoraCep: '',
-            dadosTransportadoraUf: '',
-            dadosTransportadoraCidade: '',
-            dadosTransportadoraComplemento: '',
-            dadosTransportadoraFone1: '',
-            dadosTransportadoraFone2: '',
-            dadosTransportadoraObs: '',
-            dadosTransportadoraPlaca: '',
-            dadosTransportadoraUfPlaca: '',
-            disabledButtons: false,
             modalOpen: true,
-            listaUfs: []
+            schedule: {...props.schedule}
         }
     }
-    componentDidMount(prevProps) {
-    };
 
     render() {
         const styleInput = {
@@ -170,4 +141,4 @@ class Transportadora extends Component {
 
 }
 
-export default Transportadora;
+export default ScheduleModel;
