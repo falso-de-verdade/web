@@ -25,7 +25,7 @@ import { OutbuildingList, OutbuildingModel, FindOutbuilding } from "views/outbui
 
 import Condominios from "views/condominios/ListaCondominios.jsx";
 
-import { ScheduleModel, ScheduleList } from "views/schedule";
+import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
 
@@ -105,7 +105,7 @@ const dashboardRoutes = [
     path: "/schedule/:id",
     name: "Agendamento",
     icon: "pe-7s-date",
-    component: ScheduleModel,
+    component: FindSchedule,
     layout: "/admin",
     redirect: true
   },

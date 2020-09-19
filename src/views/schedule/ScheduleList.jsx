@@ -5,36 +5,22 @@ import { Row, Col } from "reactstrap";
 
 import Card from "components/Card/Card";
 
-import { AvForm, AvField } from 'availity-reactstrap-validation';
 import ButtonB from "components/CustomButton/CustomButton.jsx";
 
 import api from '../../services/api';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import * as qs from 'query-string';
 
 class ScheduleList extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            listTransportadoras: [],
-            totTransportadoras: 0,
-            stotTransportadoras: "Total de Registros: 0",
-            inputLocalizar: '',
             isHidden: false,
             disableButtons: true,
             modalExcluir: false,
-            idTransportadoraExcluir: 0,
-            nPage: 1,
-            disableButtonAnterior: true,
-            disableButtonProximo: true
         };
     };
-
-    componentDidMount() {
-
-    }
 
     render() {
 
@@ -66,7 +52,6 @@ class ScheduleList extends Component {
                         <Link to={`schedule`}>
                             <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
                                 <span className="fa fa-plus"></span>
-                                {' '}Agendamento
                             </ButtonB>
                         </Link>
                     </Col>
@@ -95,10 +80,12 @@ class ScheduleList extends Component {
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                                                >
-                                                                    <span className="fa fa-pencil"></span>
-                                                                </ButtonB>
+                                                                <Link to={`schedule/teste`}>
+                                                                    <ButtonB bsStyle="success" simple type="button" 
+                                                                        bsSize="xs" style={{ padding: '3px' }} >
+                                                                        <span className="fa fa-pencil"></span>
+                                                                    </ButtonB>
+                                                                </Link>
 
                                                                 {' '}
                                                                 <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
