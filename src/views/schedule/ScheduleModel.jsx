@@ -13,7 +13,7 @@ import { ModelComponent } from "views/common";
 
 class ScheduleModel extends ModelComponent {
     constructor(props) {
-        super('schedule', props);
+        super(props);
 
         this.state = {
             ...this.state,
