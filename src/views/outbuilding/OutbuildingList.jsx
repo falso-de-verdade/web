@@ -31,18 +31,7 @@ class OutbuildingList extends Component {
             />
           </Col>
 
-          <Col md={2} style={{ marginBottom: '5px', paddingLeft: 0 }}>
-            <AvForm autoComplete="off" ref="formLocalizar">
-              <AvField type="select" name="select"
-                //value={this.state.inputLocalizarStatus}
-                onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
-                <option value="Ativo">Ativos</option>
-                <option value="Inativo">Inativos</option>
-              </AvField>
-            </AvForm>
-          </Col>
-
-          <Col md={6} style={{ marginBottom: '5px', paddingLeft: 0 }}>
+          <Col md={4} style={{ marginBottom: '5px', paddingLeft: 0 }}>
             <ButtonB bsStyle="info"
               //disabled={this.state.disabledButtons}
               onClick={this.listarProdutos}>
@@ -86,7 +75,7 @@ class OutbuildingList extends Component {
                             Salão de Jogos
                           </td>
                           <td>
-                            Segunda a Sexta - 14:00 ás 20:00  
+                            Segunda a Sexta - 14:00 ás 20:00
                           </td>
                           <td>
                             20

@@ -17,6 +17,8 @@
 */
 import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
+import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { Row, Col, Button } from "reactstrap";
 
 class AdminNavbarLinks extends Component {
 
@@ -29,58 +31,24 @@ class AdminNavbarLinks extends Component {
   };
 
   render() {
-    const notification = (
-      <div>
-        <i className="fa fa-globe" />
-        <b className="caret" />
-        <span className="notification">5</span>
-        <p className="hidden-lg hidden-md">Notification</p>
-      </div>
-    );
     return (
       <div>
-        <Nav>
-          {/*
-          <NavItem eventKey={1} href="#">
-            <i className="fa fa-dashboard" />
-            <p className="hidden-lg hidden-md">Dashboard</p>
-          </NavItem>          
-
-          <NavDropdown
-            eventKey={2}
-            title={notification}
-            noCaret
-            id="basic-nav-dropdown"
-          >
-            <MenuItem eventKey={2.1}>Notification 1</MenuItem>
-            <MenuItem eventKey={2.2}>Notification 2</MenuItem>
-            <MenuItem eventKey={2.3}>Notification 3</MenuItem>
-            <MenuItem eventKey={2.4}>Notification 4</MenuItem>
-            <MenuItem eventKey={2.5}>Another notifications</MenuItem>
-          </NavDropdown>
-          
-          <NavItem eventKey={3} href="#">
-            <i className="fa fa-search" />
-            <p className="hidden-lg hidden-md">Search</p>
-          </NavItem>
-          */}
-        </Nav>
         <Nav pullRight>
-          {/*
-          <NavDropdown
-            eventKey={2}
-            title="Dropdown"
-            id="basic-nav-dropdown-right"
-          >
-            <MenuItem eventKey={2.1}>Action</MenuItem>
-            <MenuItem eventKey={2.2}>Another action</MenuItem>
-            <MenuItem eventKey={2.3}>Something</MenuItem>
-            <MenuItem eventKey={2.4}>Another action</MenuItem>
-            <MenuItem eventKey={2.5}>Something</MenuItem>
-            <MenuItem divider />
-            <MenuItem eventKey={2.5}>Separated link</MenuItem>
-          </NavDropdown>
-          */}
+          <NavItem>
+            <Col md={12} style={{ marginBottom: '5px', paddingLeft: 0 }}>
+              <AvForm autoComplete="off" ref="formLocalizar">
+                <AvField type="select" name="select"
+                  //value={this.state.inputLocalizarStatus}
+                  onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
+                  <option value="">Selecione o condomínio</option>
+                  <optgroup label="Condomínios"></optgroup>
+                  <option value="1">Condomínio Villa Flor</option>
+                  <option value="2">Condomínio St Flor</option>
+                  <option value="3">Condomínio Maré Azul VI</option>
+                </AvField>
+              </AvForm>
+            </Col>
+          </NavItem>
           <NavItem
             href="/login"
             onClick={() => this.logOut()}>
