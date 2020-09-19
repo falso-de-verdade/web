@@ -95,7 +95,6 @@ class OutbuildingList extends Component {
                             Bloco A
                           </td>
 
-                          <td className="text-right"></td>
                           <td className="text-center" width={90}>
                             {
                               <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
