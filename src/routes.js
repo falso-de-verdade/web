@@ -23,7 +23,7 @@ import ResidentModel from "views/resident/ResidentModel"
 
 import { OutbuildingList, OutbuildingModel, FindOutbuilding } from "views/outbuilding";
 
-import Condominios from "views/condominios/ListaCondominios.jsx";
+import { CondominiumList } from "views/condominium";
 
 import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
@@ -136,6 +136,14 @@ const dashboardRoutes = [
     component: Diversos
   },
 
+  {
+    path: "/condominiums",
+    name: "Condomínios",
+    icon: "pe-7s-home",
+    layout: "/admin",
+    component: CondominiumList
+  },
+
   /**rota transportadora */
 
 
@@ -213,7 +221,7 @@ const dashboardRoutes = [
     path: "/config",
     name: "Configurações",
     icon: "pe-7s-config",
-    component: Condominios,
+    component: CondominiumList,
     layout: "/admin"
   }
 

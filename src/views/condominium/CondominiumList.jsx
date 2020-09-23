@@ -3,7 +3,7 @@ import { Table, Grid, Row, Col } from "react-bootstrap";
 import Card from "components/Card/Card";
 import Button from "components/CustomButton/CustomButton";
 
-class ListaCondominios extends Component {
+class CondominiumList extends Component {
     constructor(props) {
         super(props);
 
@@ -12,10 +12,6 @@ class ListaCondominios extends Component {
             isHidden: false,
             disabledButtons: true
         }
-    }
-
-    componentDidMount() {
-        //this.listarEmissores();
     }
 
 
@@ -74,4 +70,4 @@ class ListaCondominios extends Component {
     }
 }
 
-export default ListaCondominios;
+export default CondominiumList;
