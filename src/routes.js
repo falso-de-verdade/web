@@ -23,11 +23,15 @@ import ResidentModel from "views/resident/ResidentModel"
 
 import { OutbuildingList, OutbuildingModel, FindOutbuilding } from "views/outbuilding";
 
-import { CondominiumList, CondominiumModel } from "views/condominium";
+import { CondominiumList, CondominiumModel, FindCondominium } from "views/condominium";
 
 import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
+
+//
+// !!! Be carefull about route orders
+//
 
 const dashboardRoutes = [
   /*  {
@@ -142,6 +146,14 @@ const dashboardRoutes = [
     icon: "pe-7s-home",
     layout: "/admin",
     component: CondominiumList
+  },
+  {
+    path: "/condominium/:id",
+    name: "Atualizar condomínio",
+    icon: "pe-7s-home",
+    layout: "/admin",
+    component: FindCondominium,
+    redirect: true
   },
   {
     path: "/condominium",

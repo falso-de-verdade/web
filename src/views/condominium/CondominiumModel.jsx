@@ -21,6 +21,8 @@ class CondominiumModel extends ModelComponent {
             activeTab: '1',
             modalOpen: true,
         }
+
+        console.log(this.state)
     }
 
     toggle(tab) {
@@ -154,7 +156,7 @@ class CondominiumModel extends ModelComponent {
                             </CardBody>
                         </Card>
                         <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formCondominium">
-                            <Link to={`condominiums`}>
+                            <Link to="/admin/condominiums">
                                 <Button pullRight fill bsStyle="danger" >
                                     Cancelar
                                 </Button>
