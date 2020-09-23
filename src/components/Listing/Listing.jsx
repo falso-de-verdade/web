@@ -75,7 +75,7 @@ const Listing = ({ name,
                 <Card
                     title={title}
                     ctAllIcons
-                    content={<TableContent 
+                    content={<TableComponent 
                                 headers={headers}
                                 items={itemsRef.current}
                                 onItemClick={values => onItemClick(values, history)}
@@ -110,7 +110,7 @@ const Listing = ({ name,
                     <p className="text-center">
                         Confirma a exclusão do item selecionado ?
                     </p>
-                    <TableContent 
+                    <TableComponent 
                         headers={headers}
                         items={[selectedItemRef.current]}
                         dataReducer={dataReducer} />
