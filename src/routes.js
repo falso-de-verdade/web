@@ -29,7 +29,7 @@ import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
 
-import { CollisionList } from "views/collision";
+import { CollisionList, CollisionModel, FindCollision } from "views/collision";
 
 const dashboardRoutes = [
   /*  {
@@ -145,6 +145,15 @@ const dashboardRoutes = [
     // icon: "pe-7s-ticket",
     layout: "/admin",
     component: CollisionList
+  },
+  {
+    path: "/collision/:id",
+    name: "Finalizar conflito",
+    icon: "pe-7s-ribbon",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: FindCollision,
+    redirect: true
   },
 
   /**rota transportadora */
