@@ -17,7 +17,7 @@
 */
 
 import ResidentList from "views/resident/ResidentList";
-
+import ResidentModel from "views/resident/ResidentModel"
 
 //import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
@@ -48,23 +48,32 @@ const dashboardRoutes = [
     layout: "/admin"
   },
 
- /*  {
-    path: "/ResidentRegistration/:id",
-    name: "Morador",
+  {
+    path: "/resident/:id",
+    name: "Moradores",
     icon: "pe-7s-user",
-    component: ResidentRegistration,
+    component: ResidentModel,
     layout: "/admin",
     redirect: true
   },
 
-  {
-    path: "/ResidentRegistration",
-    name: "Morador",
-    icon: "pe-7s-user",
-    component: ResidentRegistration,
-    layout: "/admin",
-    redirect: true
-  }, */
+  /*  {
+     path: "/ResidentRegistration/:id",
+     name: "Morador",
+     icon: "pe-7s-user",
+     component: ResidentRegistration,
+     layout: "/admin",
+     redirect: true
+   },
+ 
+   {
+     path: "/ResidentRegistration",
+     name: "Morador",
+     icon: "pe-7s-user",
+     component: ResidentRegistration,
+     layout: "/admin",
+     redirect: true
+   }, */
 
   /**rota dependencias */
   {

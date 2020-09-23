@@ -18,9 +18,7 @@ class ListResident extends Component {
   render() {
     return (
       <div className="content">
-
         <Row style={{ marginTop: '-20px' }}>
-
           <Col md={4} style={{ marginBottom: '5px', paddingRight: 10 }}>
             <FormControl
               type="text"
@@ -39,14 +37,12 @@ class ListResident extends Component {
               Localizar
               </ButtonB>
           </Col>
-
         </Row>
 
         <Row style={{ paddingTop: '0px' }}>
           <Col md={12}>
             <Card
               title="Lista de Moradores"
-
               ctAllIcons
               content={
                 <div>
@@ -66,12 +62,11 @@ class ListResident extends Component {
                           <td className="text-center" width={140}>
                             {
                               <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                >
-                                  <span className="fa fa-pencil"></span>
-                                </ButtonB>
-
+                                <Link to="/admin/resident/teste">
+                                  <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}>
+                                    <span className="fa fa-pencil"></span>
+                                  </ButtonB>
+                                </Link>
                                 {' '}
                                 <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
                                   onClick={this.excluirCliente}>
@@ -105,7 +100,6 @@ class ListResident extends Component {
           Próximo
           <span className="fa fa-caret-right"></span>
         </ButtonB>
-
 
         {/**confirma exclusao */}
         <Modal

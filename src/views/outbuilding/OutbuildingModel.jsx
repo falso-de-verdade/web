@@ -27,7 +27,7 @@ class OutbuildingModel extends Component {
     this.state = {
       activeTab: '1',
       modalOpen: true,
-      outbuilding: {...props.outbuilding}
+      outbuilding: { ...props.outbuilding }
     }
   }
 
@@ -78,7 +78,6 @@ class OutbuildingModel extends Component {
 
         <Row>
           <Col style={{ marginTop: '-10px' }} md={12}>
-
             <Card>
               <CardBody style={{ padding: '10px', fontSize: 12 }}>
                 <Nav tabs>
@@ -108,9 +107,9 @@ class OutbuildingModel extends Component {
                               onChange={this.setModelAttr('name')}
                               value={this.state.outbuilding.name}
                               validate={{
-                                required: { value: true, errorMessage: 'Nome é obrigatório'}
+                                required: { value: true, errorMessage: 'Nome é obrigatório' }
                               }}
-                              />
+                            />
                           </AvGroup>
                         </Col>
                         <Col style={{ marginTop: '-10px' }} md={4}>
@@ -144,7 +143,7 @@ class OutbuildingModel extends Component {
                             <AvField type="text" name="location" id="location" style={styleInput}
                               onChange={this.setModelAttr('location')}
                               value={this.state.outbuilding.location}
-                              placeholder="Ex.: Bloco B"/>
+                              placeholder="Ex.: Bloco B" />
                           </AvGroup>
                         </Col>
                       </Row>
@@ -156,7 +155,7 @@ class OutbuildingModel extends Component {
                 <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                   <TabPane tabId="2">
                     <AvForm autoComplete="off" onSubmit={this.operacaoProduto} ref="formOutbuilding">
-                    <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <Col md={2} style={{ marginTop: '-10px' }}>
                           <AvGroup>
                             <Label for="fromDay" style={styleLabel}>De</Label>
@@ -215,7 +214,7 @@ class OutbuildingModel extends Component {
                               }} />
                           </AvGroup>
                         </Col>
-                        
+
                         <ButtonB onClick={() => this.setState({ isDisabledCFOP: false })} bsStyle="info" fill
                           style={{ margin: '15px' }}>
                           <span className="fa fa-plus"></span>
@@ -276,7 +275,7 @@ class OutbuildingModel extends Component {
                 <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                   <TabPane tabId="3">
                     <AvForm autoComplete="off" onSubmit={this.operacaoProduto} ref="formOutbuilding">
-                    <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <Col md={4} style={{ marginTop: '-10px' }}>
                           <AvGroup>
                             <Label for="fromDay" style={styleLabel}>Documento/Imagem/Vídeo</Label>
@@ -305,8 +304,8 @@ class OutbuildingModel extends Component {
                                 </td>
                                 <td>
                                   <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
-                                      height={64}
-                                      width={64} />
+                                    height={64}
+                                    width={64} />
                                 </td>
                                 <td className="text-center" width={140}>
                                   {
