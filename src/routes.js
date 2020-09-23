@@ -29,6 +29,8 @@ import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
 
+import { CollisionList } from "views/collision";
+
 const dashboardRoutes = [
   /*  {
      path: "/dashboard",
@@ -134,6 +136,15 @@ const dashboardRoutes = [
     icon: "pe-7s-more",
     layout: "/admin",
     component: Diversos
+  },
+
+  {
+    path: "/collisions",
+    name: "Conflitos",
+    icon: "pe-7s-ribbon",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: CollisionList
   },
 
   /**rota transportadora */
