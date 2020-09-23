@@ -42,7 +42,7 @@ class CondominiumList extends Component {
                             <span className="fa fa-search"></span>Localizar
                         </ButtonB>
 
-                        <Link to={`schedule`}>
+                        <Link to={`condominium`}>
                             <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
                                 <span className="fa fa-plus"></span>
                             </ButtonB>
@@ -78,7 +78,7 @@ class CondominiumList extends Component {
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <Link to={`schedule/teste`}>
+                                                                <Link to={`condominium/teste`}>
                                                                     <ButtonB bsStyle="success" simple type="button" 
                                                                         bsSize="xs" style={{ padding: '3px' }} >
                                                                         <span className="fa fa-pencil"></span>
@@ -106,7 +106,7 @@ class CondominiumList extends Component {
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <Link to={`schedule/teste`}>
+                                                                <Link to={`condominium/teste`}>
                                                                     <ButtonB bsStyle="success" simple type="button" 
                                                                         bsSize="xs" style={{ padding: '3px' }} >
                                                                         <span className="fa fa-pencil"></span>
@@ -134,7 +134,7 @@ class CondominiumList extends Component {
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <Link to={`schedule/teste`}>
+                                                                <Link to={`condominium/teste`}>
                                                                     <ButtonB bsStyle="success" simple type="button" 
                                                                         bsSize="xs" style={{ padding: '3px' }} >
                                                                         <span className="fa fa-pencil"></span>
@@ -162,7 +162,7 @@ class CondominiumList extends Component {
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <Link to={`schedule/teste`}>
+                                                                <Link to={`condominium/teste`}>
                                                                     <ButtonB bsStyle="success" simple type="button" 
                                                                         bsSize="xs" style={{ padding: '3px' }} >
                                                                         <span className="fa fa-pencil"></span>
@@ -190,7 +190,7 @@ class CondominiumList extends Component {
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <Link to={`schedule/teste`}>
+                                                                <Link to={`condominium/teste`}>
                                                                     <ButtonB bsStyle="success" simple type="button" 
                                                                         bsSize="xs" style={{ padding: '3px' }} >
                                                                         <span className="fa fa-pencil"></span>
