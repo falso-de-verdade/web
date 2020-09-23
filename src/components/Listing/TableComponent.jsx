@@ -3,7 +3,7 @@ import { Table, Row } from "react-bootstrap";
 
 import ItemComponent from "./ItemComponent";
 
-const TableContent = ({ headers,
+const TableComponent = ({ headers,
                         items,
                         dataReducer,
                         onItemClick,
