@@ -5,21 +5,22 @@ import Button from 'components/CustomButton/CustomButton.jsx';
 import { Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
 
-import isLoggedIn from "variables/Variables";
-
 import InputPasswordCustom from '../components/inputs/inputCustom'
 import InputCustom from '../components/inputs/inputCustom'
 import Logo from '../assets/img/logomarca.svg'
+import AuthRedirect from "components/AuthRedirect/AuthRedirect";
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            succeeded: false,
             email: '',
             password: '',
+            user: null,
             lembrarDados: false
         };
+
+
     };
 
     /**
@@ -28,8 +29,19 @@ class Login extends Component {
     handleLogin = () => {
         console.log(`email: ${this.state.email}`)
         console.log(`password: ${this.state.password}`)
-        localStorage.setItem('isAuthenticated', true)
-        this.setState({ succeeded: true })
+
+        let isManager = true;
+        if (this.state.email === "morador") {
+            isManager = false;
+        }
+
+        const user = {
+            name: "Testador",
+            email: "exsample@test.com",
+            isManager
+        }
+
+        this.setState({ user })
     };
 
     toggleChangeLembrarDados = () => {
@@ -37,8 +49,8 @@ class Login extends Component {
     };
 
     render() {
-        if (this.state.succeeded) {
-            return <Redirect to={{ pathname: "/admin/dashboard", state: { isAuthenticated: true } }} />
+        if (this.state.user) {
+            return <AuthRedirect user={this.state.user} />
         };
 
         const styleInput = {

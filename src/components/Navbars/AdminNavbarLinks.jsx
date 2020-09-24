@@ -19,15 +19,14 @@ import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Row, Col, Button } from "reactstrap";
+import { NavLink } from "react-router-dom";
+
+import { UserAuthContext } from "contexts";
 
 class AdminNavbarLinks extends Component {
 
   constructor(props) {
     super(props);
-  };
-
-  logOut() {
-    localStorage.clear();
   };
 
   render() {
@@ -49,12 +48,19 @@ class AdminNavbarLinks extends Component {
               </AvForm>
             </Col>
           </NavItem>
-          <NavItem
-            href="/login"
-            onClick={() => this.logOut()}>
+          <NavItem>
+            <UserAuthContext.Consumer>
+              {user => (
+                <p>
+                  {user.name}
+                </p>
+              )}
+            </UserAuthContext.Consumer>
+          </NavItem>
+          <NavLink to="/logout" >
             <span className="fa fa-sign-out"></span>
             {' '}Log out
-          </NavItem>
+          </NavLink>
         </Nav>
       </div>
     );
