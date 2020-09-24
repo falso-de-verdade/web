@@ -44,7 +44,8 @@ const dashboardRoutes = [
     name: "Moradores",
     icon: "pe-7s-user",
     component: ResidentList,
-    layout: "/admin"
+    layout: "/admin",
+    requiresManager: true
   },
 
   {
@@ -53,7 +54,8 @@ const dashboardRoutes = [
     icon: "pe-7s-user",
     component: ResidentModel,
     layout: "/admin",
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   /*  {
