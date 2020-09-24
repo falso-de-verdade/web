@@ -166,6 +166,11 @@ class CollisionModel extends ModelComponent {
                                 </TabContent>
                             </CardBody>
                         </Card>
+                        <Link to={`../collisions`}>
+                            <Button pullLeft fill bsStyle="danger">
+                                Cancelar
+                            </Button>
+                        </Link>
                     </Col>
                 </Row>
 
