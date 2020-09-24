@@ -125,7 +125,6 @@ const Listing = ({ name,
                         setLoading(true);
                             
                         // reset selected item
-                        selectedItemRef.current = null;
                         setHasSelectedItem(false);
                      }}>Excluir</ButtonB>
 
