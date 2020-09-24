@@ -29,7 +29,7 @@ const onRemoval = (collision) => {
 } 
 
 const onView = (collision, history) => {
-    history.push(`/admin/collision/${collision.id}`);
+    history.push(`collision/${collision.id}`);
 }
 
 async function fakeItems() {
@@ -58,24 +58,17 @@ async function fakeItems() {
     ];
 }
 
-// const Operations = ({ item, setSelectedItem }) => (
-//     <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-//         <Link to={`collision/${item.id}/`}>
-//             <ButtonB
-//                 bsStyle="success" bsSize="xs"
-//                 simple type="button" style={{ padding: '3px' }}>
-//                 <span className="fa fa-pencil"></span>
-//             </ButtonB>
-//         </Link>
-
-//         {' '}
-//         <ButtonB bsStyle="danger" 
-//             simple type="button" bsSize="xs" style={{ padding: '3px' }}
-//             onClick={() => setSelectedItem(item)}>
-//             <span className="fa fa-times"></span>
-//         </ButtonB>                                
-//     </div>
-// )
+const Operations = ({ item, setSelectedItem }) => (
+    <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+        <Link to={`collision/${item.id}/`}>
+            <ButtonB
+                bsStyle="success" bsSize="xs"
+                simple type="button" style={{ padding: '3px' }}>
+                <span className="fa fa-eye"></span>
+            </ButtonB>
+        </Link>                            
+    </div>
+)
 
 const CollisionList = ({}) => {
 
@@ -88,7 +81,8 @@ const CollisionList = ({}) => {
             searchOne={searchOne} 
             onItemClick={onView}
             onItemRemoval={onRemoval}
-            fetchItems={fakeItems} />
+            fetchItems={fakeItems} 
+            OperationsComponent={Operations} />
 }
 
 export default CollisionList;
