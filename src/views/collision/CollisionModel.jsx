@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Button from 'components/CustomButton/CustomButton.jsx';
 import api from '../../services/api';
 import {
-    Row, Col, Label, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane, Modal
+    Row, Col, Label, Card, CardBody, Nav, NavItem, NavLink, TabContent, TabPane
 } from 'reactstrap';
+import { Modal } from "react-bootstrap";
 import classnames from 'classnames';
 import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
 import { Link } from "react-router-dom";
@@ -39,8 +40,10 @@ class CollisionModel extends ModelComponent {
             ...this.state,
             activeTab: '1',
             modalOpen: true,
-            selectedResident: null
+            hasSelectedResident: false
         }
+
+        this.selectedResident = null;
     }
 
     toggle(tab) {
@@ -51,7 +54,14 @@ class CollisionModel extends ModelComponent {
         }
       }
 
-    
+    toggleModal = () => {
+        this.setState({ hasSelectedResident: !this.state.hasSelectedResident })
+    }
+
+    resolveCollision = () => {
+        console.log(`Resolvendo conflito para ${this.selectedResident.name}`);
+        this.toggleModal();
+    }
 
     render() {
         const styleInput = {
@@ -66,10 +76,6 @@ class CollisionModel extends ModelComponent {
 
         const styleLabel = {
             fontSize: 11
-        }
-
-        if (this.state.selectedResident) {
-            console.log(this.state.selectedResident); 
         }
 
         return (
@@ -99,7 +105,10 @@ class CollisionModel extends ModelComponent {
                                                     headers={residentHeaders}
                                                     items={this.state.residents}
                                                     dataReducer={residentDataReducer}
-                                                    setSelectedItem={item => this.setState({ selectedResident: item }) }
+                                                    setSelectedItem={item => {
+                                                        this.selectedResident = item;
+                                                        this.toggleModal(); 
+                                                    }}
                                                     OperationsComponent={TicketOperations} />
                                             </Col>
                                         </Row>
@@ -174,31 +183,29 @@ class CollisionModel extends ModelComponent {
                     </Col>
                 </Row>
 
-                {/* <Modal
-                    show={this.state.selectedResident}
+                <Modal
+                    show={this.state.hasSelectedResident}
                     aria-labelledby="contained-modal-title">
                     <Modal.Header>
-                        <Modal.Title>Aceitar ticket</Modal.Title>
+                        <Modal.Title>Resolver ticket</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p className="text-center">
-                            Confirma a finalização do ticket para o seguinte morador ?
+                            Confirma a resolução do ticket para o seguinte morador ?
                         </p>
                         <TableComponent 
                             headers={residentHeaders}
-                            items={[this.state.selectedResident]}
+                            items={[this.selectedResident]}
                             dataReducer={residentDataReducer} />
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <ButtonB fill bsStyle="danger" onClick={e => {
-                            this.setState({ selectedResident: null })
-                        }}>Excluir</ButtonB>
+                        <ButtonB fill bsStyle="danger" onClick={this.resolveCollision}>Resolver</ButtonB>
 
-                        <ButtonB fill onClick={e => this.setState({ selectedResident: null })}>Cancelar</ButtonB>
+                        <ButtonB fill onClick={this.toggleModal}>Cancelar</ButtonB>
                     </Modal.Footer>
-                </Modal> */}
+                </Modal>
             </div>
         )
     }
