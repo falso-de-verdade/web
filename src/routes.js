@@ -100,7 +100,8 @@ const dashboardRoutes = [
     icon: "pe-7s-user",
     component: OutbuildingModel,
     layout: "/admin",
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   // agendamentos
