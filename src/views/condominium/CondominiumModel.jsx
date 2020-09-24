@@ -58,11 +58,11 @@ class CondominiumModel extends ModelComponent {
                                         <NavLink href="#" style={{ color: '#000' }}
                                         onClick={() => { this.toggle('1'); }}>Dados Cadastrais</NavLink>
                                     </NavItem>
-
+{/* 
                                     <NavItem className={classnames({ active: this.state.activeTab === '2' })}>
                                         <NavLink href="#" style={{ color: '#000' }}
                                         onClick={() => { this.toggle('2'); }}>Mídia</NavLink>
-                                    </NavItem>
+                                    </NavItem> */}
                                 </Nav>
                                 <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                                     <TabPane tabId="1">
@@ -76,6 +76,13 @@ class CondominiumModel extends ModelComponent {
                                                             validate={{
                                                                 required: { value: true, errorMessage: 'Campo "Nome" obrigatório' },
                                                             }} />
+                                                    </AvGroup>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <AvGroup>
+                                                        <Label for="address" style={styleLabel}>Endereço</Label>
+                                                        <AvField type="text" name="address" id="address" style={styleInput}
+                                                            value={this.getModelAttr('address')} />
                                                     </AvGroup>
                                                 </Col>
                                             </Row>
@@ -94,7 +101,7 @@ class CondominiumModel extends ModelComponent {
                                     </TabPane>
                                 </TabContent>
 
-                                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
+                                {/* <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                                     <TabPane tabId="2">
                                         <AvForm autoComplete="off" onSubmit={this.operacaoProduto} ref="formOutbuilding">
                                             <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
@@ -152,11 +159,11 @@ class CondominiumModel extends ModelComponent {
                                         </AvForm>
                                     </TabPane>
                                 </TabContent>
-                                <div className="clearfix" />
+                                <div className="clearfix" /> */}
                             </CardBody>
                         </Card>
                         <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formCondominium">
-                            <Link to="/admin/condominiums">
+                            <Link to="../condominiums">
                                 <Button pullRight fill bsStyle="danger" >
                                     Cancelar
                                 </Button>

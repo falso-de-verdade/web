@@ -61,131 +61,21 @@ class CondominiumList extends Component {
                                         <Table striped hover>
                                             <thead>
                                                 <tr>
-                                                    <th>
+                                                    {/* <th>
                                                        Foto
-                                                    </th>
+                                                    </th> */}
                                                     <th>Nome</th>
+                                                    <th>Endereço</th>
                                                     <th className="text-center">Operações</th>
                                                 </tr></thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>
+                                                    {/* <td>
                                                         <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
                                                             wdith={128} height={128} />
-                                                    </td>
+                                                    </td> */}
                                                     <td>Condomínio Villa Flor</td>
-                                                    <td className="text-center" width={140}>
-                                                        {
-                                                            <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                                                <Link to={`condominium/teste`}>
-                                                                    <ButtonB bsStyle="success" simple type="button" 
-                                                                        bsSize="xs" style={{ padding: '3px' }} >
-                                                                        <span className="fa fa-pencil"></span>
-                                                                    </ButtonB>
-                                                                </Link>
-
-                                                                {' '}
-                                                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-
-                                                                    onClick={this.excluirTransportadora}>
-                                                                    <span className="fa fa-times"></span>
-                                                                </ButtonB>
-                                                                {' '}
-                                                            </div>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
-                                                            wdith={128} height={128} />
-                                                    </td>
-                                                    <td>Condomínio Villa Flor</td>
-                                                    <td className="text-center" width={140}>
-                                                        {
-                                                            <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                                                <Link to={`condominium/teste`}>
-                                                                    <ButtonB bsStyle="success" simple type="button" 
-                                                                        bsSize="xs" style={{ padding: '3px' }} >
-                                                                        <span className="fa fa-pencil"></span>
-                                                                    </ButtonB>
-                                                                </Link>
-
-                                                                {' '}
-                                                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-
-                                                                    onClick={this.excluirTransportadora}>
-                                                                    <span className="fa fa-times"></span>
-                                                                </ButtonB>
-                                                                {' '}
-                                                            </div>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
-                                                            wdith={128} height={128} />
-                                                    </td>
-                                                    <td>Condomínio Villa Flor</td>
-                                                    <td className="text-center" width={140}>
-                                                        {
-                                                            <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                                                <Link to={`condominium/teste`}>
-                                                                    <ButtonB bsStyle="success" simple type="button" 
-                                                                        bsSize="xs" style={{ padding: '3px' }} >
-                                                                        <span className="fa fa-pencil"></span>
-                                                                    </ButtonB>
-                                                                </Link>
-
-                                                                {' '}
-                                                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-
-                                                                    onClick={this.excluirTransportadora}>
-                                                                    <span className="fa fa-times"></span>
-                                                                </ButtonB>
-                                                                {' '}
-                                                            </div>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
-                                                            wdith={128} height={128} />
-                                                    </td>
-                                                    <td>Condomínio Villa Flor</td>
-                                                    <td className="text-center" width={140}>
-                                                        {
-                                                            <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                                                <Link to={`condominium/teste`}>
-                                                                    <ButtonB bsStyle="success" simple type="button" 
-                                                                        bsSize="xs" style={{ padding: '3px' }} >
-                                                                        <span className="fa fa-pencil"></span>
-                                                                    </ButtonB>
-                                                                </Link>
-
-                                                                {' '}
-                                                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-
-                                                                    onClick={this.excluirTransportadora}>
-                                                                    <span className="fa fa-times"></span>
-                                                                </ButtonB>
-                                                                {' '}
-                                                            </div>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
-                                                            wdith={128} height={128} />
-                                                    </td>
-                                                    <td>Condomínio Villa Flor</td>
+                                                    <td>Suburbio de Gotham City, nº 651</td>
                                                     <td className="text-center" width={140}>
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
@@ -209,7 +99,6 @@ class CondominiumList extends Component {
                                                     </td>
                                                 </tr>
                                                 
-
                                             </tbody>
                                         </Table>
                                     </Row>

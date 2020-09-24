@@ -5,6 +5,7 @@ import CondominiumModel from "./CondominiumModel";
 const findFunction = modelId => {
     return {
         name: "Condomínio Villa Flow",
+        address: "Centro do Mundo",
         notes: "Regras!!!!",
     }
 }
