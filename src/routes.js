@@ -29,6 +29,8 @@ import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
 
+import ListMeetings from "views/meetings/ListMeetings"
+
 const dashboardRoutes = [
   /*  {
      path: "/dashboard",
@@ -134,6 +136,14 @@ const dashboardRoutes = [
     icon: "pe-7s-more",
     layout: "/admin",
     component: Diversos
+  },
+
+  {
+    path: "/meetings/",
+    name: "Reuniões",
+    icon: "pe-7s-info",
+    component: ListMeetings,
+    layout: "/admin",
   },
 
   /**rota transportadora */
