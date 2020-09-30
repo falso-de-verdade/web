@@ -22,8 +22,6 @@ class CondominiumModel extends ModelComponent {
             activeTab: '1',
             modalOpen: true,
         }
-
-        console.log(this.state)
     }
 
     toggle(tab) {
@@ -35,6 +33,8 @@ class CondominiumModel extends ModelComponent {
     }
 
     render() {
+        const isDisabled = !this.context.isManager;
+
         const styleInput = {
             fontSize: 12,
             height: '38px'
@@ -75,13 +75,14 @@ class CondominiumModel extends ModelComponent {
                                 </Nav>
                                 <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                                     <TabPane tabId="1">
-                                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formCondominium">
+                                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora}>
                                             <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
                                                 <Col md={3}>
                                                     <AvGroup>
                                                         <Label for="name" style={styleLabel}>Nome do condomínio</Label>
                                                         <AvField type="text" name="name" id="name" style={styleInput}
                                                             value={this.getModelAttr('name')}
+                                                            disabled={isDisabled}
                                                             validate={{
                                                                 required: { value: true, errorMessage: 'Campo "Nome" obrigatório' },
                                                             }} />
@@ -91,6 +92,7 @@ class CondominiumModel extends ModelComponent {
                                                     <AvGroup>
                                                         <Label for="address" style={styleLabel}>Endereço</Label>
                                                         <AvField type="text" name="address" id="address" style={styleInput}
+                                                            disabled={isDisabled}
                                                             value={this.getModelAttr('address')} />
                                                     </AvGroup>
                                                 </Col>
@@ -101,6 +103,7 @@ class CondominiumModel extends ModelComponent {
                                                     <AvGroup>
                                                         <Label for="notes" style={styleLabel}>Observações</Label>
                                                         <AvField type="textarea" rows={5} name="notes" id="notes"
+                                                            disabled={isDisabled}
                                                             value={this.getModelAttr('notes')} />
                                                     </AvGroup>
                                                 </Col>
@@ -171,21 +174,19 @@ class CondominiumModel extends ModelComponent {
                                 <div className="clearfix" /> */}
                             </CardBody>
                         </Card>
-                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formCondominium">
+                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora}>
                             <Link to={cancelLink}>
                                 <Button pullRight fill bsStyle="danger" >
                                     Cancelar
                                 </Button>
                             </Link>
                             
-                            <UserAuthContext.Consumer>
-                                {user => user.isManager && 
-                                    <Button bsStyle="success" fill type="submit"
-                                        disabled={this.state.disabledButtons}>
-                                        Gravar
-                                    </Button>
-                                }
-                            </UserAuthContext.Consumer>
+                            {this.context.isManager && 
+                                <Button bsStyle="success" fill type="submit"
+                                    disabled={this.state.disabledButtons}>
+                                    Gravar
+                                </Button>
+                            }
                         </AvForm>
                     </Col>
                 </Row>
@@ -194,5 +195,7 @@ class CondominiumModel extends ModelComponent {
     }
 
 }
+
+CondominiumModel.contextType = UserAuthContext;
 
 export default CondominiumModel;
