@@ -115,7 +115,7 @@ const dashboardRoutes = [
     name: "Agendamentos",
     icon: "pe-7s-date",
     component: ScheduleList,
-    layout: "/admin"
+    layout: "/admin",
   },
 
   {
@@ -124,7 +124,7 @@ const dashboardRoutes = [
     icon: "pe-7s-date",
     component: FindSchedule,
     layout: "/admin",
-    redirect: true
+    redirect: true,
   },
 
   {
@@ -133,7 +133,8 @@ const dashboardRoutes = [
     icon: "pe-7s-date",
     component: ScheduleModel,
     layout: "/admin",
-    redirect: true
+    redirect: true,
+    requiresResident: true,
   },
 
   {
