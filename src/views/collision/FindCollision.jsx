@@ -6,27 +6,25 @@ import CollisionModel from "./CollisionModel";
 
 const findFunction = modelId => {
     return {
-        outbuildingId: "1",
         outbuilding: {
-            name: "Salão de jogos"
+            name: "Quadra de vôlei"
         },
-        day: new Date(),
-        fromHour: '14:30',
-        toHour: '16:30',
-        peopleCount: 20,
-        notes: "Várias anotações aqui!!!!!",
-        residents: [
+        collisions: [
             {
-                name: "Zé Pequeno",
-                email: "example@ze.com",
-                location: "Bloco F",
-                schdule_creation_at: "19/10/2020 ás 19:20:01",
+                resident: {
+                    name: "Yan"
+                },
+                date: "30/09/2020",
+                timeRange: "14:30 ás 15:00",
+                peopleCount: 20
             },
             {
-                name: "Teste 12",
-                email: "example@ze111.com",
-                location: "Bloco Z",
-                schdule_creation_at: "19/10/2020 ás 19:20:01",
+                resident: {
+                    name: "Maria"
+                },
+                date: "30/09/2020",
+                timeRange: "14:45 ás 15:45",
+                peopleCount: 8
             }
         ]
     }

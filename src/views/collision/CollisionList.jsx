@@ -6,17 +6,13 @@ import ButtonB from "components/CustomButton/CustomButton";
 
 const Headers = [
     "Dependência",
-    "Data",
-    "Horário",
-    "Qtd. de ocupantes"
+    "Qtd. de tickets"
 ];
 
 const dataReducer = collision => (
    [
        collision.outbuilding.name,
-       collision.date,
-       collision.time,
-       collision.maxOccupation
+       collision.collisions.length
    ] 
 )
 
@@ -33,28 +29,83 @@ const onView = (collision, history) => {
 }
 
 async function fakeItems() {
-    await new Promise(r => setTimeout(r, 2000));
+    // await new Promise(r => setTimeout(r, 2000));
     return [
         {
-            "id": "teste1",
-            "outbuilding": {
-                "id": "teste",
-                "name": "Piscina",
+            id: "teste1",
+            outbuilding: {
+                id: "teste",
+                name: "Piscina",
             },
-            "date": "19/10/2020",
-            "time": "14:30 ás 16:30",
-            "maxOccupation": "Cheio"
+            collisions: [
+                {
+                    resident: {
+                        name: "Yan"
+                    },
+                    date: "30/09/2020",
+                    timeRange: "14:30 ás 15:00",
+                    peopleCount: 20
+                },
+                {
+                    resident: {
+                        name: "Maria"
+                    },
+                    date: "30/09/2020",
+                    timeRange: "14:45 ás 15:45",
+                    peopleCount: 8
+                },
+                {
+                    resident: {
+                        name: "Maria"
+                    },
+                    date: "30/09/2020",
+                    timeRange: "14:45 ás 15:45",
+                    peopleCount: 8
+                }
+            ]
         },
         {
-            "id": "teste2",
-            "outbuilding": {
-                "id": "teste",
-                "name": "Piscina",
+            id: "teste1",
+            outbuilding: {
+                id: "teste",
+                name: "Piscina",
             },
-            "date": "19/10/2020",
-            "time": "14:30 ás 16:30",
-            "maxOccupation": "Cheio"
-        }
+            collisions: [
+                {
+                    resident: {
+                        name: "Yan"
+                    },
+                    date: "30/09/2020",
+                    timeRange: "14:30 ás 15:00",
+                    peopleCount: 20
+                },
+                {
+                    resident: {
+                        name: "Maria"
+                    },
+                    date: "30/09/2020",
+                    timeRange: "14:45 ás 15:45",
+                    peopleCount: 8
+                }
+            ]
+        },
+        {
+            id: "teste1",
+            outbuilding: {
+                id: "teste",
+                name: "Piscina",
+            },
+            collisions: [
+                {
+                    resident: {
+                        name: "Maria"
+                    },
+                    date: "30/09/2020",
+                    timeRange: "14:45 ás 15:45",
+                    peopleCount: 8
+                }
+            ]
+        },
     ];
 }
 

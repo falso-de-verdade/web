@@ -23,14 +23,14 @@ const TicketOperations = ({ item, setSelectedItem }) => (
     </div>
 )
 
-const residentDataReducer = resident => [
-    resident.name,
-    resident.email,
-    resident.location,
-    resident.schdule_creation_at
+const collisionDataReducer = collision => [
+    collision.resident.name,
+    collision.date,
+    collision.timeRange,
+    collision.peopleCount,
 ]
 
-const residentHeaders = ["Nome", "E-mail", "Localização", "Requisição"]
+const collisionHeaders = ["Morador", "Data", "Horário", "Qtd. de ocupantes"]
 
 class CollisionModel extends ModelComponent {
     constructor(props) {
@@ -85,94 +85,19 @@ class CollisionModel extends ModelComponent {
 
                         <Card>
                             <CardBody style={{ padding: '10px', fontSize: 12 }}>
-                                <Nav tabs>
-                                    <NavItem className={classnames({ active: this.state.activeTab === '1' })}>
-                                        <NavLink href="#" style={{ color: '#000' }}
-                                        onClick={() => { this.toggle('1'); }}>Tickets</NavLink>
-                                    </NavItem>
-
-                                    <NavItem className={classnames({ active: this.state.activeTab === '2' })}>
-                                        <NavLink href="#" style={{ color: '#000' }}
-                                        onClick={() => { this.toggle('2'); }}>Dados do agendamento</NavLink>
-                                    </NavItem>
-                                </Nav>
-
-                                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                                    <TabPane tabId="1">
-                                        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                                            <Col md={12}>
-                                                <TableComponent
-                                                    headers={residentHeaders}
-                                                    items={this.state.residents}
-                                                    dataReducer={residentDataReducer}
-                                                    setSelectedItem={item => {
-                                                        this.selectedResident = item;
-                                                        this.toggleModal(); 
-                                                    }}
-                                                    OperationsComponent={TicketOperations} />
-                                            </Col>
-                                        </Row>
-                                    </TabPane>
-                                </TabContent>
-
-                                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                                    <TabPane tabId="2">
-                                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formCollision">
-                                            <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                                                <Col md={3}>
-                                                    <AvGroup>
-                                                        <Label for="outbuildingId" style={styleLabel}>Dependência</Label>
-                                                        <AvField type="text" name="outbuildingId" id="outbuildingId" style={styleInput}
-                                                            value={this.state.outbuilding.name}
-                                                            disabled={true} />
-                                                    </AvGroup>
-                                                </Col>
-                                            </Row>
-                                            <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
-                                                <Col style={{ marginTop: '-10px' }} md={2}>
-                                                    <AvGroup>
-                                                        <Label for="fromHour" style={styleLabel}>Hora início</Label>
-                                                        <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
-                                                            disabled={true}
-                                                            value={this.state.fromHour} />
-                                                    </AvGroup>
-                                                </Col>
-                                                <Col style={{ marginTop: '-10px' }} md={2}>
-                                                    <AvGroup>
-                                                        <Label for="toHour" style={styleLabel}>Hora fim</Label>
-                                                        <AvField type="time" name="toHour" id="toHour" style={styleInput}
-                                                            disabled={true}
-                                                            value={this.state.toHour} />
-                                                    </AvGroup> 
-                                                </Col>
-                                                <Col md={3} style={{ marginTop: '-10px' }}>
-                                                    <AvGroup>
-                                                        <Label for="peopleCount" style={styleLabel}>Quantidade de ocupantes</Label>
-                                                        <AvField type="number" name="peopleCount" id="peopleCount" 
-                                                            min={1}
-                                                            style={styleInput}
-                                                            value={this.state.peopleCount}
-                                                            disabled={true}
-                                                            placeholder="Ocupação total">
-                                                        </AvField>
-                                                    </AvGroup>
-                                                </Col>
-                                            </Row>
-
-                                            <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
-                                                <Col md={12} style={{ marginTop: '-10px' }}>
-                                                    <AvGroup>
-                                                        <Label for="notes" style={styleLabel}>Observações</Label>
-                                                        <AvField type="textarea" rows={5} name="notes" id="notes"
-                                                            disabled={true}
-                                                            value={this.getModelAttr('notes')} />
-                                                    </AvGroup>
-                                                </Col>
-                                            </Row>
-                                        </AvForm>
-                                        <div className="clearfix" />
-                                    </TabPane>
-                                </TabContent>
+                                <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                                    <Col md={12}>
+                                        <TableComponent
+                                            headers={collisionHeaders}
+                                            items={this.state.collisions}
+                                            dataReducer={collisionDataReducer}
+                                            setSelectedItem={item => {
+                                                this.selectedResident = item;
+                                                this.toggleModal(); 
+                                            }}
+                                            OperationsComponent={TicketOperations} />
+                                    </Col>
+                                </Row>
                             </CardBody>
                         </Card>
                         <Link to={`../collisions`}>
@@ -195,9 +120,9 @@ class CollisionModel extends ModelComponent {
                             Confirma a resolução do ticket para o seguinte morador ?
                         </p>
                         <TableComponent 
-                            headers={residentHeaders}
+                            headers={collisionHeaders}
                             items={[this.selectedResident]}
-                            dataReducer={residentDataReducer} />
+                            dataReducer={collisionDataReducer} />
                     </Modal.Body>
 
                     <Modal.Footer>
