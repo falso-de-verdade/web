@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import Card from "components/Card/Card";
 import ButtonB from "components/CustomButton/CustomButton.jsx";
-
+import { UserAuthContext } from "contexts";
 
 class CondominiumList extends Component {
     constructor(props) {
@@ -42,11 +42,15 @@ class CondominiumList extends Component {
                             <span className="fa fa-search"></span>Localizar
                         </ButtonB>
 
-                        <Link to={`condominium`}>
-                            <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
-                                <span className="fa fa-plus"></span>
-                            </ButtonB>
-                        </Link>
+                        <UserAuthContext.Consumer>
+                            {user => user.isManager &&
+                                <Link to={`condominium`}>
+                                    <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                                        <span className="fa fa-plus"></span>
+                                    </ButtonB>
+                                </Link>
+                            }
+                        </UserAuthContext.Consumer>
                     </Col>
                 </Row>
 
@@ -77,25 +81,37 @@ class CondominiumList extends Component {
                                                     <td>Condomínio Villa Flor</td>
                                                     <td>Suburbio de Gotham City, nº 651</td>
                                                     <td className="text-center" width={140}>
-                                                        {
-                                                            <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+                                                        <UserAuthContext.Consumer>
+                                                            {user =>
+                                                                <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+                                                                    {
+                                                                        user.isManager && 
+                                                                            <React.Fragment>
+                                                                                <Link to={`condominium/teste`}>
+                                                                                    <ButtonB bsStyle="success" simple type="button" 
+                                                                                        bsSize="xs" style={{ padding: '3px' }} >
+                                                                                        <span className="fa fa-pencil"></span>
+                                                                                    </ButtonB>
+                                                                                </Link>
 
-                                                                <Link to={`condominium/teste`}>
-                                                                    <ButtonB bsStyle="success" simple type="button" 
-                                                                        bsSize="xs" style={{ padding: '3px' }} >
-                                                                        <span className="fa fa-pencil"></span>
-                                                                    </ButtonB>
-                                                                </Link>
+                                                                                {' '}
+                                                                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
 
-                                                                {' '}
-                                                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-
-                                                                    onClick={this.excluirTransportadora}>
-                                                                    <span className="fa fa-times"></span>
-                                                                </ButtonB>
-                                                                {' '}
-                                                            </div>
-                                                        }
+                                                                                    onClick={this.excluirTransportadora}>
+                                                                                    <span className="fa fa-times"></span>
+                                                                                </ButtonB>
+                                                                                {' '}
+                                                                            </React.Fragment> ||
+                                                                            <Link to={`condominium/teste`}>
+                                                                                <ButtonB bsStyle="success" simple type="button" 
+                                                                                    bsSize="xs" style={{ padding: '3px' }} >
+                                                                                    <span className="fa fa-eye"></span>
+                                                                                </ButtonB>
+                                                                            </Link>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </UserAuthContext.Consumer>
                                                     </td>
                                                 </tr>
                                                 

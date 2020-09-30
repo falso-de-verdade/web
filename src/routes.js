@@ -49,7 +49,8 @@ const dashboardRoutes = [
     name: "Moradores",
     icon: "pe-7s-user",
     component: ResidentList,
-    layout: "/admin"
+    layout: "/admin",
+    requiresManager: true
   },
 
   {
@@ -58,7 +59,8 @@ const dashboardRoutes = [
     icon: "pe-7s-user",
     component: ResidentModel,
     layout: "/admin",
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   /*  {
@@ -103,7 +105,8 @@ const dashboardRoutes = [
     icon: "pe-7s-user",
     component: OutbuildingModel,
     layout: "/admin",
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   // agendamentos
@@ -162,7 +165,8 @@ const dashboardRoutes = [
     icon: "pe-7s-home",
     layout: "/admin",
     component: CondominiumModel,
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   {
@@ -171,7 +175,8 @@ const dashboardRoutes = [
     icon: "pe-7s-ribbon",
     // icon: "pe-7s-ticket",
     layout: "/admin",
-    component: CollisionList
+    component: CollisionList,
+    requiresManager: true
   },
   {
     path: "/collision/:id",
@@ -180,7 +185,8 @@ const dashboardRoutes = [
     // icon: "pe-7s-ticket",
     layout: "/admin",
     component: FindCollision,
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   /**rota transportadora */

@@ -10,7 +10,7 @@ import ButtonB from "components/CustomButton/CustomButton.jsx";
 
 import api from '../../services/api';
 import { Link } from "react-router-dom";
-
+import { UserAuthContext } from "contexts";
 import * as qs from 'query-string';
 
 class OutbuildingList extends Component {
@@ -39,12 +39,20 @@ class OutbuildingList extends Component {
               Localizar
               </ButtonB>
 
-            <Link to={`outbuilding`}>
-              <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
-                <span className="fa fa-plus"></span>
-                {' '}Nova dependência
-                </ButtonB>
-            </Link>
+            <UserAuthContext.Consumer>
+              {user => {
+                if (user.isManager) {
+                  return (
+                    <Link to={`outbuilding`}>
+                      <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                        <span className="fa fa-plus"></span>
+                        {' '}Nova dependência
+                        </ButtonB>
+                    </Link>
+                  )
+                }                
+              }}
+            </UserAuthContext.Consumer>
           </Col>
 
         </Row>
@@ -87,21 +95,38 @@ class OutbuildingList extends Component {
                           <td className="text-center" width={90}>
                             {
                               <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+                                <UserAuthContext.Consumer>
+                                  {user => {
+                                    if (user.isManager) {
+                                      return <React.Fragment>
+                                        <Link to="outbuilding/teste">
+                                          <ButtonB 
+                                            bsStyle="success" bsSize="xs"
+                                            simple type="button" style={{ padding: '3px' }}>
+                                            <span className="fa fa-pencil"></span>
+                                          </ButtonB>
+                                        </Link>
 
-                                <Link to="/admin/outbuilding/teste">
-                                  <ButtonB 
-                                    bsStyle="success" bsSize="xs"
-                                    simple type="button" style={{ padding: '3px' }}>
-                                    <span className="fa fa-pencil"></span>
-                                  </ButtonB>
-                                </Link>
+                                        {' '}
+                                        <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
 
-                                {' '}
-                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+                                          onClick={this.excluirProduto}>
+                                          <span className="fa fa-times"></span>
+                                        </ButtonB>
+                                      </React.Fragment>;
+                                    }
 
-                                  onClick={this.excluirProduto}>
-                                  <span className="fa fa-times"></span>
-                                </ButtonB>
+                                    return (
+                                      <Link to="outbuilding/teste">
+                                        <ButtonB 
+                                          bsStyle="success" bsSize="xs"
+                                          simple type="button" style={{ padding: '3px' }}>
+                                          <span className="fa fa-eye"></span>
+                                        </ButtonB>
+                                      </Link>
+                                    )
+                                  }}
+                                </UserAuthContext.Consumer>
                               </div>
                             }
                           </td>

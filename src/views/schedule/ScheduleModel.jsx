@@ -10,8 +10,11 @@ import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
 
 import { ModelComponent } from "views/common";
+import { UserAuthContext } from "contexts";
 
 class ScheduleModel extends ModelComponent {
+    static contextType = UserAuthContext;
+
     constructor(props) {
         super(props);
 
@@ -49,7 +52,7 @@ class ScheduleModel extends ModelComponent {
 
                                 <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formSchedule">
                                     <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                                        {this.state.resident && 
+                                        {this.context.isManager && this.state.resident &&
                                             <Col md={3}>
                                                 <AvGroup>
                                                     <Label for="residentName" style={styleLabel}>Morador</Label>
