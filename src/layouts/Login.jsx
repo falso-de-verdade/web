@@ -36,7 +36,7 @@ class Login extends Component {
         }
 
         const user = {
-            name: "Testador",
+            name: isManager ? "Síndico" : "Morador",
             email: "exsample@test.com",
             isManager
         }
