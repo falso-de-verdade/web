@@ -23,14 +23,13 @@ const TicketOperations = ({ item, setSelectedItem }) => (
     </div>
 )
 
-const collisionDataReducer = collision => [
+const ticketDataReducer = collision => [
     collision.resident.name,
-    collision.date,
     collision.timeRange,
     collision.peopleCount,
 ]
 
-const collisionHeaders = ["Morador", "Data", "Horário", "Qtd. de ocupantes"]
+const ticketHeaders = ["Morador", "Horário", "Qtd. de ocupantes"]
 
 class CollisionModel extends ModelComponent {
     constructor(props) {
@@ -40,10 +39,10 @@ class CollisionModel extends ModelComponent {
             ...this.state,
             activeTab: '1',
             modalOpen: true,
-            hasSelectedResident: false
+            hasSelectedTicket: false
         }
 
-        this.selectedResident = null;
+        this.selectedTicket = null;
     }
 
     toggle(tab) {
@@ -55,11 +54,11 @@ class CollisionModel extends ModelComponent {
       }
 
     toggleModal = () => {
-        this.setState({ hasSelectedResident: !this.state.hasSelectedResident })
+        this.setState({ hasSelectedTicket: !this.state.hasSelectedTicket })
     }
 
     resolveCollision = () => {
-        console.log(`Resolvendo conflito para ${this.selectedResident.name}`);
+        console.log(`Resolvendo conflito para ${this.selectedTicket.resident.name}`);
         this.toggleModal();
     }
 
@@ -88,11 +87,11 @@ class CollisionModel extends ModelComponent {
                                 <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
                                     <Col md={12}>
                                         <TableComponent
-                                            headers={collisionHeaders}
-                                            items={this.state.collisions}
-                                            dataReducer={collisionDataReducer}
+                                            headers={ticketHeaders}
+                                            items={this.state.tickets}
+                                            dataReducer={ticketDataReducer}
                                             setSelectedItem={item => {
-                                                this.selectedResident = item;
+                                                this.selectedTicket = item;
                                                 this.toggleModal(); 
                                             }}
                                             OperationsComponent={TicketOperations} />
@@ -109,7 +108,7 @@ class CollisionModel extends ModelComponent {
                 </Row>
 
                 <Modal
-                    show={this.state.hasSelectedResident}
+                    show={this.state.hasSelectedTicket}
                     aria-labelledby="contained-modal-title">
                     <Modal.Header>
                         <Modal.Title>Resolver ticket</Modal.Title>
@@ -120,9 +119,9 @@ class CollisionModel extends ModelComponent {
                             Confirma a resolução do ticket para o seguinte morador ?
                         </p>
                         <TableComponent 
-                            headers={collisionHeaders}
-                            items={[this.selectedResident]}
-                            dataReducer={collisionDataReducer} />
+                            headers={ticketHeaders}
+                            items={[this.selectedTicket]}
+                            dataReducer={ticketDataReducer} />
                     </Modal.Body>
 
                     <Modal.Footer>

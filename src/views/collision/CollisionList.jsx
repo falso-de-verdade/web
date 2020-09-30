@@ -6,13 +6,15 @@ import ButtonB from "components/CustomButton/CustomButton";
 
 const Headers = [
     "Dependência",
+    "Data",
     "Qtd. de tickets"
 ];
 
 const dataReducer = collision => (
    [
        collision.outbuilding.name,
-       collision.collisions.length
+       collision.date,
+       collision.tickets.length
    ] 
 )
 
@@ -37,12 +39,12 @@ async function fakeItems() {
                 id: "teste",
                 name: "Piscina",
             },
-            collisions: [
+            date: "30/09/2020",
+            tickets: [
                 {
                     resident: {
                         name: "Yan"
                     },
-                    date: "30/09/2020",
                     timeRange: "14:30 ás 15:00",
                     peopleCount: 20
                 },
@@ -50,7 +52,6 @@ async function fakeItems() {
                     resident: {
                         name: "Maria"
                     },
-                    date: "30/09/2020",
                     timeRange: "14:45 ás 15:45",
                     peopleCount: 8
                 },
@@ -58,54 +59,12 @@ async function fakeItems() {
                     resident: {
                         name: "Maria"
                     },
-                    date: "30/09/2020",
                     timeRange: "14:45 ás 15:45",
                     peopleCount: 8
                 }
             ]
         },
-        {
-            id: "teste1",
-            outbuilding: {
-                id: "teste",
-                name: "Piscina",
-            },
-            collisions: [
-                {
-                    resident: {
-                        name: "Yan"
-                    },
-                    date: "30/09/2020",
-                    timeRange: "14:30 ás 15:00",
-                    peopleCount: 20
-                },
-                {
-                    resident: {
-                        name: "Maria"
-                    },
-                    date: "30/09/2020",
-                    timeRange: "14:45 ás 15:45",
-                    peopleCount: 8
-                }
-            ]
-        },
-        {
-            id: "teste1",
-            outbuilding: {
-                id: "teste",
-                name: "Piscina",
-            },
-            collisions: [
-                {
-                    resident: {
-                        name: "Maria"
-                    },
-                    date: "30/09/2020",
-                    timeRange: "14:45 ás 15:45",
-                    peopleCount: 8
-                }
-            ]
-        },
+        
     ];
 }
 
