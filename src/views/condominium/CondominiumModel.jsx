@@ -47,6 +47,14 @@ class CondominiumModel extends ModelComponent {
         const styleLabel = {
             fontSize: 11
         }
+
+        let cancelLink = "condominiums";
+
+        // back one level when editing a condominium
+        if (this.state.name !== undefined) {
+            cancelLink = `../${cancelLink}`;
+        }
+
         return (
             <div className="content">
                 <Row>
@@ -163,7 +171,7 @@ class CondominiumModel extends ModelComponent {
                             </CardBody>
                         </Card>
                         <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formCondominium">
-                            <Link to="../condominiums">
+                            <Link to={cancelLink}>
                                 <Button pullRight fill bsStyle="danger" >
                                     Cancelar
                                 </Button>
