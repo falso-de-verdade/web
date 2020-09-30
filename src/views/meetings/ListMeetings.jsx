@@ -4,10 +4,10 @@ import Card from "components/Card/Card";
 import Button from "components/CustomButton/CustomButton";
 import ButtonB from "components/CustomButton/CustomButton";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-
-import MeetingModel from './MeetingModel';
+import { Link } from 'react-router-dom'
 
 class ListaCondominios extends Component {
+
   constructor(props) {
     super(props);
 
@@ -50,13 +50,13 @@ class ListaCondominios extends Component {
               <AvField type="select" name="select"
                 value={this.state.inputLocalizarStatus}
                 onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
-                <option value="pendente">Pendente</option>
+                <option value="pendentes">Pendentes</option>
                 <option value="realizada">Realizadas</option>
               </AvField>
             </AvForm>
           </Col>
-
         </Row>
+
         <Row>
           <Col md={12}>
             <Card
@@ -79,11 +79,15 @@ class ListaCondominios extends Component {
                       <td>30/09/2020</td>
                       <td>19h30</td>
                       <td>1h30</td>
-                      <td><ButtonB
-                        bsStyle="success" bsSize="xs"
-                        simple type="button" style={{ padding: '3px' }}>
-                        <span className="fa fa-pencil"></span>
-                      </ButtonB></td>
+                      <td>
+                        <Link to="/admin/meeting/updatemeeting">
+                          <ButtonB
+                            bsStyle="success" bsSize="xs"
+                            simple type="button" style={{ padding: '3px' }}>
+                            <span className="fa fa-pencil"></span>
+                          </ButtonB>
+                        </Link>
+                      </td>
                       <td><ButtonB
                         bsStyle="danger" bsSize="xs"
                         simple type="button" style={{ padding: '3px' }}>
@@ -94,9 +98,6 @@ class ListaCondominios extends Component {
                 </Table>
               }
             />
-          </Col>
-          <Col md={6}>
-            <MeetingModel />
           </Col>
         </Row>
       </div>

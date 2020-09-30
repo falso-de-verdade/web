@@ -6,11 +6,16 @@ import { AvForm, AvField } from 'availity-reactstrap-validation';
 import ButtonB from "components/CustomButton/CustomButton.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 
-class MeetingModel extends Component {
+import { ModelComponent } from "views/common";
+
+class MeetingModel extends ModelComponent {
+
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      ...this.state
+    };
   };
 
   componentDidMount() { };
@@ -33,6 +38,7 @@ class MeetingModel extends Component {
                       <Col md={12}>
                         <Label style={{ fontSize: 12, color: '#000' }} for="descriptionMeeting" >Descrição/tópicos da reunião</Label>
                         <AvField
+                          value={this.getModelAttr('description')}
                           disabled={this.state.isDisabledCFOP}
                           style={{ resize: 'none', width: 500, height: 300 }}
                           type="textarea"
@@ -43,6 +49,7 @@ class MeetingModel extends Component {
                     <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
                       <Col md={4}>
                         <InputCustom
+                          value={this.getModelAttr('schedule')}
                           type="date"
                           id="dateMeeting"
                           name="dateMeeting"
@@ -50,6 +57,7 @@ class MeetingModel extends Component {
                       </Col>
                       <Col md={4}>
                         <InputCustom
+                          value={this.getModelAttr('start')}
                           type="time"
                           id="timeMeeting"
                           name="timeMeeting"
@@ -59,6 +67,7 @@ class MeetingModel extends Component {
                     <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
                       <Col md={4}>
                         <InputCustom
+                          value={this.getModelAttr('duration')}
                           type="text"
                           id="timeDuraction"
                           name="timeDuraction"
