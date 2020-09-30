@@ -1,28 +1,23 @@
 import React, { Component } from "react";
-
 import { Modal, Table, FormControl } from "react-bootstrap";
 import { Row, Col } from "reactstrap";
-
-import Card from "components/Card/Card";
-
-import ButtonB from "components/CustomButton/CustomButton.jsx";
-
-import api from '../../services/api';
 import { Link } from "react-router-dom";
 
+import Card from "components/Card/Card";
+import ButtonB from "components/CustomButton/CustomButton.jsx";
 
-class ScheduleList extends Component {
+
+class CondominiumList extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isHidden: false,
-            disableButtons: true,
-            modalExcluir: false,
-        };
-    };
+
+        }
+    }
 
     render() {
+
         return (
             <div className="content">
 
@@ -35,7 +30,7 @@ class ScheduleList extends Component {
                             //value={this.state.inputLocalizar}
                             onChange={(e) => { this.setState({ inputLocalizar: e.target.value }) }}
                             onKeyUp={(valor) => valor.key == 'Enter' ? this.listarTransportadoras() : ''}
-                            placeholder="Localizar Agendamento"
+                            placeholder="Localizar condomínio"
                         />
                     </Col>
 
@@ -47,7 +42,7 @@ class ScheduleList extends Component {
                             <span className="fa fa-search"></span>Localizar
                         </ButtonB>
 
-                        <Link to={`schedule`}>
+                        <Link to={`condominium`}>
                             <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
                                 <span className="fa fa-plus"></span>
                             </ButtonB>
@@ -58,7 +53,7 @@ class ScheduleList extends Component {
                 <Row style={{ paddingTop: '0px' }}>
                     <Col md={12}>
                         <Card
-                            title="Lista de Agendamentos"
+                            title="Lista de Condomínios"
                             ctAllIcons
                             content={
                                 <div>
@@ -66,31 +61,26 @@ class ScheduleList extends Component {
                                         <Table striped hover>
                                             <thead>
                                                 <tr>
-                                                    <th>Morador</th>
-                                                    <th>Dependência</th>
-                                                    <th>
-                                                        Data
-                                                    </th>
-                                                    <th>
-                                                        Horário
-                                                    </th>
-                                                    <th>
-                                                        Qtd. de ocupantes
-                                                    </th>
+                                                    {/* <th>
+                                                       Foto
+                                                    </th> */}
+                                                    <th>Nome</th>
+                                                    <th>Endereço</th>
                                                     <th className="text-center">Operações</th>
                                                 </tr></thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Pelé</td>
-                                                    <td>Piscina</td>
-                                                    <td>19/10/2020</td>
-                                                    <td>14:30 ás 15:30</td>
-                                                    <td>Cheio</td>
+                                                    {/* <td>
+                                                        <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
+                                                            wdith={128} height={128} />
+                                                    </td> */}
+                                                    <td>Condomínio Villa Flor</td>
+                                                    <td>Suburbio de Gotham City, nº 651</td>
                                                     <td className="text-center" width={140}>
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <Link to={`schedule/teste`}>
+                                                                <Link to={`condominium/teste`}>
                                                                     <ButtonB bsStyle="success" simple type="button" 
                                                                         bsSize="xs" style={{ padding: '3px' }} >
                                                                         <span className="fa fa-pencil"></span>
@@ -108,7 +98,7 @@ class ScheduleList extends Component {
                                                         }
                                                     </td>
                                                 </tr>
-
+                                                
                                             </tbody>
                                         </Table>
                                     </Row>
@@ -150,8 +140,8 @@ class ScheduleList extends Component {
                 </Modal>
 
             </div>
-        )
+        );
     }
 }
 
-export default ScheduleList;
+export default CondominiumList;

@@ -6,6 +6,9 @@ import ScheduleModel from "./ScheduleModel";
 
 const findFunction = modelId => {
     return {
+        resident: {
+            name: "Yan"
+        },
         outbuildingId: "1",
         day: new Date(),
         peopleCount: 20,
