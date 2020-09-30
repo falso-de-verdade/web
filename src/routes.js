@@ -175,7 +175,8 @@ const dashboardRoutes = [
     icon: "pe-7s-ribbon",
     // icon: "pe-7s-ticket",
     layout: "/admin",
-    component: CollisionList
+    component: CollisionList,
+    requiresManager: true
   },
   {
     path: "/collision/:id",
@@ -184,7 +185,8 @@ const dashboardRoutes = [
     // icon: "pe-7s-ticket",
     layout: "/admin",
     component: FindCollision,
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   /**rota transportadora */
