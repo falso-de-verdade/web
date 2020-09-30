@@ -28,6 +28,7 @@ import { CondominiumList, CondominiumModel, FindCondominium } from "views/condom
 import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
+import { CollisionList, CollisionModel, FindCollision } from "views/collision";
 
 //
 // !!! Be carefull about route orders
@@ -161,6 +162,24 @@ const dashboardRoutes = [
     icon: "pe-7s-home",
     layout: "/admin",
     component: CondominiumModel,
+    redirect: true
+  },
+
+  {
+    path: "/collisions",
+    name: "Conflitos",
+    icon: "pe-7s-ribbon",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: CollisionList
+  },
+  {
+    path: "/collision/:id",
+    name: "Finalizar conflito",
+    icon: "pe-7s-ribbon",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: FindCollision,
     redirect: true
   },
 

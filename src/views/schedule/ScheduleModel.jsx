@@ -22,6 +22,9 @@ class ScheduleModel extends ModelComponent {
         }
     }
 
+    // TODO use a better method to test which operation this model is in
+    isViewing = () => this.state.outbuildingId !== undefined
+
     render() {
         const styleInput = {
             fontSize: 12,
@@ -55,6 +58,7 @@ class ScheduleModel extends ModelComponent {
                                                         name="residentName" 
                                                         id="residentName" 
                                                         style={styleInput}
+                                                        disabled={this.isViewing()}
                                                         value={this.state.resident.name} />
                                                 </AvGroup>
                                             </Col>
@@ -65,6 +69,7 @@ class ScheduleModel extends ModelComponent {
                                                 <Label for="outbuildingId" style={styleLabel}>Dependência</Label>
                                                 <AvField type="select" name="outbuildingId" id="outbuildingId" style={styleInput}
                                                     value={this.getModelAttr('outbuildingId')}
+                                                    disabled={this.isViewing()}
                                                     validate={{
                                                         required: { value: true, errorMessage: 'Campo "Nome" obrigatório' },
                                                     }} >
@@ -75,8 +80,9 @@ class ScheduleModel extends ModelComponent {
                                         </Col>
                                         <Col md={6} >
                                             <AvGroup>                                                
-                                                <DayPicker required={false} selectedDays={this.getModelAttr('day')}
-                                                    onDayClick={this.setModelAttrValue('day')} />
+                                                <DayPicker 
+                                                    selectedDays={this.getModelAttr('day')}
+                                                    onDayClick={this.isViewing() ? null : this.setModelAttrValue('day')} />
                                             </AvGroup>
                                         </Col>
                                     </Row>
@@ -85,6 +91,7 @@ class ScheduleModel extends ModelComponent {
                                             <AvGroup>
                                                 <Label for="fromHour" style={styleLabel}>Hora início</Label>
                                                 <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
+                                                    disabled={this.isViewing()}
                                                     validate={{
                                                         required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
                                                     }} />
@@ -94,6 +101,7 @@ class ScheduleModel extends ModelComponent {
                                             <AvGroup>
                                                 <Label for="toHour" style={styleLabel}>Hora fim</Label>
                                                 <AvField type="time" name="toHour" id="toHour" style={styleInput}
+                                                    disabled={this.isViewing()}
                                                     validate={{
                                                         required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
                                                     }} />
@@ -105,6 +113,7 @@ class ScheduleModel extends ModelComponent {
                                                 <AvField type="number" name="peopleCount" id="peopleCount" 
                                                     min={1}
                                                     style={styleInput}
+                                                    disabled={this.isViewing()}
                                                     value={this.getModelAttr('peopleCount')} 
                                                     placeholder="Ocupação total">
                                                 </AvField>
@@ -117,6 +126,7 @@ class ScheduleModel extends ModelComponent {
                                             <AvGroup>
                                                 <Label for="notes" style={styleLabel}>Observações</Label>
                                                 <AvField type="textarea" rows={5} name="notes" id="notes"
+                                                    disabled={this.isViewing()}
                                                     value={this.getModelAttr('notes')} />
                                             </AvGroup>
                                         </Col>
@@ -130,11 +140,11 @@ class ScheduleModel extends ModelComponent {
                                 onClick={this.retornarListaTransportadora}>
                                 Cancelar
                             </Button>
-
+{/* 
                             <Button bsStyle="success" fill type="submit"
                                 disabled={this.state.disabledButtons}>
                                 Gravar
-                            </Button>
+                            </Button> */}
                         </AvForm>
                     </Col>
                 </Row>
