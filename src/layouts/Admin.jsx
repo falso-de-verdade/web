@@ -233,7 +233,8 @@ const getBrandText = pathname => {
 };
 
 const mapRoutesForUser = user => {
-  return routes.filter(route => !(route.requiresManager && !user.isManager))
+  return routes.filter(route => !(route.requiresManager && !user.isManager) && 
+                                !(route.requiresResident && user.isManager))
 }
 
 const buildRoutes = (layout, routes) => {
