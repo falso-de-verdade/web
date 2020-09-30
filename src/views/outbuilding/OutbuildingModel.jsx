@@ -18,6 +18,7 @@ import InputCustom from '../../components/inputs/inputCustom';
 import ButtonB from "components/CustomButton/CustomButton.jsx";
 
 import { ModelComponent } from "views/common";
+import { UserAuthContext } from "contexts";
 
 class OutbuildingModel extends ModelComponent {
 
@@ -315,10 +316,14 @@ class OutbuildingModel extends ModelComponent {
                 Cancelar
               </Button>
 
-              <Button bsStyle="success" fill type="submit"
-                disabled={this.state.disabledButtons}>
-                Gravar
-              </Button>
+              <UserAuthContext>
+                    {user => user.isManager && 
+                        <Button bsStyle="success" fill type="submit"
+                            disabled={this.state.disabledButtons}>
+                            Gravar
+                        </Button>
+                    }
+                </UserAuthContext>
             </AvForm>
           </Col>
         </Row>
