@@ -81,7 +81,14 @@ const Operations = ({ item, setSelectedItem }) => (
                 simple type="button" style={{ padding: '3px' }}>
                 <span className="fa fa-eye"></span>
             </ButtonB>
-        </Link>                            
+        </Link>
+
+        <ButtonB
+            bsStyle="danger" bsSize="xs"
+            onClick={e => setSelectedItem(item)}
+            simple type="button" style={{ padding: '3px' }}>
+            <span className="fa fa-times"></span>
+        </ButtonB>                    
     </div>
 )
 
