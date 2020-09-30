@@ -262,7 +262,7 @@ class OutbuildingModel extends ModelComponent {
                       <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <Col md={4} style={{ marginTop: '-10px' }}>
                           <AvGroup>
-                            <Label for="fromDay" style={styleLabel}>Documento/Imagem/Vídeo</Label>
+                            <Label for="fromDay" style={styleLabel}>Documentos</Label>
                             <AvField type="file" name="fromDay" style={styleInput}
                               //value={this.state.dadosClienteStatus}
                               //disabled={this.state.disabledButtons}
@@ -277,29 +277,17 @@ class OutbuildingModel extends ModelComponent {
                             <thead>
                               <tr>
                                 <th>Arquivo</th>
-                                <th>Preview</th>
                                 <th className="text-center">Operações</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <td>
-                                  C:\Users\Yan\Documentos\meu-lindo-condominio.png
-                                </td>
-                                <td>
-                                  <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
-                                    height={64}
-                                    width={64} />
+                                  C:\Users\Yan\Documentos\regras.pdf
                                 </td>
                                 <td className="text-center" width={140}>
                                   {
                                     <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                      <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                      >
-                                        <span className="fa fa-pencil"></span>
-                                      </ButtonB>
-
                                       {' '}
                                       <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
                                         onClick={this.excluirCliente}>
