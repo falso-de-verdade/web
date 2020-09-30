@@ -164,7 +164,8 @@ const dashboardRoutes = [
     icon: "pe-7s-home",
     layout: "/admin",
     component: CondominiumModel,
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   /**rota transportadora */
