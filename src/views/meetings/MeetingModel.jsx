@@ -38,9 +38,10 @@ class MeetingModel extends ModelComponent {
                       <Col md={12}>
                         <Label style={{ fontSize: 12, color: '#000' }} for="descriptionMeeting" >Descrição/tópicos da reunião</Label>
                         <AvField
+                          rows={10}
                           value={this.getModelAttr('description')}
                           disabled={this.state.isDisabledCFOP}
-                          style={{ resize: 'none', width: 500, height: 300 }}
+                          style={{ resize: 'none' }}
                           type="textarea"
                           name="descriptionMeeting"
                           id="descriptionMeeting" />
@@ -63,9 +64,7 @@ class MeetingModel extends ModelComponent {
                           name="timeMeeting"
                           descricao="Início" />
                       </Col>
-                    </Row>
-                    <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                      <Col md={4}>
+                      <Col md={3}>
                         <InputCustom
                           value={this.getModelAttr('duration')}
                           type="text"
@@ -73,7 +72,7 @@ class MeetingModel extends ModelComponent {
                           name="timeDuraction"
                           descricao="Duração" />
                       </Col>
-                      <Col md={6}>
+                      <Col md={1}>
                         <Button
                           disabled={this.state.isDisabledCFOP}
                           onClick={this.addCfop}

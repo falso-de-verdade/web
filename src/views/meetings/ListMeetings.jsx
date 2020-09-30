@@ -45,6 +45,7 @@ class ListaCondominios extends Component {
               Localizar
             </ButtonB>
           </Col>
+
           <Col md={2} style={{ marginBottom: '5px', paddingLeft: 0 }}>
             <AvForm autoComplete="off" ref="formLocalizar">
               <AvField type="select" name="select"
@@ -54,6 +55,15 @@ class ListaCondominios extends Component {
                 <option value="realizada">Realizadas</option>
               </AvField>
             </AvForm>
+          </Col>
+
+          <Col md={2}>
+            <Link to={`meeting`}>
+              <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                <span className="fa fa-plus"></span>
+                {' '}Nova reunião
+              </ButtonB>
+            </Link>
           </Col>
         </Row>
 
