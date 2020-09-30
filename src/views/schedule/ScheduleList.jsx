@@ -9,9 +9,12 @@ import ButtonB from "components/CustomButton/CustomButton.jsx";
 
 import api from '../../services/api';
 import { Link } from "react-router-dom";
+import { UserAuthContext } from "contexts";
 
 
 class ScheduleList extends Component {
+    static contextType = UserAuthContext;
+
     constructor(props) {
         super(props);
 
@@ -66,7 +69,9 @@ class ScheduleList extends Component {
                                         <Table striped hover>
                                             <thead>
                                                 <tr>
-                                                    <th>Morador</th>
+                                                    {this.context.isManager &&
+                                                        <th>Morador</th>
+                                                    }
                                                     <th>Dependência</th>
                                                     <th>
                                                         Data
@@ -81,7 +86,9 @@ class ScheduleList extends Component {
                                                 </tr></thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Pelé</td>
+                                                    {this.context.isManager &&
+                                                        <td>Pelé</td>
+                                                    }
                                                     <td>Piscina</td>
                                                     <td>19/10/2020</td>
                                                     <td>14:30 ás 15:30</td>
