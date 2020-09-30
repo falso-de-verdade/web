@@ -46,6 +46,20 @@ class ScheduleModel extends ModelComponent {
 
                                 <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formSchedule">
                                     <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                                        {this.state.resident && 
+                                            <Col md={3}>
+                                                <AvGroup>
+                                                    <Label for="residentName" style={styleLabel}>Morador</Label>
+                                                    <AvField 
+                                                        type="text" 
+                                                        name="residentName" 
+                                                        id="residentName" 
+                                                        style={styleInput}
+                                                        value={this.state.resident.name} />
+                                                </AvGroup>
+                                            </Col>
+                                        }
+
                                         <Col md={3}>
                                             <AvGroup>
                                                 <Label for="outbuildingId" style={styleLabel}>Dependência</Label>
