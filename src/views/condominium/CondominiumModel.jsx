@@ -178,14 +178,14 @@ class CondominiumModel extends ModelComponent {
                                 </Button>
                             </Link>
                             
-                            <UserAuthContext>
+                            <UserAuthContext.Consumer>
                                 {user => user.isManager && 
                                     <Button bsStyle="success" fill type="submit"
                                         disabled={this.state.disabledButtons}>
                                         Gravar
                                     </Button>
                                 }
-                            </UserAuthContext>
+                            </UserAuthContext.Consumer>
                         </AvForm>
                     </Col>
                 </Row>
