@@ -149,7 +149,7 @@ const dashboardRoutes = [
   },
 
   {
-    path: "/meetings/:id",
+    path: "/meeting/:id",
     name: "Reunião",
     icon: "pe-7s-info",
     component: FindMeeting,
