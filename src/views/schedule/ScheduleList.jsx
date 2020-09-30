@@ -9,7 +9,7 @@ import ButtonB from "components/CustomButton/CustomButton.jsx";
 
 import api from '../../services/api';
 import { Link } from "react-router-dom";
-
+import { UserAuthContext } from "contexts";
 
 class ScheduleList extends Component {
     constructor(props) {
@@ -47,11 +47,15 @@ class ScheduleList extends Component {
                             <span className="fa fa-search"></span>Localizar
                         </ButtonB>
 
-                        <Link to={`schedule`}>
-                            <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
-                                <span className="fa fa-plus"></span>
-                            </ButtonB>
-                        </Link>
+                        <UserAuthContext.Consumer>
+                            {user => !user.isManager &&
+                                <Link to={`schedule`}>
+                                    <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                                        <span className="fa fa-plus"></span>
+                                    </ButtonB>
+                                </Link>
+                            }
+                        </UserAuthContext.Consumer>
                     </Col>
                 </Row>
 
@@ -96,14 +100,24 @@ class ScheduleList extends Component {
                                                                         <span className="fa fa-eye"></span>
                                                                     </ButtonB>
                                                                 </Link>
-
                                                                 {' '}
-                                                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-
-                                                                    onClick={this.excluirTransportadora}>
-                                                                    <span className="fa fa-times"></span>
-                                                                </ButtonB>
-                                                                {' '}
+                                                                
+                                                                <UserAuthContext.Consumer>
+                                                                    {user => !user.isManager && 
+                                                                        <React.Fragment>
+                                                                            <ButtonB 
+                                                                                bsStyle="danger" 
+                                                                                simple 
+                                                                                type="button" 
+                                                                                bsSize="xs" 
+                                                                                style={{ padding: '3px' }}
+                                                                                onClick={this.excluirTransportadora}>
+                                                                                <span className="fa fa-times"></span>
+                                                                            </ButtonB>
+                                                                            {' '}
+                                                                        </React.Fragment>
+                                                                    }
+                                                                </UserAuthContext.Consumer>
                                                             </div>
                                                         }
                                                     </td>
