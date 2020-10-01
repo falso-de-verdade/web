@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Container } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { AvForm } from 'availity-reactstrap-validation';
 import { Modal } from "react-bootstrap";
@@ -36,6 +36,8 @@ const SignUpComponent = props => {
           props.onUserFromAccount(user, history);
       }
   }
+
+  const hideSignInModal = () => setShowSignInModal(false);
 
   return (
     <div className="content" style={styleContent}>
@@ -94,18 +96,32 @@ const SignUpComponent = props => {
 
       <Modal
           show={showSignInModal}
-          aria-labelledby="contained-modal-title">
-          <SignInComponent 
-              onSubmit={onInternalSubmit} 
-              operations={
-                  <Button
-                      fill 
-                      pullRight 
-                      bsStyle="danger" 
-                      onClick={() => setShowSignInModal(false)}>
-                      Cancelar
-                  </Button>
-              } />
+          aria-labelledby="contained-modal-title"
+          onHide={hideSignInModal}
+      >
+          <Modal.Header>
+            <Modal.Title>
+              Login
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container>
+              <Row style={{ marginLeft: "-30px" }}>
+                <SignInComponent
+                  colSize={6}
+                  onSubmit={onInternalSubmit} 
+                  operations={
+                      <Button
+                          fill 
+                          pullRight 
+                          bsStyle="danger" 
+                          onClick={hideSignInModal}>
+                          Cancelar
+                      </Button>
+                  } />
+              </Row>
+            </Container>
+          </Modal.Body>
       </Modal>
 
       <img src={props.image} />
