@@ -6,6 +6,16 @@ import Subscriber from '../../assets/img/subscriber.svg'
 import Button from "components/CustomButton/CustomButton.jsx";
 import SignUpComponent from "components/SignUp/SignUpComponent";
 
+const styleContent = {
+  width: '100%',
+  maxWidth: '1120px',
+  height: '100vh',
+  margin: '0 auto',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+};
+
 const onResidentFromAccount = (user, history) => {
   console.log(user);
   // history.push("/admin/dashboard");
@@ -27,12 +37,14 @@ const BackOperations = props => {
 
 const ManagerRegistration = props => {
   return (
-    <SignUpComponent 
-      onUserFromAccount={onResidentFromAccount} 
-      onRegister={onRegister}
-      image={Subscriber}
-      operations={<BackOperations />}
-      />
+    <div className="content" style={styleContent}>
+      <SignUpComponent 
+        onUserFromAccount={onResidentFromAccount} 
+        onRegister={onRegister}
+        image={Subscriber}
+        operations={<BackOperations />}
+        />
+    </div>
   );
 }
 

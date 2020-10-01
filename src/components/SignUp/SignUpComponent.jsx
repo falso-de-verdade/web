@@ -37,8 +37,7 @@ const SignUpComponent = props => {
       }
   }
 
-  return (
-    <div className="content" style={styleContent}>
+  return <React.Fragment>
       <Col md={6}>
         <div style={{ padding: '16px', boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', backgroundColor: ' #4091ff', borderRadius: '6px' }}>
           <AvForm autoComplete="off" onSubmit={e => props.onRegister("Yan", "teste@teste", "1234", history)}>
@@ -92,25 +91,24 @@ const SignUpComponent = props => {
         </div>
       </Col>
 
-        <Modal
-            show={showSignInModal}
-            aria-labelledby="contained-modal-title">
-            <SignInComponent 
-                onSubmit={onInternalSubmit} 
-                operations={
-                    <Button
-                        fill 
-                        pullRight 
-                        bsStyle="danger" 
-                        onClick={() => setShowSignInModal(false)}>
-                        Cancelar
-                    </Button>
-                } />
-        </Modal>
+      <Modal
+          show={showSignInModal}
+          aria-labelledby="contained-modal-title">
+          <SignInComponent 
+              onSubmit={onInternalSubmit} 
+              operations={
+                  <Button
+                      fill 
+                      pullRight 
+                      bsStyle="danger" 
+                      onClick={() => setShowSignInModal(false)}>
+                      Cancelar
+                  </Button>
+              } />
+      </Modal>
 
       <img src={props.image} />
-    </div>
-  );
+    </React.Fragment>
 }
 
 export default SignUpComponent;
