@@ -130,12 +130,12 @@ class Login extends Component {
                     backdrop="static"
                 >
                     <Modal.Header>
-                        <Modal.Title>Papéis</Modal.Title>
+                        <Modal.Title>Perfis</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p className="text-center">
-                            Esta conta possui o papel de síndico de morador. Escolha qual deseja usar.
+                            Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar.
                         </p>
                     </Modal.Body>
 
