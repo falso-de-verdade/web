@@ -29,6 +29,7 @@ import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
 import { CollisionList, CollisionModel, FindCollision } from "views/collision";
+import { TicketList, FindTicket } from "views/ticket";
 
 //
 // !!! Be carefull about route orders
@@ -180,6 +181,24 @@ const dashboardRoutes = [
     // icon: "pe-7s-ticket",
     layout: "/admin",
     component: FindCollision,
+    redirect: true
+  },
+
+  {
+    path: "/tickets",
+    name: "Tickets",
+    icon: "pe-7s-ticket",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: TicketList
+  },
+  {
+    path: "/ticket/:id",
+    name: "Ticket",
+    icon: "pe-7s-ticket",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: FindTicket,
     redirect: true
   },
 

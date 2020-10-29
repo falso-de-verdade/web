@@ -62,11 +62,13 @@ const Listing = ({ name,
                         <span className="fa fa-search"></span>Localizar
                     </ButtonB>
 
-                    <Link to={`${addLink}`}>
-                        <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
-                            <span className="fa fa-plus"></span>
-                        </ButtonB>
-                    </Link>
+                    {addLink && 
+                        <Link to={`${addLink}`}>
+                            <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                                <span className="fa fa-plus"></span>
+                            </ButtonB>
+                        </Link>
+                    }
                 </Col>
             </Row>
 

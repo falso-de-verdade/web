@@ -4,12 +4,32 @@ import api from '../../services/api';
 import {
     Row, Col, Label, Card, CardBody, Nav
 } from 'reactstrap';
+import { Modal } from "react-bootstrap";
 import classnames from 'classnames';
 import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
+import { Link } from "react-router-dom";
 
 import { ModelComponent } from "views/common";
+import { TableComponent } from "components/Listing";
+import ButtonB from "components/CustomButton/CustomButton.jsx";
+
+const scheduleHeaders = [
+    "Morador",
+    "Dependência",
+    "Data",
+    "Horário",
+    "Qtd. de ocupantes"
+]
+
+const scheduleDataReducer = schedule => [
+    schedule.resident.name,
+    schedule.outbuilding.name,
+    schedule.date,
+    schedule.timeRange,
+    schedule.peopleCount,
+]
 
 class ScheduleModel extends ModelComponent {
     constructor(props) {
@@ -19,11 +39,30 @@ class ScheduleModel extends ModelComponent {
             ...this.state,
             activeTab: '1',
             modalOpen: true,
+            hasCollision: false,
         }
+
+        this.collisionedSchedule = null;
     }
 
     // TODO use a better method to test which operation this model is in
     isViewing = () => this.state.outbuildingId !== undefined
+
+    handleSubmit = e => {
+        this.collisionedSchedule = {
+            resident: {
+                name: "Yan"
+            },
+            outbuilding: {
+                name: "Salão de festas"
+            },
+            date: "19/04/2020",
+            timeRange: "21:00 ás 23:00",
+            peopleCount: 20,
+        }
+
+        this.setState({ hasCollision: true })
+    }
 
     render() {
         const styleInput = {
@@ -140,14 +179,53 @@ class ScheduleModel extends ModelComponent {
                                 onClick={this.retornarListaTransportadora}>
                                 Cancelar
                             </Button>
-{/* 
-                            <Button bsStyle="success" fill type="submit"
-                                disabled={this.state.disabledButtons}>
+
+                            <Button 
+                                bsStyle="success" 
+                                fill 
+                                type="submit"
+                                onClick={this.handleSubmit} >
                                 Gravar
-                            </Button> */}
+                            </Button>
                         </AvForm>
                     </Col>
                 </Row>
+
+                {/**confirma exclusao */}
+                <Modal
+                    show={this.state.hasCollision}
+                    aria-labelledby="contained-modal-title">
+                    <Modal.Header>
+                        <Modal.Title>Conflito</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p className="text-center">
+                            Lamentamos informar mas o agendamento solicitado com um já existente.
+                            Um ticket será aberto.
+                        </p>
+                        <TableComponent 
+                            headers={scheduleHeaders}
+                            items={[this.collisionedSchedule]}
+                            dataReducer={scheduleDataReducer} />
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
+                            <Col md={2}>
+                                <Link to={"ticket/teste1"}>
+                                    <ButtonB pullLeft fill bsStyle="info">Ver ticket</ButtonB>
+                                </Link>
+                            </Col>
+                            
+                            <Col md={10}>
+                                <Link to={"schedule/teste1"}>
+                                    <ButtonB fill>Entendi</ButtonB>
+                                </Link>
+                            </Col>
+                        </Row>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }
