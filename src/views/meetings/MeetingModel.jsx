@@ -87,6 +87,17 @@ class MeetingModel extends ModelComponent {
             />
           </Col>
         </Row>
+        <AvForm autoComplete="off" ref="formNF">
+          <Button pullRight fill bsStyle="danger"
+            onClick={this.retornarListaProdutos}>
+            Cancelar
+              </Button>
+
+          <Button bsStyle="success" fill type="submit"
+            disabled={this.state.disabledButtons}>
+            Gravar
+              </Button>
+        </AvForm>
       </div>
     );
   };
