@@ -8,6 +8,8 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import { ModelComponent } from "views/common";
 
+import { UserAuthContext } from "contexts";
+
 class MeetingModel extends ModelComponent {
 
   constructor(props) {
@@ -23,6 +25,7 @@ class MeetingModel extends ModelComponent {
   componentDidUpdate(prevProps) { };
 
   render() {
+    const isDisabled = !this.context.isManager;
     return (
       <div className="content">
         <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
@@ -36,11 +39,11 @@ class MeetingModel extends ModelComponent {
                   <div>
                     <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
                       <Col md={12}>
-                        <Label style={{ fontSize: 12, color: '#000' }} for="descriptionMeeting" >Descrição/tópicos da reunião</Label>
+                        <Label style={{ fontSize: 12, color: '#000' }} for="descriptionMeeting">Descrição/tópicos da reunião</Label>
                         <AvField
+                          disabled={isDisabled}
                           rows={10}
                           value={this.getModelAttr('description')}
-                          disabled={this.state.isDisabledCFOP}
                           style={{ resize: 'none' }}
                           type="textarea"
                           name="descriptionMeeting"
@@ -49,32 +52,38 @@ class MeetingModel extends ModelComponent {
                     </Row>
                     <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
                       <Col md={4}>
-                        <InputCustom
+                        <Label style={{ fontSize: 12, color: '#000' }} for="dateMeeting">Dia da reunião</Label>
+                        <AvField
+                          disabled={isDisabled}
                           value={this.getModelAttr('schedule')}
                           type="date"
                           id="dateMeeting"
                           name="dateMeeting"
-                          descricao="Dia da reunião" />
+                        />
                       </Col>
                       <Col md={4}>
-                        <InputCustom
+                        <Label style={{ fontSize: 12, color: '#000' }} for="timeMeeting">Início</Label>
+                        <AvField
+                          disabled={isDisabled}
                           value={this.getModelAttr('start')}
                           type="time"
                           id="timeMeeting"
                           name="timeMeeting"
-                          descricao="Início" />
+                        />
                       </Col>
                       <Col md={3}>
-                        <InputCustom
+                        <Label style={{ fontSize: 12, color: '#000' }} for="timeDuraction">Duração</Label>
+                        <AvField
+                          disabled={true}
                           value={this.getModelAttr('duration')}
                           type="text"
                           id="timeDuraction"
                           name="timeDuraction"
-                          descricao="Duração" />
+                        />
                       </Col>
                       <Col md={1}>
                         <Button
-                          disabled={this.state.isDisabledCFOP}
+                          disabled={isDisabled}
                           onClick={this.addCfop}
                           bsSize="sm" bsStyle="success" fill style={{ marginTop: '25px' }}>
                           <span className="fa fa-plus"></span>
@@ -93,14 +102,18 @@ class MeetingModel extends ModelComponent {
             Cancelar
               </Button>
 
-          <Button bsStyle="success" fill type="submit"
-            disabled={this.state.disabledButtons}>
-            Gravar
-              </Button>
+          {this.context.isManager &&
+            <Button bsStyle="success" fill type="submit"
+              disabled={this.state.disabledButtons}>
+              Gravar
+            </Button>
+          }
         </AvForm>
       </div>
     );
   };
 };
+
+MeetingModel.contextType = UserAuthContext;
 
 export default MeetingModel

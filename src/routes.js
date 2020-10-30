@@ -161,7 +161,8 @@ const dashboardRoutes = [
     icon: "pe-7s-info",
     component: MeetingModel,
     layout: "/admin",
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
   {
@@ -171,6 +172,7 @@ const dashboardRoutes = [
     icon: "pe-7s-info",
     component: FindMeeting,
     redirect: true,
+    
   },
   {
     layout: "/admin",

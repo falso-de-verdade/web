@@ -5,6 +5,7 @@ import Button from "components/CustomButton/CustomButton";
 import ButtonB from "components/CustomButton/CustomButton";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom'
+import { UserAuthContext } from "contexts";
 
 class ListaCondominios extends Component {
 
@@ -58,12 +59,16 @@ class ListaCondominios extends Component {
           </Col>
 
           <Col md={2}>
-            <Link to={`meeting`}>
-              <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
-                <span className="fa fa-plus"></span>
-                {' '}Nova reunião
-              </ButtonB>
-            </Link>
+            <UserAuthContext.Consumer>
+              {user => user.isManager &&
+                <Link to={`meeting`}>
+                  <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                    <span className="fa fa-plus"></span>
+                    {' '}Nova reunião
+                  </ButtonB>
+                </Link>
+              }
+            </UserAuthContext.Consumer>
           </Col>
         </Row>
 
@@ -89,20 +94,38 @@ class ListaCondominios extends Component {
                       <td>30/09/2020</td>
                       <td>19h30</td>
                       <td>1h30</td>
-                      <td>
-                        <Link to="/admin/meeting/updatemeeting">
-                          <ButtonB
-                            bsStyle="success" bsSize="xs"
-                            simple type="button" style={{ padding: '3px' }}>
-                            <span className="fa fa-pencil"></span>
-                          </ButtonB>
-                        </Link>
+                      <td className="text-center" width={140}>
+                        <UserAuthContext.Consumer>
+                          {user =>
+                            <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+                              {
+                                user.isManager &&
+                                <React.Fragment>
+                                  <Link to={`/admin/meeting/teste`}>
+                                    <ButtonB bsStyle="success" simple type="button"
+                                      bsSize="xs" style={{ padding: '3px' }} >
+                                      <span className="fa fa-pencil"></span>
+                                    </ButtonB>
+                                  </Link>
+
+                                  {' '}
+                                  <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+                                    onClick={this.excluirTransportadora}>
+                                    <span className="fa fa-times"></span>
+                                  </ButtonB>
+                                  {' '}
+                                </React.Fragment> ||
+                                <Link to={`/admin/meeting/teste`}>
+                                  <ButtonB bsStyle="success" simple type="button"
+                                    bsSize="xs" style={{ padding: '3px' }} >
+                                    <span className="fa fa-eye"></span>
+                                  </ButtonB>
+                                </Link>
+                              }
+                            </div>
+                          }
+                        </UserAuthContext.Consumer>
                       </td>
-                      <td><ButtonB
-                        bsStyle="danger" bsSize="xs"
-                        simple type="button" style={{ padding: '3px' }}>
-                        <span className="fa fa-times"></span>
-                      </ButtonB></td>
                     </tr>
                   </tbody>
                 </Table>
