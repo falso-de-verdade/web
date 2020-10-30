@@ -100,7 +100,7 @@ class ScheduleList extends Component {
                                                                 <Link to={`schedule/teste`}>
                                                                     <ButtonB bsStyle="success" simple type="button" 
                                                                         bsSize="xs" style={{ padding: '3px' }} >
-                                                                        <span className="fa fa-pencil"></span>
+                                                                        <span className="fa fa-eye"></span>
                                                                     </ButtonB>
                                                                 </Link>
 

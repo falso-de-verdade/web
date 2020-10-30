@@ -16,20 +16,32 @@
 
 */
 import React, { Component } from "react";
-import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
+import { NavItem, Nav, NavDropdown, MenuItem, ModalHeader, ModalBody, Modal } from "react-bootstrap";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Row, Col, Button } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
 import { UserAuthContext } from "contexts";
+import Button from "components/CustomButton/CustomButton.jsx";
+import InputCustom from "components/inputs/inputCustom";
+
 
 class AdminNavbarLinks extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      isModal: false,
+    }
   };
 
+  toggleModal = () => {
+    this.setState({ isModal: !this.state.isModal })
+  }
+
   render() {
+
     return (
       <div>
         <Nav pullRight>
@@ -57,13 +69,73 @@ class AdminNavbarLinks extends Component {
               )}
             </UserAuthContext.Consumer>
           </NavItem>
-          <NavLink to="/logout" >
+          <NavItem
+            onSelect={() => this.toggleModal()}>
+            <span className="fa fa-cog fa-spin"></span>
+            {' '}Minha conta
+          </NavItem>
+          <NavLink
+            to="/logout" >
             <span className="fa fa-sign-out"></span>
             {' '}Log out
           </NavLink>
         </Nav>
-      </div>
-    );
+
+        <Modal show={this.state.isModal} >
+          <ModalHeader>
+            <h4>Alteração de dados pessoais</h4>
+          </ModalHeader>
+          <ModalBody>
+            <AvForm>
+              <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                <Col md={12}>
+                  <InputCustom
+                    id="name"
+                    name="name"
+                    descricao="Nome"
+                  />
+                </Col>
+              </Row>
+              <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                <Col md={12}>
+                  <InputCustom
+                    id="email"
+                    name="email"
+                    descricao="E-mail"
+                  />
+                </Col>
+              </Row>
+              <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                <Col md={12}>
+                  <InputCustom
+                    type="password"
+                    id="password"
+                    name="password"
+                    descricao="Senha"
+                  />
+                </Col>
+              </Row>
+              <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                <Col md={12}>
+                  <InputCustom
+                    required
+                    type="password"
+                    id="password"
+                    name="password"
+                    descricao="Confirmação de senha"
+                  />
+                </Col>
+              </Row>
+            </AvForm>
+          </ModalBody>
+          <Modal.Footer>
+            <Button fill onClick={() => this.toggleModal()} bsStyle="danger">Fechar</Button>
+            <Button fill onClick={this.handleAlterarDadosConta} bsStyle="success">Gravar</Button>
+          </Modal.Footer>
+        </Modal >
+      </div >
+
+    )
   }
 }
 

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Redirect, Link } from 'react-router-dom';
 
 import Button from 'components/CustomButton/CustomButton.jsx';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Container } from 'reactstrap';
+import { Modal } from "react-bootstrap";
 import { AvForm } from 'availity-reactstrap-validation';
 
 import InputPasswordCustom from '../components/inputs/inputCustom'
@@ -17,7 +18,8 @@ class Login extends Component {
             email: '',
             password: '',
             user: null,
-            lembrarDados: false
+            lembrarDados: false,
+            hasMultipleRoles: false
         };
 
 
@@ -30,26 +32,33 @@ class Login extends Component {
         console.log(`email: ${this.state.email}`)
         console.log(`password: ${this.state.password}`)
 
-        let isManager = true;
-        if (this.state.email === "morador") {
-            isManager = false;
-        }
-
         const user = {
-            name: isManager ? "Síndico" : "Morador",
             email: "exsample@test.com",
-            isManager
         }
 
-        this.setState({ user })
+        this.setState({ user, hasMultipleRoles: true })
     };
 
     toggleChangeLembrarDados = () => {
         this.setState({ lembrarDados: !this.state.lembrarDados });
     };
 
+    handleResidentRole = () => {
+        this.setState({ 
+            succeeded: true, 
+            user: { name: "Morador", isManager: false } 
+        })
+    }
+
+    handleManagerRole = () => {
+        this.setState({ 
+            succeeded: true, 
+            user: { isManager: true, name: "Síndico" } 
+        })
+    }
+
     render() {
-        if (this.state.user) {
+        if (this.state.succeeded) {
             return <AuthRedirect user={this.state.user} />
         };
 
@@ -123,6 +132,43 @@ class Login extends Component {
                     </div>
                 </Col>
                 <img src={Logo} alt="logomarca"></img>
+
+                <Modal
+                    show={this.state.hasMultipleRoles}
+                    aria-labelledby="contained-modal-title"
+                    backdrop="static"
+                >
+                    <Modal.Header>
+                        <Modal.Title>Perfis</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p className="text-center">
+                            Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar.
+                        </p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Col md={2}>
+                            <Button
+                                bsStyle="primary"
+                                onClick={this.handleResidentRole}
+                                fill
+                            >
+                                Morador
+                            </Button>{" "}
+                        </Col>
+
+                        <Button
+                            bsStyle="secondary"
+                            onClick={this.handleManagerRole}
+                            fill
+                            pullRight
+                        >
+                            Síndico
+                        </Button>{" "}
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     };

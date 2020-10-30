@@ -4,13 +4,33 @@ import api from '../../services/api';
 import {
     Row, Col, Label, Card, CardBody, Nav
 } from 'reactstrap';
+import { Modal } from "react-bootstrap";
 import classnames from 'classnames';
 import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
+import { Link } from "react-router-dom";
 
 import { ModelComponent } from "views/common";
 import { UserAuthContext } from "contexts";
+import { TableComponent } from "components/Listing";
+import ButtonB from "components/CustomButton/CustomButton.jsx";
+
+const scheduleHeaders = [
+    "Morador",
+    "Dependência",
+    "Data",
+    "Horário",
+    "Qtd. de ocupantes"
+]
+
+const scheduleDataReducer = schedule => [
+    schedule.resident.name,
+    schedule.outbuilding.name,
+    schedule.date,
+    schedule.timeRange,
+    schedule.peopleCount,
+]
 
 class ScheduleModel extends ModelComponent {
     static contextType = UserAuthContext;
@@ -22,7 +42,29 @@ class ScheduleModel extends ModelComponent {
             ...this.state,
             activeTab: '1',
             modalOpen: true,
+            hasCollision: false,
         }
+
+        this.collisionedSchedule = null;
+    }
+
+    // TODO use a better method to test which operation this model is in
+    isViewing = () => this.state.outbuildingId !== undefined
+
+    handleSubmit = e => {
+        this.collisionedSchedule = {
+            resident: {
+                name: "Yan"
+            },
+            outbuilding: {
+                name: "Salão de festas"
+            },
+            date: "19/04/2020",
+            timeRange: "21:00 ás 23:00",
+            peopleCount: 20,
+        }
+
+        this.setState({ hasCollision: true })
     }
 
     render() {
@@ -58,6 +100,7 @@ class ScheduleModel extends ModelComponent {
                                                         name="residentName" 
                                                         id="residentName" 
                                                         style={styleInput}
+                                                        disabled={this.isViewing()}
                                                         value={this.state.resident.name} />
                                                 </AvGroup>
                                             </Col>
@@ -68,6 +111,7 @@ class ScheduleModel extends ModelComponent {
                                                 <Label for="outbuildingId" style={styleLabel}>Dependência</Label>
                                                 <AvField type="select" name="outbuildingId" id="outbuildingId" style={styleInput}
                                                     value={this.getModelAttr('outbuildingId')}
+                                                    disabled={this.isViewing()}
                                                     validate={{
                                                         required: { value: true, errorMessage: 'Campo "Nome" obrigatório' },
                                                     }} >
@@ -78,8 +122,9 @@ class ScheduleModel extends ModelComponent {
                                         </Col>
                                         <Col md={6} >
                                             <AvGroup>                                                
-                                                <DayPicker required={false} selectedDays={this.getModelAttr('day')}
-                                                    onDayClick={this.setModelAttrValue('day')} />
+                                                <DayPicker 
+                                                    selectedDays={this.getModelAttr('day')}
+                                                    onDayClick={this.isViewing() ? null : this.setModelAttrValue('day')} />
                                             </AvGroup>
                                         </Col>
                                     </Row>
@@ -88,6 +133,7 @@ class ScheduleModel extends ModelComponent {
                                             <AvGroup>
                                                 <Label for="fromHour" style={styleLabel}>Hora início</Label>
                                                 <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
+                                                    disabled={this.isViewing()}
                                                     validate={{
                                                         required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
                                                     }} />
@@ -97,6 +143,7 @@ class ScheduleModel extends ModelComponent {
                                             <AvGroup>
                                                 <Label for="toHour" style={styleLabel}>Hora fim</Label>
                                                 <AvField type="time" name="toHour" id="toHour" style={styleInput}
+                                                    disabled={this.isViewing()}
                                                     validate={{
                                                         required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
                                                     }} />
@@ -108,6 +155,7 @@ class ScheduleModel extends ModelComponent {
                                                 <AvField type="number" name="peopleCount" id="peopleCount" 
                                                     min={1}
                                                     style={styleInput}
+                                                    disabled={this.isViewing()}
                                                     value={this.getModelAttr('peopleCount')} 
                                                     placeholder="Ocupação total">
                                                 </AvField>
@@ -120,6 +168,7 @@ class ScheduleModel extends ModelComponent {
                                             <AvGroup>
                                                 <Label for="notes" style={styleLabel}>Observações</Label>
                                                 <AvField type="textarea" rows={5} name="notes" id="notes"
+                                                    disabled={this.isViewing()}
                                                     value={this.getModelAttr('notes')} />
                                             </AvGroup>
                                         </Col>
@@ -134,13 +183,52 @@ class ScheduleModel extends ModelComponent {
                                 Cancelar
                             </Button>
 
-                            <Button bsStyle="success" fill type="submit"
-                                disabled={this.state.disabledButtons}>
+                            <Button 
+                                bsStyle="success" 
+                                fill 
+                                type="submit"
+                                onClick={this.handleSubmit} >
                                 Gravar
                             </Button>
                         </AvForm>
                     </Col>
                 </Row>
+
+                {/**confirma exclusao */}
+                <Modal
+                    show={this.state.hasCollision}
+                    aria-labelledby="contained-modal-title">
+                    <Modal.Header>
+                        <Modal.Title>Conflito</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p className="text-center">
+                            Lamentamos informar mas o agendamento solicitado com um já existente.
+                            Um ticket será aberto.
+                        </p>
+                        <TableComponent 
+                            headers={scheduleHeaders}
+                            items={[this.collisionedSchedule]}
+                            dataReducer={scheduleDataReducer} />
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
+                            <Col md={2}>
+                                <Link to={"ticket/teste1"}>
+                                    <ButtonB pullLeft fill bsStyle="info">Ver ticket</ButtonB>
+                                </Link>
+                            </Col>
+                            
+                            <Col md={10}>
+                                <Link to={"schedule/teste1"}>
+                                    <ButtonB fill>Entendi</ButtonB>
+                                </Link>
+                            </Col>
+                        </Row>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }

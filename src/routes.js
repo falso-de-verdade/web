@@ -16,8 +16,7 @@
 
 */
 
-import ResidentList from "views/resident/ResidentList";
-import ResidentModel from "views/resident/ResidentModel"
+import { ResidentList, FindResident } from "views/resident";
 
 //import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
@@ -29,10 +28,15 @@ import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
 import { CollisionList, CollisionModel, FindCollision } from "views/collision";
+import { TicketList, FindTicket } from "views/ticket";
 
 //
 // !!! Be carefull about route orders
 //
+
+import ListMeetings from "views/meetings/ListMeetings"
+import MeetingModel from "views/meetings/MeetingModel"
+import FindMeeting from "views/meetings/FindMeeting"
 
 const dashboardRoutes = [
   /*  {
@@ -57,7 +61,7 @@ const dashboardRoutes = [
     path: "/resident/:id",
     name: "Moradores",
     icon: "pe-7s-user",
-    component: ResidentModel,
+    component: FindResident,
     layout: "/admin",
     redirect: true,
     requiresManager: true
@@ -145,10 +149,34 @@ const dashboardRoutes = [
   },
 
   {
+    path: "/meetings",
+    name: "Reuniões",
+    icon: "pe-7s-info",
+    component: ListMeetings,
+    layout: "/admin",
+  },
+  {
+    path: "/meeting",
+    name: "Reunião",
+    icon: "pe-7s-info",
+    component: MeetingModel,
+    layout: "/admin",
+    redirect: true
+  },
+
+  {
+    layout: "/admin",
+    path: "/meeting/:id",
+    name: "Reunião",
+    icon: "pe-7s-info",
+    component: FindMeeting,
+    redirect: true,
+  },
+  {
+    layout: "/admin",
     path: "/condominiums",
     name: "Condomínios",
     icon: "pe-7s-home",
-    layout: "/admin",
     component: CondominiumList
   },
   {
@@ -187,6 +215,23 @@ const dashboardRoutes = [
     component: FindCollision,
     redirect: true,
     requiresManager: true
+  },
+  {
+    path: "/tickets",
+    name: "Tickets",
+    icon: "pe-7s-ticket",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: TicketList
+  },
+  {
+    path: "/ticket/:id",
+    name: "Ticket",
+    icon: "pe-7s-ticket",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: FindTicket,
+    redirect: true
   },
 
   /**rota transportadora */

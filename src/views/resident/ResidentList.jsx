@@ -59,6 +59,18 @@ class ListResident extends Component {
                       </thead>
                       <tbody>
                         <tr>
+                          <td>
+                            11/10/2020
+                          </td>
+                          <td>
+                            Cara
+                          </td>
+                          <td>
+                            carac@gmail.com
+                          </td>
+                          <td>
+                            {" "}
+                          </td>
                           <td className="text-center" width={140}>
                             {
                               <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
