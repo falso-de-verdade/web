@@ -6,22 +6,23 @@ import { Row, Col, Container } from 'reactstrap';
 import { Modal } from "react-bootstrap";
 import { AvForm } from 'availity-reactstrap-validation';
 
-import isLoggedIn from "variables/Variables";
-
 import InputPasswordCustom from '../components/inputs/inputCustom'
 import InputCustom from '../components/inputs/inputCustom'
 import Logo from '../assets/img/logomarca.svg'
+import AuthRedirect from "components/AuthRedirect/AuthRedirect";
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            succeeded: false,
             email: '',
             password: '',
+            user: null,
             lembrarDados: false,
             hasMultipleRoles: false
         };
+
+
     };
 
     /**
@@ -30,9 +31,12 @@ class Login extends Component {
     handleLogin = () => {
         console.log(`email: ${this.state.email}`)
         console.log(`password: ${this.state.password}`)
-        
-        this.setState({ hasMultipleRoles: true })
-        // this.setState({ succeeded: true })
+
+        const user = {
+            email: "exsample@test.com",
+        }
+
+        this.setState({ user, hasMultipleRoles: true })
     };
 
     toggleChangeLembrarDados = () => {
@@ -40,17 +44,22 @@ class Login extends Component {
     };
 
     handleResidentRole = () => {
-        localStorage.setItem('isAuthenticated', true)
-        this.setState({ succeeded: true })
+        this.setState({ 
+            succeeded: true, 
+            user: { name: "Morador", isManager: false } 
+        })
     }
 
     handleManagerRole = () => {
-        this.handleResidentRole()
+        this.setState({ 
+            succeeded: true, 
+            user: { isManager: true, name: "Síndico" } 
+        })
     }
 
     render() {
         if (this.state.succeeded) {
-            return <Redirect to={{ pathname: "/admin/dashboard", state: { isAuthenticated: true } }} />
+            return <AuthRedirect user={this.state.user} />
         };
 
         const styleInput = {

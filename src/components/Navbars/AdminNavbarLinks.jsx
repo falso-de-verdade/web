@@ -19,6 +19,9 @@ import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem, ModalHeader, ModalBody, Modal } from "react-bootstrap";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Row, Col } from "reactstrap";
+import { NavLink } from "react-router-dom";
+
+import { UserAuthContext } from "contexts";
 import Button from "components/CustomButton/CustomButton.jsx";
 import InputCustom from "components/inputs/inputCustom";
 
@@ -31,10 +34,6 @@ class AdminNavbarLinks extends Component {
     this.state = {
       isModal: false,
     }
-  };
-
-  logOut() {
-    localStorage.clear();
   };
 
   toggleModal = () => {
@@ -61,17 +60,25 @@ class AdminNavbarLinks extends Component {
               </AvForm>
             </Col>
           </NavItem>
+          <NavItem>
+            <UserAuthContext.Consumer>
+              {user => (
+                <p>
+                  {user.name}
+                </p>
+              )}
+            </UserAuthContext.Consumer>
+          </NavItem>
           <NavItem
             onSelect={() => this.toggleModal()}>
             <span className="fa fa-cog fa-spin"></span>
             {' '}Minha conta
           </NavItem>
-          <NavItem
-            href="/login"
-            onClick={() => this.logOut()}>
+          <NavLink
+            to="/logout" >
             <span className="fa fa-sign-out"></span>
             {' '}Log out
-          </NavItem>
+          </NavLink>
         </Nav>
 
         <Modal show={this.state.isModal} >
