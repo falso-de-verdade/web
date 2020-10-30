@@ -1,17 +1,11 @@
 import React, { Component } from "react";
-import { Row, Col, CardBody, Card } from "reactstrap";
-import { AvForm } from 'availity-reactstrap-validation';
-import InputCustom from '../../components/inputs/inputCustom';
+import { Row, Col, CardBody, Card, Label } from "reactstrap";
+import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
+
+import { ModelComponent } from '../common';
 import Button from "components/CustomButton/CustomButton.jsx";
 
-class ResidentModel extends Component {
-  notificationSystem = React.createRef();
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  };
-
+class ResidentModel extends ModelComponent {
   componentDidMount() { };
 
   componentDidUpdate(prevProps) { };
@@ -22,6 +16,14 @@ class ResidentModel extends Component {
   };
 
   render() {
+    const styleInput = {
+      fontSize: 12
+    }
+
+    const styleLabel = {
+      fontSize: 11
+    }
+
     return (
       <div className="content">
         <Row>
@@ -37,27 +39,30 @@ class ResidentModel extends Component {
               <CardBody>
                 <AvForm autoComplete="off" ref="formUpdateResident" /* onSubmit={} */>
                   <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                    <Col style={{ marginTop: '-10px' }} md={4}>
-                      <InputCustom
-                        descricao="Nome completo"
-                        id="nameResident"
-                        name="nameResident"
-                        type="text" />
-                    </Col>
-                    <Col style={{ marginTop: '-10px' }} md={4}>
-                      <InputCustom
-                        descricao="E-mail"
-                        id="emailResident"
-                        name="emailResident"
-                        type="email" />
-                    </Col>
-                    <Col style={{ marginTop: '-10px' }} md={4}>
-                      <InputCustom
-                        descricao="Localização"
-                        id="locationResident"
-                        name="locationResident"
-                        type="text" />
-                    </Col>
+                      <Col style={{ marginTop: '-10px' }} md={8}>
+                        <AvGroup>
+                          <Label for="name" style={styleLabel}>Nome completo</Label>
+                          <AvField type="text" name="nome" style={styleInput}
+                            value={this.state.name} disabled
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label for="email" style={styleLabel}>E-mail</Label>
+                          <AvField type="text" name="email" style={styleInput}
+                            value={this.state.email} disabled
+                          />
+                        </AvGroup>
+                      </Col>
+                  </Row>
+                  <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                      <Col style={{ marginTop: '-10px' }} md={8}>
+                        <AvGroup>
+                          <Label for="location" style={styleLabel}>Localização</Label>
+                          <AvField type="text" name="location" style={styleInput}
+                            value={this.state.location}
+                          />
+                        </AvGroup>
+                      </Col>
                   </Row>
                 </AvForm>
               </CardBody>

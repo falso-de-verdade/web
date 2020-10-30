@@ -16,8 +16,7 @@
 
 */
 
-import ResidentList from "views/resident/ResidentList";
-import ResidentModel from "views/resident/ResidentModel"
+import { ResidentList, FindResident } from "views/resident";
 
 //import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
@@ -57,7 +56,7 @@ const dashboardRoutes = [
     path: "/resident/:id",
     name: "Moradores",
     icon: "pe-7s-user",
-    component: ResidentModel,
+    component: FindResident,
     layout: "/admin",
     redirect: true
   },
