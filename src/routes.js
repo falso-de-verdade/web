@@ -34,6 +34,10 @@ import { TicketList, FindTicket } from "views/ticket";
 // !!! Be carefull about route orders
 //
 
+import ListMeetings from "views/meetings/ListMeetings"
+import MeetingModel from "views/meetings/MeetingModel"
+import FindMeeting from "views/meetings/FindMeeting"
+
 const dashboardRoutes = [
   /*  {
      path: "/dashboard",
@@ -142,10 +146,34 @@ const dashboardRoutes = [
   },
 
   {
+    path: "/meetings",
+    name: "Reuniões",
+    icon: "pe-7s-info",
+    component: ListMeetings,
+    layout: "/admin",
+  },
+  {
+    path: "/meeting",
+    name: "Reunião",
+    icon: "pe-7s-info",
+    component: MeetingModel,
+    layout: "/admin",
+    redirect: true
+  },
+
+  {
+    layout: "/admin",
+    path: "/meeting/:id",
+    name: "Reunião",
+    icon: "pe-7s-info",
+    component: FindMeeting,
+    redirect: true,
+  },
+  {
+    layout: "/admin",
     path: "/condominiums",
     name: "Condomínios",
     icon: "pe-7s-home",
-    layout: "/admin",
     component: CondominiumList
   },
   {
@@ -182,7 +210,6 @@ const dashboardRoutes = [
     component: FindCollision,
     redirect: true
   },
-
   {
     path: "/tickets",
     name: "Tickets",
