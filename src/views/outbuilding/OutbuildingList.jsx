@@ -10,7 +10,7 @@ import ButtonB from "components/CustomButton/CustomButton.jsx";
 
 import api from '../../services/api';
 import { Link } from "react-router-dom";
-
+import { UserAuthContext } from "contexts";
 import * as qs from 'query-string';
 
 class OutbuildingList extends Component {
@@ -31,18 +31,7 @@ class OutbuildingList extends Component {
             />
           </Col>
 
-          <Col md={2} style={{ marginBottom: '5px', paddingLeft: 0 }}>
-            <AvForm autoComplete="off" ref="formLocalizar">
-              <AvField type="select" name="select"
-                //value={this.state.inputLocalizarStatus}
-                onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
-                <option value="Ativo">Ativos</option>
-                <option value="Inativo">Inativos</option>
-              </AvField>
-            </AvForm>
-          </Col>
-
-          <Col md={6} style={{ marginBottom: '5px', paddingLeft: 0 }}>
+          <Col md={4} style={{ marginBottom: '5px', paddingLeft: 0 }}>
             <ButtonB bsStyle="info"
               //disabled={this.state.disabledButtons}
               onClick={this.listarProdutos}>
@@ -50,12 +39,20 @@ class OutbuildingList extends Component {
               Localizar
               </ButtonB>
 
-            <Link to={`outbuilding`}>
-              <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
-                <span className="fa fa-plus"></span>
-                {' '}Nova dependência
-                </ButtonB>
-            </Link>
+            <UserAuthContext.Consumer>
+              {user => {
+                if (user.isManager) {
+                  return (
+                    <Link to={`outbuilding`}>
+                      <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                        <span className="fa fa-plus"></span>
+                        {' '}Nova dependência
+                        </ButtonB>
+                    </Link>
+                  )
+                }                
+              }}
+            </UserAuthContext.Consumer>
           </Col>
 
         </Row>
@@ -86,7 +83,7 @@ class OutbuildingList extends Component {
                             Salão de Jogos
                           </td>
                           <td>
-                            Segunda a Sexta - 14:00 ás 20:00  
+                            Segunda a Sexta - 14:00 ás 20:00
                           </td>
                           <td>
                             20
@@ -95,22 +92,41 @@ class OutbuildingList extends Component {
                             Bloco A
                           </td>
 
-                          <td className="text-right"></td>
                           <td className="text-center" width={90}>
                             {
                               <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+                                <UserAuthContext.Consumer>
+                                  {user => {
+                                    if (user.isManager) {
+                                      return <React.Fragment>
+                                        <Link to="outbuilding/teste">
+                                          <ButtonB 
+                                            bsStyle="success" bsSize="xs"
+                                            simple type="button" style={{ padding: '3px' }}>
+                                            <span className="fa fa-pencil"></span>
+                                          </ButtonB>
+                                        </Link>
 
-                                <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                >
-                                  <span className="fa fa-pencil"></span>
-                                </ButtonB>
+                                        {' '}
+                                        <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
 
-                                {' '}
-                                <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+                                          onClick={this.excluirProduto}>
+                                          <span className="fa fa-times"></span>
+                                        </ButtonB>
+                                      </React.Fragment>;
+                                    }
 
-                                  onClick={this.excluirProduto}>
-                                  <span className="fa fa-times"></span>
-                                </ButtonB>
+                                    return (
+                                      <Link to="outbuilding/teste">
+                                        <ButtonB 
+                                          bsStyle="success" bsSize="xs"
+                                          simple type="button" style={{ padding: '3px' }}>
+                                          <span className="fa fa-eye"></span>
+                                        </ButtonB>
+                                      </Link>
+                                    )
+                                  }}
+                                </UserAuthContext.Consumer>
                               </div>
                             }
                           </td>

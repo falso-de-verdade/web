@@ -1,93 +1,89 @@
-import React, { Component } from "react";
-import Button from "components/CustomButton/CustomButton.jsx";
-import {
-  Row, Col, Label, Card, CardBody, TabPane, TabContent,
-  Nav, NavItem, NavLink,
-} from "reactstrap";
-import classnames from 'classnames';
+import React from "react";
+import { Col } from "reactstrap";
+import { Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
-import InputCustom from '../../components/inputs/inputCustom';
 import Subscriber from '../../assets/img/subscriber.svg'
+import SignUpComponent from "components/SignUp/SignUpComponent";
+import { TableComponent } from "components/Listing";
+import Button from "components/CustomButton/CustomButton.jsx";
 
-class ResidentRegistration extends Component {
-  constructor(props) {
-    super(props)
+const onManagerFromAccount = (user, history) => {
+  console.log(user);
+  // history.push("/admin/dashboard");
+}
 
-    this.state = {
-      activeTab: '1'
-    }
-  }
+const onRegister = (name, email, password, history) => {
+  console.log(name, email, password);
+}
 
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      })
-    }
-  }
+const condominiumHeaders = [
+  "Nome",
+  "Endereço",
+]
 
-  render() {
+const condominiumDataReducer = condominium => [
+  condominium.name,
+  condominium.address,
+]
 
-    const styleContent = {
-      width: '100%',
-      maxWidth: '1120px',
-      height: '100vh',
-      margin: '0 auto',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    };
+const targetCondominium = {
+  name: "Condomínio Flores Flatulentas",
+  address: "Avenida Não Existe, Nº 0"
+}
 
-    return (
-      <div className="content" style={styleContent}>
-        <Col md={6}>
-          <div style={{ padding: '16px', boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', backgroundColor: ' #4091ff', borderRadius: '6px' }}>
-            <AvForm autoComplete="off" onSubmit={this.operacaoCliente} ref="formCliente">
-              <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                <Col md={12} style={{ marginTop: '-10px' }}>
-                  <InputCustom
-                    id="name"
-                    name="name"
-                    type="text"
-                    descricao="Nome completo" />
-                </Col>
-                <Col md={12} style={{ marginTop: '-10px' }}>
-                  <InputCustom
-                    id="email"
-                    name="email"
-                    type="email"
-                    descricao="E-mail" />
-                </Col>
-              </Row>
-              <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                <Col md={12} style={{ marginTop: '-10px' }}>
-                  <InputCustom
-                    id="password"
-                    name="password"
-                    type="password"
-                    descricao="Senha" />
-                </Col>
-                <Col md={12} style={{ marginTop: '-10px' }}>
-                  <InputCustom
-                    id="confirmedPassword"
-                    name="confirmedPassword"
-                    type="password"
-                    descricao="Confirma senha" />
-                </Col>
-              </Row>
-              <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                <Col md={12}>
-                  <Button type="submit" bsStyle="success" fill pullRight>Gravar</Button>
-                </Col>
-              </Row>
-            </AvForm>
-          </div>
-        </Col>
-        <img src={Subscriber} alt="Inscreva-se" />
-      </div>
-    );
-  };
-};
+const ResidentRegistration = props => {
+  const [showCondoModal, setShowCondoModal] = React.useState(true);
+
+  const hideCondoModal = () => setShowCondoModal(false);
+
+  return <React.Fragment>
+      <SignUpComponent 
+          onUserFromAccount={onManagerFromAccount} 
+          onRegister={onRegister}
+          image={Subscriber}
+          />
+
+      <Modal
+        show={showCondoModal}
+        aria-labelledby="contained-modal-title">
+        <Modal.Header>
+          <Modal.Title>Condomínio</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <p className="text-center">
+            Este é o condomínio apresentado pelo convite.
+          </p>
+          <p className="text-center">
+            Por favor confirme se é o condomínio desejado.
+          </p>
+          <TableComponent 
+            items={[targetCondominium]}
+            headers={condominiumHeaders}
+            dataReducer={condominiumDataReducer}
+            />
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Col md={2}>
+            <Button 
+              bsStyle="success" 
+              onClick={hideCondoModal}
+              fill
+              pullLeft>
+              Esse é meu condomínio!
+            </Button>{' '}
+          </Col>
+
+          <Link to={"/support"}>
+            <Button bsStyle="danger" fill>
+              Não é meu condomínio
+            </Button>{' '}
+          </Link>
+        </Modal.Footer>
+      </Modal>
+    </React.Fragment>
+}
 
 export default ResidentRegistration;

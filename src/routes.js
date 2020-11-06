@@ -16,20 +16,27 @@
 
 */
 
-import ResidentList from "views/resident/ResidentList";
-
+import { ResidentList, FindResident } from "views/resident";
 
 //import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
 
-import OutbuildingList from "views/outbuilding/OutbuildingList";
-import OutbuildingModel from "views/outbuilding/OutbuildingModel";
+import { OutbuildingList, OutbuildingModel, FindOutbuilding } from "views/outbuilding";
 
-import Condominios from "views/condominios/ListaCondominios.jsx";
+import { CondominiumList, CondominiumModel, FindCondominium } from "views/condominium";
 
-import Agendamento from "views/agendamentos/Agendamento.jsx";
-import ListaAgendamentos from "views/agendamentos/ListaAgendamentos.jsx";
+import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
 import Diversos from "views/diversos";
+import { CollisionList, CollisionModel, FindCollision } from "views/collision";
+import { TicketList, FindTicket } from "views/ticket";
+
+//
+// !!! Be carefull about route orders
+//
+
+import ListMeetings from "views/meetings/ListMeetings"
+import MeetingModel from "views/meetings/MeetingModel"
+import FindMeeting from "views/meetings/FindMeeting"
 
 const dashboardRoutes = [
   /*  {
@@ -46,26 +53,37 @@ const dashboardRoutes = [
     name: "Moradores",
     icon: "pe-7s-user",
     component: ResidentList,
-    layout: "/admin"
-  },
-
- /*  {
-    path: "/ResidentRegistration/:id",
-    name: "Morador",
-    icon: "pe-7s-user",
-    component: ResidentRegistration,
     layout: "/admin",
-    redirect: true
+    requiresManager: true
   },
 
   {
-    path: "/ResidentRegistration",
-    name: "Morador",
+    path: "/resident/:id",
+    name: "Moradores",
     icon: "pe-7s-user",
-    component: ResidentRegistration,
+    component: FindResident,
     layout: "/admin",
-    redirect: true
-  }, */
+    redirect: true,
+    requiresManager: true
+  },
+
+  /*  {
+     path: "/ResidentRegistration/:id",
+     name: "Morador",
+     icon: "pe-7s-user",
+     component: ResidentRegistration,
+     layout: "/admin",
+     redirect: true
+   },
+ 
+   {
+     path: "/ResidentRegistration",
+     name: "Morador",
+     icon: "pe-7s-user",
+     component: ResidentRegistration,
+     layout: "/admin",
+     redirect: true
+   }, */
 
   /**rota dependencias */
   {
@@ -77,10 +95,10 @@ const dashboardRoutes = [
   },
 
   {
-    path: "/dependencia/:id",
+    path: "/outbuilding/:id",
     name: "Dependencia",
     icon: "pe-7s-user",
-    component: OutbuildingModel,
+    component: FindOutbuilding,
     layout: "/admin",
     redirect: true
   },
@@ -91,31 +109,33 @@ const dashboardRoutes = [
     icon: "pe-7s-user",
     component: OutbuildingModel,
     layout: "/admin",
-    redirect: true
+    redirect: true,
+    requiresManager: true
   },
 
+  // agendamentos
   {
-    path: "/agendamentos",
+    path: "/schedules",
     name: "Agendamentos",
     icon: "pe-7s-date",
-    component: ListaAgendamentos,
+    component: ScheduleList,
     layout: "/admin"
   },
 
   {
-    path: "/agendamento/:id",
+    path: "/schedule/:id",
     name: "Agendamento",
     icon: "pe-7s-date",
-    component: Agendamento,
+    component: FindSchedule,
     layout: "/admin",
     redirect: true
   },
 
   {
-    path: "/agendamento",
+    path: "/schedule",
     name: "Agendamento",
     icon: "pe-7s-date",
-    component: Agendamento,
+    component: ScheduleModel,
     layout: "/admin",
     redirect: true
   },
@@ -126,6 +146,94 @@ const dashboardRoutes = [
     icon: "pe-7s-more",
     layout: "/admin",
     component: Diversos
+  },
+
+  {
+    path: "/meetings",
+    name: "Reuniões",
+    icon: "pe-7s-info",
+    component: ListMeetings,
+    layout: "/admin",
+  },
+  {
+    path: "/meeting",
+    name: "Reunião",
+    icon: "pe-7s-info",
+    component: MeetingModel,
+    layout: "/admin",
+    redirect: true,
+    requiresManager: true
+  },
+
+  {
+    layout: "/admin",
+    path: "/meeting/:id",
+    name: "Reunião",
+    icon: "pe-7s-info",
+    component: FindMeeting,
+    redirect: true,
+    
+  },
+  {
+    layout: "/admin",
+    path: "/condominiums",
+    name: "Condomínios",
+    icon: "pe-7s-home",
+    component: CondominiumList
+  },
+  {
+    path: "/condominium/:id",
+    name: "Atualizar condomínio",
+    icon: "pe-7s-home",
+    layout: "/admin",
+    component: FindCondominium,
+    redirect: true
+  },
+  {
+    path: "/condominium",
+    name: "Novo condomínio",
+    icon: "pe-7s-home",
+    layout: "/admin",
+    component: CondominiumModel,
+    redirect: true,
+    requiresManager: true
+  },
+
+  {
+    path: "/collisions",
+    name: "Conflitos",
+    icon: "pe-7s-ribbon",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: CollisionList,
+    requiresManager: true
+  },
+  {
+    path: "/collision/:id",
+    name: "Finalizar conflito",
+    icon: "pe-7s-ribbon",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: FindCollision,
+    redirect: true,
+    requiresManager: true
+  },
+  {
+    path: "/tickets",
+    name: "Tickets",
+    icon: "pe-7s-ticket",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: TicketList
+  },
+  {
+    path: "/ticket/:id",
+    name: "Ticket",
+    icon: "pe-7s-ticket",
+    // icon: "pe-7s-ticket",
+    layout: "/admin",
+    component: FindTicket,
+    redirect: true
   },
 
   /**rota transportadora */
@@ -202,11 +310,10 @@ const dashboardRoutes = [
       layout: "/admin"
     },*/
   {
-    upgrade: true,
     path: "/config",
     name: "Configurações",
     icon: "pe-7s-config",
-    component: Condominios,
+    component: CondominiumList,
     layout: "/admin"
   }
 

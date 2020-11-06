@@ -28,6 +28,7 @@ import "./assets/css/pe-icon-7-stroke.css";
 
 import AdminLayout from "layouts/Admin.jsx";
 import LoginLayout from "layouts/Login.jsx";
+import LogoutLayout from "layouts/Logout.jsx";
 import ResidentRegistration from '../src/views/resident/ResidentRegistration.jsx';
 import ManagerRegistration from 'views/manager/ManagerRegistration';
 
@@ -38,6 +39,7 @@ ReactDOM.render(
     <Switch>
       <PrivateRoute path="/admin" Component={AdminLayout} />
 
+      <Route path="/logout" render={props => <LogoutLayout {...props} />} />
       <Route path="/login" render={props => <LoginLayout {...props} />} />
       <Route path="/manager-signup" render={props => <ManagerRegistration {...props} />} />
       <Route path="/ResidentRegistration" render={props => <ResidentRegistration {...props} />} />

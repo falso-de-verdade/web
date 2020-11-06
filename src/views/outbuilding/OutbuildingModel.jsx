@@ -17,7 +17,10 @@ import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
 import InputCustom from '../../components/inputs/inputCustom';
 import ButtonB from "components/CustomButton/CustomButton.jsx";
 
-class OutbuildingModel extends Component {
+import { ModelComponent } from "views/common";
+import { UserAuthContext } from "contexts";
+
+class OutbuildingModel extends ModelComponent {
 
   notificationSystem = React.createRef();
 
@@ -25,8 +28,10 @@ class OutbuildingModel extends Component {
     super(props);
 
     this.state = {
+      ...this.state,
       activeTab: '1',
-      modalOpen: true
+      modalOpen: true,
+      outbuilding: { ...props.outbuilding }
     }
   }
 
@@ -39,6 +44,7 @@ class OutbuildingModel extends Component {
   }
 
   render() {
+    const isDisabled = !this.context.isManager;
 
     const styleInputVlr = {
       height: '40px',
@@ -71,7 +77,6 @@ class OutbuildingModel extends Component {
 
         <Row>
           <Col style={{ marginTop: '-10px' }} md={12}>
-
             <Card>
               <CardBody style={{ padding: '10px', fontSize: 12 }}>
                 <Nav tabs>
@@ -92,25 +97,26 @@ class OutbuildingModel extends Component {
 
                 <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                   <TabPane tabId="1">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto} ref="formOutbuilding">
+                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
                       <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <Col style={{ marginTop: '-10px' }} md={4}>
                           <AvGroup>
                             <Label for="name" style={styleLabel}>Nome</Label>
                             <AvField type="text" name="nome" style={styleInput}
+                              value={this.getModelAttr('name')}
+                              disabled={isDisabled}
                               validate={{
-                                required: { value: true, errorMessage: 'Nome é obrigatório'}
+                                required: { value: true, errorMessage: 'Nome é obrigatório' }
                               }}
-                              />
+                            />
                           </AvGroup>
                         </Col>
                         <Col style={{ marginTop: '-10px' }} md={4}>
                           <AvGroup>
                             <Label for="condominium" style={styleLabel}>Condomínio</Label>
                             <AvField type="select" name="condominium" style={styleInput}
-                              //value={this.state.dadosClienteStatus}
-                              //disabled={this.state.disabledButtons}
-                              onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
+                              value={this.getModelAttr('condominium')} 
+                              disabled={isDisabled} >
                               <option value="0">Condomínio Rio de Pedra</option>
                               <option value="1">Condomínio da Roçinha</option>
                             </AvField>
@@ -123,9 +129,8 @@ class OutbuildingModel extends Component {
                             <Label for="maxCapacity" style={styleLabel}>Lotação Máxima</Label>
                             <AvField type="number" name="maxCapacity" id="maxCapacity" min="1"
                               style={styleInput}
-                            //value={this.state.dadosProdutoCodigo}
-                            //onChange={(e) => { this.setState({ dadosProdutoCodigo: e.target.value }) }}
-                            />
+                              disabled={isDisabled}
+                              value={this.getModelAttr('maxCapacity')} />
                           </AvGroup>
                         </Col>
 
@@ -133,7 +138,10 @@ class OutbuildingModel extends Component {
                           <AvGroup>
                             <Label for="location" style={styleLabel}>Localização</Label>
                             <AvField type="text" name="location" id="location" style={styleInput}
-                              placeholder="Ex.: Bloco B"/>
+                              onChange={this.setModelAttr('location')}
+                              disabled={isDisabled}
+                              value={this.state.outbuilding.location}
+                              placeholder="Ex.: Bloco B" />
                           </AvGroup>
                         </Col>
                       </Row>
@@ -144,73 +152,68 @@ class OutbuildingModel extends Component {
 
                 <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                   <TabPane tabId="2">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto} ref="formOutbuilding">
-                    <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col md={2} style={{ marginTop: '-10px' }}>
-                          <AvGroup>
-                            <Label for="fromDay" style={styleLabel}>De</Label>
-                            <AvField type="select" name="fromDay" style={styleInput}
-                              //value={this.state.dadosClienteStatus}
-                              //disabled={this.state.disabledButtons}
-                              onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
-                              <option value="0">Domingo</option>
-                              <option value="1">Segunda-feira</option>
-                              <option value="2">Terça-feira</option>
-                              <option value="3">Quarta-feira</option>
-                              <option value="4">Quinta-feira</option>
-                              <option value="5">Sexta-feira</option>
-                              <option value="6">Sábado</option>
-                            </AvField>
-                          </AvGroup>
-                        </Col>
-                        <Col md={2} style={{ marginTop: '-10px' }}>
-                          <AvGroup>
-                            <Label for="toDay" style={styleLabel}>Até</Label>
-                            <AvField type="select" name="toDay" style={styleInput}
-                              //value={this.state.dadosClienteStatus}
-                              //disabled={this.state.disabledButtons}
-                              onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
-                              <option value="-1">Não selecionado</option>
-                              <option value="0">Domingo</option>
-                              <option value="1">Segunda-feira</option>
-                              <option value="2">Terça-feira</option>
-                              <option value="3">Quarta-feira</option>
-                              <option value="4">Quinta-feira</option>
-                              <option value="5">Sexta-feira</option>
-                              <option value="6">Sábado</option>
-                            </AvField>
-                          </AvGroup>
-                        </Col>
-                        <Col style={{ marginTop: '-10px' }} md={2}>
-                          <AvGroup>
-                            <Label for="fromHour" style={styleLabel}>Hora início</Label>
-                            <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
-                              //disabled={this.state.disabledButtons}
-                              //value={this.state.dadosProdutoDescricao}
-                              validate={{
-                                required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
-                              }} />
-                          </AvGroup>
-                        </Col>
-                        <Col style={{ marginTop: '-10px' }} md={2}>
-                          <AvGroup>
-                            <Label for="toHour" style={styleLabel}>Hora fim</Label>
-                            <AvField type="time" name="toHour" id="toHour" style={styleInput}
-                              //disabled={this.state.disabledButtons}
-                              //value={this.state.dadosProdutoDescricao}
-                              onChange={(e) => { this.setState({ dadosProdutoDescricao: e.target.value }) }}
-                              validate={{
-                                required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
-                              }} />
-                          </AvGroup>
-                        </Col>
-                        
-                        <ButtonB onClick={() => this.setState({ isDisabledCFOP: false })} bsStyle="info" fill
-                          style={{ margin: '15px' }}>
-                          <span className="fa fa-plus"></span>
-                          {' '}Adicionar
-                        </ButtonB>
-                      </Row>
+                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
+                      {this.context.isManager &&
+                        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                          <Col md={2} style={{ marginTop: '-10px' }}>
+                            <AvGroup>
+                              <Label for="fromDay" style={styleLabel}>De</Label>
+                              <AvField type="select" name="fromDay" style={styleInput}
+                                  value={this.getModelAttr('fromDay')} >
+                                <option value="0">Domingo</option>
+                                <option value="1">Segunda-feira</option>
+                                <option value="2">Terça-feira</option>
+                                <option value="3">Quarta-feira</option>
+                                <option value="4">Quinta-feira</option>
+                                <option value="5">Sexta-feira</option>
+                                <option value="6">Sábado</option>
+                              </AvField>
+                            </AvGroup>
+                          </Col>
+                          <Col md={2} style={{ marginTop: '-10px' }}>
+                            <AvGroup>
+                              <Label for="toDay" style={styleLabel}>Até</Label>
+                              <AvField type="select" name="toDay" style={styleInput}
+                                  value={this.getModelAttr('toDay')} >
+                                <option value="-1">Não selecionado</option>
+                                <option value="0">Domingo</option>
+                                <option value="1">Segunda-feira</option>
+                                <option value="2">Terça-feira</option>
+                                <option value="3">Quarta-feira</option>
+                                <option value="4">Quinta-feira</option>
+                                <option value="5">Sexta-feira</option>
+                                <option value="6">Sábado</option>
+                              </AvField>
+                            </AvGroup>
+                          </Col>
+                          <Col style={{ marginTop: '-10px' }} md={2}>
+                            <AvGroup>
+                              <Label for="fromHour" style={styleLabel}>Hora início</Label>
+                              <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
+                                value={this.getModelAttr('fromHour')}
+                                validate={{
+                                  required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
+                                }} />
+                            </AvGroup>
+                          </Col>
+                          <Col style={{ marginTop: '-10px' }} md={2}>
+                            <AvGroup>
+                              <Label for="toHour" style={styleLabel}>Hora fim</Label>
+                              <AvField type="time" name="toHour" id="toHour" style={styleInput}
+                                value={this.getModelAttr('toHour')}
+                                validate={{
+                                  required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
+                                }} />
+                            </AvGroup>
+                          </Col>
+
+                          <ButtonB onClick={() => this.setState({ isDisabledCFOP: false })} bsStyle="info" fill
+                            style={{ margin: '15px' }}>
+                            <span className="fa fa-plus"></span>
+                            {' '}Adicionar
+                          </ButtonB>
+                        </Row>
+                      }
                       <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
                         <Col style={{ marginTop: '-10px' }} md={6}>
                           <Table stiped hover>
@@ -219,7 +222,9 @@ class OutbuildingModel extends Component {
                                 <th>Dia(s) da semana</th>
                                 <th>Das</th>
                                 <th>Até</th>
-                                <th className="text-center">Operações</th>
+                                {this.context.isManager &&
+                                  <th className="text-center">Operações</th>
+                                }
                               </tr>
                             </thead>
                             <tbody>
@@ -234,7 +239,7 @@ class OutbuildingModel extends Component {
                                   20:00
                                 </td>
                                 <td className="text-center" width={140}>
-                                  {
+                                  {this.context.isManager &&
                                     <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
                                       <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
@@ -264,56 +269,54 @@ class OutbuildingModel extends Component {
 
                 <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
                   <TabPane tabId="3">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto} ref="formOutbuilding">
-                    <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col md={4} style={{ marginTop: '-10px' }}>
-                          <AvGroup>
-                            <Label for="fromDay" style={styleLabel}>Documento/Imagem/Vídeo</Label>
-                            <AvField type="file" name="fromDay" style={styleInput}
-                              //value={this.state.dadosClienteStatus}
-                              //disabled={this.state.disabledButtons}
-                              onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
-                            </AvField>
-                          </AvGroup>
-                        </Col>
-                      </Row>
+                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
+                      {this.context.isManager &&
+                        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+                          <Col md={4} style={{ marginTop: '-10px' }}>
+                            <AvGroup>
+                              <Label for="fromDay" style={styleLabel}>Documentos</Label>
+                              <AvField type="file" name="fromDay" style={styleInput}
+                                //value={this.state.dadosClienteStatus}
+                                //disabled={this.state.disabledButtons}
+                                onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
+                              </AvField>
+                            </AvGroup>
+                          </Col>
+                        </Row>
+                      }
                       <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
                         <Col style={{ marginTop: '-10px' }} md={10}>
                           <Table stiped hover>
                             <thead>
                               <tr>
                                 <th>Arquivo</th>
-                                <th>Preview</th>
                                 <th className="text-center">Operações</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <td>
-                                  C:\Users\Yan\Documentos\meu-lindo-condominio.png
-                                </td>
-                                <td>
-                                  <img src="https://raw.githubusercontent.com/falso-de-verdade/requisitos/master/logo.jpg"
-                                      height={64}
-                                      width={64} />
+                                  C:\Users\Yan\Documentos\regras.pdf
                                 </td>
                                 <td className="text-center" width={140}>
-                                  {
-                                    <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                      <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                      >
-                                        <span className="fa fa-pencil"></span>
-                                      </ButtonB>
-
-                                      {' '}
-                                      <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                        onClick={this.excluirCliente}>
-                                        <span className="fa fa-times"></span>
-                                      </ButtonB>
-
-                                    </div>
-                                  }
+                                  <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+                                    {this.context.isManager &&
+                                      <React.Fragment>
+                                        {' '}
+                                        <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+                                          onClick={this.excluirCliente}>
+                                          <span className="fa fa-times"></span>
+                                        </ButtonB>
+                                      </React.Fragment> || 
+                                      <React.Fragment>
+                                        {' '}
+                                        <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+                                          onClick={this.excluirCliente}>
+                                          <span className="fa fa-eye"></span>
+                                        </ButtonB>
+                                      </React.Fragment> 
+                                    }
+                                  </div>
                                 </td>
                               </tr>
 
@@ -327,16 +330,18 @@ class OutbuildingModel extends Component {
                 </TabContent>
               </CardBody>
             </Card>
-            <AvForm autoComplete="off" onSubmit={this.operacaoProduto} ref="formNF">
+            <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
               <Button pullRight fill bsStyle="danger"
                 onClick={this.retornarListaProdutos}>
                 Cancelar
               </Button>
 
-              <Button bsStyle="success" fill type="submit"
-                disabled={this.state.disabledButtons}>
-                Gravar
-              </Button>
+              {this.context.isManager && 
+                <Button bsStyle="success" fill type="submit"
+                    disabled={this.state.disabledButtons}>
+                    Gravar
+                </Button>
+              }
             </AvForm>
           </Col>
         </Row>
@@ -345,4 +350,7 @@ class OutbuildingModel extends Component {
   }
 
 }
+
+OutbuildingModel.contextType = UserAuthContext;
+
 export default OutbuildingModel;

@@ -2,24 +2,27 @@ import React, { Component } from "react";
 import { Redirect, Link } from 'react-router-dom';
 
 import Button from 'components/CustomButton/CustomButton.jsx';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Container } from 'reactstrap';
+import { Modal } from "react-bootstrap";
 import { AvForm } from 'availity-reactstrap-validation';
-
-import isLoggedIn from "variables/Variables";
 
 import InputPasswordCustom from '../components/inputs/inputCustom'
 import InputCustom from '../components/inputs/inputCustom'
 import Logo from '../assets/img/logomarca.svg'
+import AuthRedirect from "components/AuthRedirect/AuthRedirect";
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            succeeded: false,
             email: '',
             password: '',
-            lembrarDados: false
+            user: null,
+            lembrarDados: false,
+            hasMultipleRoles: false
         };
+
+
     };
 
     /**
@@ -28,17 +31,35 @@ class Login extends Component {
     handleLogin = () => {
         console.log(`email: ${this.state.email}`)
         console.log(`password: ${this.state.password}`)
-        localStorage.setItem('isAuthenticated', true)
-        this.setState({ succeeded: true })
+
+        const user = {
+            email: "exsample@test.com",
+        }
+
+        this.setState({ user, hasMultipleRoles: true })
     };
 
     toggleChangeLembrarDados = () => {
         this.setState({ lembrarDados: !this.state.lembrarDados });
     };
 
+    handleResidentRole = () => {
+        this.setState({ 
+            succeeded: true, 
+            user: { name: "Morador", isManager: false } 
+        })
+    }
+
+    handleManagerRole = () => {
+        this.setState({ 
+            succeeded: true, 
+            user: { isManager: true, name: "Síndico" } 
+        })
+    }
+
     render() {
         if (this.state.succeeded) {
-            return <Redirect to={{ pathname: "/admin/dashboard", state: { isAuthenticated: true } }} />
+            return <AuthRedirect user={this.state.user} />
         };
 
         const styleInput = {
@@ -111,6 +132,43 @@ class Login extends Component {
                     </div>
                 </Col>
                 <img src={Logo} alt="logomarca"></img>
+
+                <Modal
+                    show={this.state.hasMultipleRoles}
+                    aria-labelledby="contained-modal-title"
+                    backdrop="static"
+                >
+                    <Modal.Header>
+                        <Modal.Title>Perfis</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p className="text-center">
+                            Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar.
+                        </p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Col md={2}>
+                            <Button
+                                bsStyle="primary"
+                                onClick={this.handleResidentRole}
+                                fill
+                            >
+                                Morador
+                            </Button>{" "}
+                        </Col>
+
+                        <Button
+                            bsStyle="secondary"
+                            onClick={this.handleManagerRole}
+                            fill
+                            pullRight
+                        >
+                            Síndico
+                        </Button>{" "}
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     };

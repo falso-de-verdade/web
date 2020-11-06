@@ -5,40 +5,27 @@ import { Row, Col } from "reactstrap";
 
 import Card from "components/Card/Card";
 
-import { AvForm, AvField } from 'availity-reactstrap-validation';
 import ButtonB from "components/CustomButton/CustomButton.jsx";
 
 import api from '../../services/api';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { UserAuthContext } from "contexts";
 
-import * as qs from 'query-string';
 
-class ListaTransportadora extends Component {
+class ScheduleList extends Component {
+    static contextType = UserAuthContext;
+
     constructor(props) {
         super(props);
 
         this.state = {
-            listTransportadoras: [],
-            totTransportadoras: 0,
-            stotTransportadoras: "Total de Registros: 0",
-            inputLocalizar: '',
             isHidden: false,
             disableButtons: true,
             modalExcluir: false,
-            idTransportadoraExcluir: 0,
-            nPage: 1,
-            disableButtonAnterior: true,
-            disableButtonProximo: true
         };
     };
 
-    componentDidMount() {
-
-    }
-
     render() {
-
-
         return (
             <div className="content">
 
@@ -63,10 +50,9 @@ class ListaTransportadora extends Component {
                             <span className="fa fa-search"></span>Localizar
                         </ButtonB>
 
-                        <Link to={`agendamento`}>
+                        <Link to={`schedule`}>
                             <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
                                 <span className="fa fa-plus"></span>
-                                {' '}Agendamento
                             </ButtonB>
                         </Link>
                     </Col>
@@ -83,22 +69,40 @@ class ListaTransportadora extends Component {
                                         <Table striped hover>
                                             <thead>
                                                 <tr>
-                                                    <th>Código</th>
+                                                    {this.context.isManager &&
+                                                        <th>Morador</th>
+                                                    }
                                                     <th>Dependência</th>
+                                                    <th>
+                                                        Data
+                                                    </th>
+                                                    <th>
+                                                        Horário
+                                                    </th>
+                                                    <th>
+                                                        Qtd. de ocupantes
+                                                    </th>
                                                     <th className="text-center">Operações</th>
                                                 </tr></thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Código</td>
+                                                    {this.context.isManager &&
+                                                        <td>Pelé</td>
+                                                    }
                                                     <td>Piscina</td>
+                                                    <td>19/10/2020</td>
+                                                    <td>14:30 ás 15:30</td>
+                                                    <td>Cheio</td>
                                                     <td className="text-center" width={140}>
                                                         {
                                                             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
 
-                                                                <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                                                >
-                                                                    <span className="fa fa-pencil"></span>
-                                                                </ButtonB>
+                                                                <Link to={`schedule/teste`}>
+                                                                    <ButtonB bsStyle="success" simple type="button" 
+                                                                        bsSize="xs" style={{ padding: '3px' }} >
+                                                                        <span className="fa fa-eye"></span>
+                                                                    </ButtonB>
+                                                                </Link>
 
                                                                 {' '}
                                                                 <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
@@ -157,4 +161,4 @@ class ListaTransportadora extends Component {
     }
 }
 
-export default ListaTransportadora;
+export default ScheduleList;
