@@ -5,7 +5,7 @@ const ItemComponent = ({ item, dataReducer, onClick }) => {
     item = dataReducer(item);
     const values = Object.values(item);
 
-    return <React.Fragment>
+    return <React.Fragment key={item._id}>
         {values.map(value => (
             <td className="text-center" onClick={e => onClick && onClick(originalItem)}>
                 {value}
