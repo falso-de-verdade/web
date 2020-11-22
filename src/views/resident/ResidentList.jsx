@@ -43,7 +43,8 @@ const Operations = ({ item, setSelectedItem }) => (
         </ButtonB>
       </Link>
       {' '}
-      <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}>
+      <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+        onClick={() => setSelectedItem(item)}>
         <span className="fa fa-times"></span>
       </ButtonB>
   </div>
