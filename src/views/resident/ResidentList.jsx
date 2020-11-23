@@ -35,7 +35,7 @@ async function fakeItems() {
   return response.data._items;
 }
 
-const Operations = ({ item, setSelectedItem }) => (
+const Operations = ({ item, selectItem }) => (
   <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
       <Link to={`resident/${item._id}`}>
         <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}>
@@ -44,7 +44,7 @@ const Operations = ({ item, setSelectedItem }) => (
       </Link>
       {' '}
       <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-        onClick={() => setSelectedItem(item)}>
+        onClick={selectItem}>
         <span className="fa fa-times"></span>
       </ButtonB>
   </div>

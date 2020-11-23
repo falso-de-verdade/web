@@ -25,12 +25,15 @@ const TableComponent = ({ headers,
                     <tbody>
                         {items && items.map(item => (
                             <tr>
-                                <ItemComponent item={item} onClick={onItemClick} dataReducer={dataReducer} />
+                                <ItemComponent 
+                                    item={item} 
+                                    onClick={onItemClick} 
+                                    dataReducer={dataReducer} />
                                 {OperationsComponent &&
                                     <td className="text-center" width={140}>
                                         <OperationsComponent
                                             item={item}
-                                            setSelectedItem={setSelectedItem} />
+                                            selectItem={() => setSelectedItem(item)} />
                                     </td>
                                 }
                             </tr>
