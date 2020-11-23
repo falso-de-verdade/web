@@ -12,6 +12,17 @@ const configure = () => {
     axios.defaults.baseURL = apiUrl;
 }
 
+async function send(config, parseItems = true) {
+    const promise = axios(config);
+    if (!parseItems) {
+        return promise;
+    }
+
+    const response = await promise;
+    return response.data._items;
+}
+
 export {
-    configure
+    configure,
+    send,
 }
