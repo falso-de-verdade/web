@@ -1,10 +1,4 @@
-const axios = require('axios');
+import { DataDomain } from ".";
 
 
-const list = () => {
-    return axios.get('/user');
-}
-
-export {
-    list
-}
+export default new DataDomain('/user');

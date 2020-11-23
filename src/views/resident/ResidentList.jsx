@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Listing } from "components/Listing";
 import ButtonB from "components/CustomButton/CustomButton.jsx";
-import { list } from "domains/user";
+import UserDomain from "domains/user";
 
 
 const dataReducer = resident => [
@@ -22,17 +22,8 @@ const searchOne = (query, history) => {
   console.log(`Procurando ${query} ...`);
 }
 
-const onRemoval = resident => {
-  console.log(`Removing: ${resident.id}`);
-} 
-
 const onView = (resident, history) => {
   history.push(`resident/${resident._id}`);
-}
-
-async function fakeItems() {
-  const response = await list();
-  return response.data._items;
 }
 
 const Operations = ({ item, selectItem }) => (
@@ -59,8 +50,8 @@ const ResidentList = ({}) => {
           dataReducer={dataReducer}
           searchOne={searchOne} 
           onItemClick={onView}
-          onItemRemoval={onRemoval}
-          fetchItems={fakeItems} 
+          onItemRemoval={UserDomain.remove}
+          fetchItems={UserDomain.list} 
           OperationsComponent={Operations} />
 }
 
