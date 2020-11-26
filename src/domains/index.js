@@ -16,12 +16,14 @@ class DataDomain {
     remove = item => {
         return send({
             method: 'delete',
-            url: `${this.url}/${item._id}`,
+            url: this.path(item),
             headers: {
                 'If-Match': item._etag
             }
         })
     }
+
+    path = item => `${this.url}/${item._id}`
 }
 
 export {
