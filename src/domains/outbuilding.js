@@ -1,4 +1,4 @@
 import { DataDomain } from ".";
 
 
-export default new DataDomain('/outbuilding');
+export default new DataDomain('outbuilding');

@@ -23,14 +23,14 @@ const searchOne = (query, history) => {
 }
 
 const onView = (outb, history) => {
-  history.push(OutbuildingDomain.path(outb));
+  history.push(OutbuildingDomain.itemPath(outb));
 }
 
 const Operations = ({ item, selectItem }) => (
   <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
     <UserAuthContext.Consumer>
       {user => {
-        const link = OutbuildingDomain.path(item);
+        const link = OutbuildingDomain.itemPath(item);
 
         if (user.isManager) {
           return <React.Fragment>
@@ -77,7 +77,7 @@ const OutbuildingList = ({}) => (
                 onItemRemoval={OutbuildingDomain.remove}
                 fetchItems={OutbuildingDomain.list} 
                 OperationsComponent={Operations} 
-                addLink={user.isManager && OutbuildingDomain.url}/>
+                addLink={user.isManager && OutbuildingDomain.resource}/>
     }
   </UserAuthContext.Consumer>
 )

@@ -1,4 +1,4 @@
 import { DataDomain } from ".";
 
 
-export default new DataDomain('/user');
+export default new DataDomain('user');

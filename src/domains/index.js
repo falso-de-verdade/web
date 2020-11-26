@@ -2,28 +2,38 @@ import { send } from "services/api";
 
 
 class DataDomain {
-    constructor(url) {
-        this.url = url;
+    constructor(resource) {
+        this.resource = resource;
     }
 
-    list = (parseItems = true) => {
-        return send({
+    url = () => `/${this.resource}`
+
+    list = (parseItems = true) =>
+        send({
             method: 'get',
-            url: this.url,
+            url: this.url(),
         }, parseItems)
-    }
     
-    remove = item => {
-        return send({
-            method: 'delete',
-            url: this.path(item),
+    remove = item => this._with_item({
+        item,
+        method: 'delete'
+    })
+
+    create = body => send({
+        body,
+        method: 'post',
+    })
+
+    itemPath = item => `${this.url()}/${item._id}`
+
+    _with_item = ({ item, ...config }) =>
+        send({
+            url: this.itemPath(item),
             headers: {
                 'If-Match': item._etag
-            }
+            },
+            ...config, 
         })
-    }
-
-    path = item => `${this.url}/${item._id}`
 }
 
 export {
