@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { AvForm } from 'availity-reactstrap-validation';
+import { Row } from "reactstrap";
+
+import Button from 'components/CustomButton/CustomButton.jsx';
 
 const FORM_STATE = {
     IDDLE: 0,
@@ -23,7 +28,15 @@ class ModelComponent extends Component {
 
     render = () => {
         if (this.state._formState != FORM_STATE.WROTE) {
-            return this.doRender(this.state._formState == FORM_STATE.WAITING);
+            const isLoading = this.state._formState == FORM_STATE.WAITING;
+            return (
+                <div disabled={isLoading} className="content">
+                    <Row>
+                        {this.doRender()}
+                    </Row>
+                    {this.buttonsComponent()}          
+                </div>
+            );
         }
         
         const nextLink = this.deduceNextLink();
@@ -34,6 +47,10 @@ class ModelComponent extends Component {
 
     mapData = () => {
         throw new Error('Missing model mapData implementation');
+    }
+
+    doRender = () => {
+        throw new Error('Missing model doRender implementation');
     }
 
     deduceNextLink = () => {
@@ -59,10 +76,6 @@ class ModelComponent extends Component {
     }
 
     listingResource = () => `${this.domain.resource}s`; 
-
-    doRender = isLoading => {
-        throw new Error('Missing model doRender implementation');
-    }
 
     setModelAttr = attrName => event => this.setRawModelAttrValue(attrName, event.target.value);
     setModelAttrValue = attrName => value => this.setRawModelAttrValue(attrName, value);
@@ -91,6 +104,30 @@ class ModelComponent extends Component {
         }
     }
 
+    deduceButtonText = () => {
+        if (this.isEditing) {
+            return 'Salvar';
+        }
+
+        return 'Criar';
+    }
+
+    buttonsComponent = hideSaveButton => 
+        <AvForm autoComplete="off">
+            <Link to={this.cancelLink()}>
+                <Button pullRight fill bsStyle="danger" >
+                    Cancelar
+                </Button>
+            </Link>
+            
+            {!hideSaveButton && 
+                <Button bsStyle="success" fill type="submit"
+                    onClick={this.onFormSubmit}>
+                    {this.deduceButtonText()}
+                </Button>
+            }
+        </AvForm>
+
     onFormSubmit = () => {
         let _createdModel = null;
         let _hasError = false;
@@ -99,7 +136,6 @@ class ModelComponent extends Component {
     
         handler(data).then(model => {
             _createdModel = model;
-            // this.setState({ _formState: FORM_STATE.WROTE, _hasError, _createdModel })
         }).catch(error => {
             _hasError = true;
         }).then(() => {
