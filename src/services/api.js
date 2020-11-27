@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const configure = () => {
+const configure = alert => {
     // define the api url
     const apiUrl = process.env.REACT_APP_BACKEND_API;
 
@@ -10,6 +10,37 @@ const configure = () => {
     }
 
     axios.defaults.baseURL = apiUrl;
+    axios.interceptors.request.use(onRequest, 
+                                   withErrHandler(alert, onRequestErr));
+    axios.interceptors.response.use(onResponse, 
+                                    withErrHandler(alert, onResponseErr));
+}
+
+const withErrHandler = (alert, handler) => {
+    return error => {
+        console.log(error);
+        if (!handler(alert, error)) {
+            // return Promise.reject(error);
+        }
+    }
+}
+
+const onRequest = request => {
+    return request;
+}
+
+const onRequestErr = (alert, error) => {
+    // alert.show('error', {
+    //     type: 'danger'
+    // })
+}
+
+const onResponse = response => {
+    return response;
+}
+
+const onResponseErr = (alert, error) => {
+    // alert.show('error')
 }
 
 async function send(config, parseItems = true) {
@@ -19,7 +50,9 @@ async function send(config, parseItems = true) {
     }
 
     const response = await promise;
-    return response.data._items;
+    if (response) {
+        return response.data._items;
+    }
 }
 
 export {

@@ -35,21 +35,34 @@ import ManagerRegistration from 'views/manager/ManagerRegistration';
 import PrivateRoute from "components/PrivateRoute/PrivateRoute.jsx";
 
 // make sure http api is configured
-import { configure } from "services/api";
-configure();
+import { configure as configureApi } from "services/api";
+
+const App = () => {
+  const configuredRef = React.useRef(false);
+  const alert = null;
+
+  if (!configuredRef.current) {
+    configureApi(alert);
+    configuredRef.current = true;
+  }
+
+  return (
+    <BrowserRouter>
+      <Switch>
+        <PrivateRoute path="/admin" Component={AdminLayout} />
+
+        <Route path="/logout" render={props => <LogoutLayout {...props} />} />
+        <Route path="/login" render={props => <LoginLayout {...props} />} />
+        <Route path="/manager-signup" render={props => <ManagerRegistration {...props} />} />
+        <Route path="/ResidentRegistration" render={props => <ResidentRegistration {...props} />} />
+
+        <Redirect exact from="/" to="/login" />
+      </Switch>
+    </BrowserRouter>
+  )
+}
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <PrivateRoute path="/admin" Component={AdminLayout} />
-
-      <Route path="/logout" render={props => <LogoutLayout {...props} />} />
-      <Route path="/login" render={props => <LoginLayout {...props} />} />
-      <Route path="/manager-signup" render={props => <ManagerRegistration {...props} />} />
-      <Route path="/ResidentRegistration" render={props => <ResidentRegistration {...props} />} />
-
-      <Redirect exact from="/" to="/login" />
-    </Switch>
-  </BrowserRouter>,
+  <App />,
   document.getElementById("root")
 );
