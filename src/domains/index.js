@@ -6,12 +6,10 @@ class DataDomain {
         this.resource = resource;
     }
 
-    url = () => `/${this.resource}`
-
     list = (parseItems = true) =>
         send({
             method: 'get',
-            url: this.url(),
+            url: this.resource,
         }, parseItems)
     
     remove = item => this._with_item({
@@ -19,12 +17,15 @@ class DataDomain {
         method: 'delete'
     })
 
-    create = body => send({
-        body,
+    create = data => send({
+        data,
         method: 'post',
+        url: this.resource,
     })
 
     itemPath = item => `${this.url()}/${item._id}`
+
+    itemPath = item => `${this.resource}/${item._id}`
 
     _with_item = ({ item, ...config }) =>
         send({
