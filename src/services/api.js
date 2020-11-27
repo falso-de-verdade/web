@@ -43,7 +43,9 @@ const onResponseErr = (alert, error) => {
     // alert.show('error')
 }
 
-async function send(config, { parseItems = true, isItem = false }) {
+async function send(config, 
+                    parseItems = false, 
+                    isItem = false) {
     const promise = axios(config);
     if (!parseItems) {
         return promise;
@@ -59,7 +61,12 @@ async function send(config, { parseItems = true, isItem = false }) {
     }
 }
 
+async function sendAndParse(config, isItem = false) {
+    return send(config, true, isItem);
+}
+
 export {
     configure,
     send,
+    sendAndParse,
 }

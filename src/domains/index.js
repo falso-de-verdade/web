@@ -1,4 +1,4 @@
-import { send } from "services/api";
+import { send, sendAndParse } from "services/api";
 
 
 class DataDomain {
@@ -6,35 +6,41 @@ class DataDomain {
         this.resource = resource;
     }
 
-    list = (parseItems = true) =>
-        send({
+    list = config =>
+        sendAndParse({
             method: 'get',
             url: this.resource,
-        }, parseItems)
+            ...config,
+        })
     
-    remove = item => this._with_item({
+    remove = item => this._withItem({
         item,
         method: 'delete'
     })
 
-    create = data => send({
+    create = data => sendAndParse({
         data,
         method: 'post',
         url: this.resource,
-    })
+    }, true)
 
-    itemPath = item => `${this.url()}/${item._id}`
+    update = item => 
+        this._withItem({
+            item: item,
+            data: { ...item, _etag: undefined },
+            method: 'patch',
+        })
 
-    find = id => send({
+    find = id => sendAndParse({
         method: 'get',
         url: this.itemPath({
             _id: id
         }),
-    }, { isItem: true })
+    }, true)
 
     itemPath = item => `${this.resource}/${item._id}`
 
-    _with_item = ({ item, ...config }) =>
+    _withItem = ({ item, ...config }) =>
         send({
             url: this.itemPath(item),
             headers: {
