@@ -27,7 +27,7 @@ class ModelComponent extends Component {
         }
         
         const nextLink = this.deduceNextLink();
-        this.props.history.push(`../${nextLink}`);
+        this.props.history.push(nextLink);
         // return useless data, required
         return (<div></div>)
     }
@@ -37,7 +37,11 @@ class ModelComponent extends Component {
     }
 
     deduceNextLink = () => {
-        if (this.state._hasError || this.isEditing) {
+        if (this.isEditing) {
+            return `../${this.listingResource()}`;
+        }
+
+        if (this.state._hasError) {
             return this.listingResource();
         }
 
