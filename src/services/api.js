@@ -43,7 +43,7 @@ const onResponseErr = (alert, error) => {
     // alert.show('error')
 }
 
-async function send(config, parseItems = true) {
+async function send(config, { parseItems = true, isItem = false }) {
     const promise = axios(config);
     if (!parseItems) {
         return promise;
@@ -51,6 +51,10 @@ async function send(config, parseItems = true) {
 
     const response = await promise;
     if (response) {
+        if (isItem) {
+            return response.data;
+        }
+
         return response.data._items;
     }
 }

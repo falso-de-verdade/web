@@ -1,13 +1,24 @@
+import React from "react";
+
 import { FindModel } from "views/common";
+import UserDomain from "domains/user";
 
 import ResidentModel from "./ResidentModel";
 
-const findFunction = modelId => {
-    return {
-        name: "José",
-        email: "jose@gmail.com",
-        location: null
-    }
-}
+// const findFunction = modelId => {
+//     return {
+//         name: "José",
+//         email: "jose@gmail.com",
+//         location: null
+//     }
+// }
 
-export default FindModel(ResidentModel, findFunction);
+const FindResident = props => (
+    <FindModel 
+        component={ResidentModel}
+        domain={UserDomain}
+        {...props}
+        />
+)
+  
+export default FindResident;

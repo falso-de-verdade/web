@@ -25,6 +25,13 @@ class DataDomain {
 
     itemPath = item => `${this.url()}/${item._id}`
 
+    find = id => send({
+        method: 'get',
+        url: this.itemPath({
+            _id: id
+        }),
+    }, { isItem: true })
+
     itemPath = item => `${this.resource}/${item._id}`
 
     _with_item = ({ item, ...config }) =>

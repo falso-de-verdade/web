@@ -15,4 +15,8 @@ const findFunction = modelId => {
     }
 }
 
-export default FindModel(ScheduleModel, findFunction);
+const FindTicket = ({}) => {
+    return null;
+}
+
+export default FindTicket;

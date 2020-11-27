@@ -1,21 +1,35 @@
 import React from "react";
 
-const FindModel = (Component, findFunction) => props => {
-    let modelId;
+const FindModel = ({ match, domain, ...props }) => {
+    const [modelData, setModelData] = React.useState(null);
+    const loadingRef = React.useRef(null);
 
-    try {
-        modelId = props.match.id; 
-    } catch (err) {   
-        return (
-            <div class="content">
-                <p>Page not found :(</p>
-            </div>
-        )
+    if (loadingRef.current === null) {
+        loadingRef.current = true;
+
+        let modelId;
+
+        try {
+            modelId = match.params.id; 
+        } catch (err) {   
+            return (
+                <div class="content">
+                    <p>Page not found :(</p>
+                </div>
+            )
+        }
+
+        domain.find(modelId).then(data => {
+            loadingRef.current = false;
+            setModelData(data);
+        });
     }
 
-    const modelData = findFunction(modelId);
-
-    return <Component {...props} modelData={modelData} />;
+    if (loadingRef.current) {
+        return (<div></div>)
+    }
+    
+    return <props.component {...props} modelData={modelData} />;
 }
 
 export default FindModel;
