@@ -20,7 +20,7 @@ const withErrHandler = (alert, handler) => {
     return error => {
         console.log(error);
         if (!handler(alert, error)) {
-            // return Promise.reject(error);
+            return Promise.reject(error);
         }
     }
 }
