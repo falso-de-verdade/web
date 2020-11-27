@@ -34,6 +34,20 @@ const Listing = ({ name,
         });
     }
 
+    async function removeItem() {
+        setLoading(true);
+        await onItemRemoval(selectedItemRef.current);
+
+        // force re-fetching
+        itemsRef.current = null;
+
+        // we are waiting
+        setLoading(true);
+            
+        // reset selected item
+        setHasSelectedItem(false);
+    }
+
     return <React.Fragment>
         <div style={{ display: loading ? "block" : "none" }}>
             <Spinner animation="border">
@@ -119,16 +133,7 @@ const Listing = ({ name,
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <ButtonB fill bsStyle="danger" onClick={e => {
-                        onItemRemoval(selectedItemRef.current);
-
-                        // force re-fetching
-                        itemsRef.current = null;
-                        setLoading(true);
-                            
-                        // reset selected item
-                        setHasSelectedItem(false);
-                     }}>Excluir</ButtonB>
+                    <ButtonB fill bsStyle="danger" onClick={removeItem}>Excluir</ButtonB>
 
                     <ButtonB fill onClick={e => setHasSelectedItem(false)}>Cancelar</ButtonB>
                 </Modal.Footer>

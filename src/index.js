@@ -34,6 +34,10 @@ import ManagerRegistration from 'views/manager/ManagerRegistration';
 
 import PrivateRoute from "components/PrivateRoute/PrivateRoute.jsx";
 
+// make sure http api is configured
+import { configure } from "services/api";
+configure();
+
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
