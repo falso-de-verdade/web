@@ -1,354 +1,293 @@
-import React, { Component } from "react";
-//import { Modal } from "react-bootstrap";
-
-//import { Card } from "components/Card/Card.jsx";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
-
-import api from '../../services/api';
-
+import React from "react";
+import { AvField, AvGroup } from 'availity-reactstrap-validation';
 import {
-  Row, Col, Label, Card, CardBody, TabPane, TabContent,
-  Nav, NavItem, NavLink, Table
+  Row, Col, Label, Table
 } from "reactstrap";
-import classnames from 'classnames';
 
-import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
-import InputCustom from '../../components/inputs/inputCustom';
-import ButtonB from "components/CustomButton/CustomButton.jsx";
-
+import Button from "components/CustomButton/CustomButton";
+import { TableComponent } from "components/Listing";
 import { ModelComponent } from "views/common";
 import { UserAuthContext } from "contexts";
+import OutbDomain from "domains/outbuilding";
+
+const DAYS = [
+  "Domingo",
+  "Segunda-feira",
+  "Terça-feira",
+  "Quarta-feira",
+  "Quinta-feira",
+  "Sexta-feira",
+  "Sábado"
+]
 
 class OutbuildingModel extends ModelComponent {
-
-  notificationSystem = React.createRef();
-
   constructor(props) {
     super(props);
-
     this.state = {
+      _tmpAvailabilities: [],
+      _tmpMedias: [],
       ...this.state,
-      activeTab: '1',
-      modalOpen: true,
-      outbuilding: { ...props.outbuilding }
+    }
+
+    this.domain = OutbDomain;
+  }
+
+  mapData = () => {
+    const {
+      name,
+      description,
+      capacity,
+      availabilities,
+      medias,
+    } = this.state;
+
+    return {
+      name,
+      description,
+      capacity,
+      availabilities,
+      medias,
     }
   }
 
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      })
+  tabs = () => [
+    {
+      name: 'Cadastro',
+      component: this.storeTab() 
+    },
+    {
+      name: 'Horários disponíveis',
+      component: this.availabilityTab()
+    },
+    {
+      name: 'Mídia',
+      component: this.mediaTab()
+    }
+  ]
+
+  disableFields = () => !this.context.isManager
+
+  removeObjFrom = (key, item) => {
+    return () => {
+      try {
+        const index = this.state[key].indexOf(item);
+        delete this.state[key][index];
+        this.setState({ [key]: this.state[key] })
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
-  render() {
-    const isDisabled = !this.context.isManager;
+  storeTab = () => (
+    <React.Fragment>
+      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+        <Col style={{ marginTop: '-10px' }} md={4}>
+          <AvGroup>
+            <Label for="name">Nome</Label>
+            {this.field({
+              name: "name",
+              type: "text"
+            })}
+          </AvGroup>
+        </Col>
+        <Col style={{ marginTop: '-10px' }} md={4}>
+          <AvGroup>
+            <Label for="condominiumId" >Condomínio</Label>
+            {this.field({
+              name: "condominiumId",
+              children: <React.Fragment>
+                <option value="0">Condomínio Rio de Pedra</option>
+                <option value="1">Condomínio da Roçinha</option>
+              </React.Fragment>
+            })}
+          </AvGroup>
+        </Col>
+      </Row>
+      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+        <Col style={{ marginTop: '-10px' }} md={2}>
+          <AvGroup>
+            <Label for="capacity" >Lotação Máxima</Label>
+            {this.field({
+              name: "capacity",
+              type: "number",
+              min: "1"
+            })}
+          </AvGroup>
+        </Col>
 
-    const styleInputVlr = {
-      height: '40px',
-      borderStyle: 'solid',
-      borderColor: '#d9d9d9',
-      borderRadius: '3px',
-      borderWidth: '1px',
-      textAlign: 'right',
-      fontSize: 13,
-      color: '#000',
-      paddingRight: '10px',
-      width: '100%'
-    }
+        {/* <Col style={{ marginTop: '-10px' }} md={4}>
+          <AvGroup>
+            <Label for="location" >Localização</Label>
+            <AvField type="text" name="location" id="location" 
+              onChange={this.setModelAttr('location')}
+              disabled={isDisabled}
+              value={this.state.outbuilding.location}
+              placeholder="Ex.: Bloco B" />
+          </AvGroup>
+        </Col> */}
+      </Row>
+    </React.Fragment>
+  )
 
-    const styleInput = {
-      fontSize: 12
-    }
+  availabilityTab = isDisabled => {
+    const headers = ["Dia(s) da semana", "Das", "Até"]
 
-    const styleInputUpper = {
-      fontSize: 12,
-      textTransform: 'uppercase'
-    }
+    const dataReducer = availability => [
+      `${DAYS[availability.fromDay] || "Ausente"} - ${DAYS[availability.toDay] || "Ausente"}`,
+      availability.fromHour,
+      availability.toHour,
+    ]
 
-    const styleLabel = {
-      fontSize: 11
-    }
-
-    return (
-      <div className="content">
-
-        <Row>
-          <Col style={{ marginTop: '-10px' }} md={12}>
-            <Card>
-              <CardBody style={{ padding: '10px', fontSize: 12 }}>
-                <Nav tabs>
-                  <NavItem className={classnames({ active: this.state.activeTab === '1' })}>
-                    <NavLink href="#" style={{ color: '#000' }}
-                      onClick={() => { this.toggle('1'); }}>Dados Cadastrais</NavLink>
-                  </NavItem>
-
-                  <NavItem className={classnames({ active: this.state.activeTab === '2' })}>
-                    <NavLink href="#" style={{ color: '#000' }}
-                      onClick={() => { this.toggle('2'); }}>Horários disponíveis</NavLink>
-                  </NavItem>
-                  <NavItem className={classnames({ active: this.state.activeTab === '3' })}>
-                    <NavLink href="#" style={{ color: '#000' }}
-                      onClick={() => { this.toggle('3'); }}>Mídia</NavLink>
-                  </NavItem>
-                </Nav>
-
-                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                  <TabPane tabId="1">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-                      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={4}>
-                          <AvGroup>
-                            <Label for="name" style={styleLabel}>Nome</Label>
-                            <AvField type="text" name="nome" style={styleInput}
-                              value={this.getModelAttr('name')}
-                              disabled={isDisabled}
-                              validate={{
-                                required: { value: true, errorMessage: 'Nome é obrigatório' }
-                              }}
-                            />
-                          </AvGroup>
-                        </Col>
-                        <Col style={{ marginTop: '-10px' }} md={4}>
-                          <AvGroup>
-                            <Label for="condominium" style={styleLabel}>Condomínio</Label>
-                            <AvField type="select" name="condominium" style={styleInput}
-                              value={this.getModelAttr('condominium')} 
-                              disabled={isDisabled} >
-                              <option value="0">Condomínio Rio de Pedra</option>
-                              <option value="1">Condomínio da Roçinha</option>
-                            </AvField>
-                          </AvGroup>
-                        </Col>
-                      </Row>
-                      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={2}>
-                          <AvGroup>
-                            <Label for="maxCapacity" style={styleLabel}>Lotação Máxima</Label>
-                            <AvField type="number" name="maxCapacity" id="maxCapacity" min="1"
-                              style={styleInput}
-                              disabled={isDisabled}
-                              value={this.getModelAttr('maxCapacity')} />
-                          </AvGroup>
-                        </Col>
-
-                        <Col style={{ marginTop: '-10px' }} md={4}>
-                          <AvGroup>
-                            <Label for="location" style={styleLabel}>Localização</Label>
-                            <AvField type="text" name="location" id="location" style={styleInput}
-                              onChange={this.setModelAttr('location')}
-                              disabled={isDisabled}
-                              value={this.state.outbuilding.location}
-                              placeholder="Ex.: Bloco B" />
-                          </AvGroup>
-                        </Col>
-                      </Row>
-                    </AvForm>
-                  </TabPane>
-                </TabContent>
-
-
-                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                  <TabPane tabId="2">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-                      {this.context.isManager &&
-                        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                          <Col md={2} style={{ marginTop: '-10px' }}>
-                            <AvGroup>
-                              <Label for="fromDay" style={styleLabel}>De</Label>
-                              <AvField type="select" name="fromDay" style={styleInput}
-                                  value={this.getModelAttr('fromDay')} >
-                                <option value="0">Domingo</option>
-                                <option value="1">Segunda-feira</option>
-                                <option value="2">Terça-feira</option>
-                                <option value="3">Quarta-feira</option>
-                                <option value="4">Quinta-feira</option>
-                                <option value="5">Sexta-feira</option>
-                                <option value="6">Sábado</option>
-                              </AvField>
-                            </AvGroup>
-                          </Col>
-                          <Col md={2} style={{ marginTop: '-10px' }}>
-                            <AvGroup>
-                              <Label for="toDay" style={styleLabel}>Até</Label>
-                              <AvField type="select" name="toDay" style={styleInput}
-                                  value={this.getModelAttr('toDay')} >
-                                <option value="-1">Não selecionado</option>
-                                <option value="0">Domingo</option>
-                                <option value="1">Segunda-feira</option>
-                                <option value="2">Terça-feira</option>
-                                <option value="3">Quarta-feira</option>
-                                <option value="4">Quinta-feira</option>
-                                <option value="5">Sexta-feira</option>
-                                <option value="6">Sábado</option>
-                              </AvField>
-                            </AvGroup>
-                          </Col>
-                          <Col style={{ marginTop: '-10px' }} md={2}>
-                            <AvGroup>
-                              <Label for="fromHour" style={styleLabel}>Hora início</Label>
-                              <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
-                                value={this.getModelAttr('fromHour')}
-                                validate={{
-                                  required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
-                                }} />
-                            </AvGroup>
-                          </Col>
-                          <Col style={{ marginTop: '-10px' }} md={2}>
-                            <AvGroup>
-                              <Label for="toHour" style={styleLabel}>Hora fim</Label>
-                              <AvField type="time" name="toHour" id="toHour" style={styleInput}
-                                value={this.getModelAttr('toHour')}
-                                validate={{
-                                  required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
-                                }} />
-                            </AvGroup>
-                          </Col>
-
-                          <ButtonB onClick={() => this.setState({ isDisabledCFOP: false })} bsStyle="info" fill
-                            style={{ margin: '15px' }}>
-                            <span className="fa fa-plus"></span>
-                            {' '}Adicionar
-                          </ButtonB>
-                        </Row>
-                      }
-                      <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={6}>
-                          <Table stiped hover>
-                            <thead>
-                              <tr>
-                                <th>Dia(s) da semana</th>
-                                <th>Das</th>
-                                <th>Até</th>
-                                {this.context.isManager &&
-                                  <th className="text-center">Operações</th>
-                                }
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  Segunda - Sexta
-                                </td>
-                                <td>
-                                  14:00
-                                </td>
-                                <td>
-                                  20:00
-                                </td>
-                                <td className="text-center" width={140}>
-                                  {this.context.isManager &&
-                                    <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                      <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                      >
-                                        <span className="fa fa-pencil"></span>
-                                      </ButtonB>
-
-                                      {' '}
-                                      <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                        onClick={this.excluirCliente}>
-                                        <span className="fa fa-times"></span>
-                                      </ButtonB>
-
-                                    </div>
-                                  }
-                                </td>
-                              </tr>
-
-                            </tbody>
-                          </Table>
-                        </Col>
-                      </Row>
-                      <div className="clearfix" />
-                    </AvForm>
-                  </TabPane>
-                </TabContent>
-
-                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                  <TabPane tabId="3">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-                      {this.context.isManager &&
-                        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                          <Col md={4} style={{ marginTop: '-10px' }}>
-                            <AvGroup>
-                              <Label for="fromDay" style={styleLabel}>Documentos</Label>
-                              <AvField type="file" name="fromDay" style={styleInput}
-                                //value={this.state.dadosClienteStatus}
-                                //disabled={this.state.disabledButtons}
-                                onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
-                              </AvField>
-                            </AvGroup>
-                          </Col>
-                        </Row>
-                      }
-                      <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={10}>
-                          <Table stiped hover>
-                            <thead>
-                              <tr>
-                                <th>Arquivo</th>
-                                <th className="text-center">Operações</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  C:\Users\Yan\Documentos\regras.pdf
-                                </td>
-                                <td className="text-center" width={140}>
-                                  <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-                                    {this.context.isManager &&
-                                      <React.Fragment>
-                                        {' '}
-                                        <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                          onClick={this.excluirCliente}>
-                                          <span className="fa fa-times"></span>
-                                        </ButtonB>
-                                      </React.Fragment> || 
-                                      <React.Fragment>
-                                        {' '}
-                                        <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                          onClick={this.excluirCliente}>
-                                          <span className="fa fa-eye"></span>
-                                        </ButtonB>
-                                      </React.Fragment> 
-                                    }
-                                  </div>
-                                </td>
-                              </tr>
-
-                            </tbody>
-                          </Table>
-                        </Col>
-                      </Row>
-                      <div className="clearfix" />
-                    </AvForm>
-                  </TabPane>
-                </TabContent>
-              </CardBody>
-            </Card>
-            <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-              <Button pullRight fill bsStyle="danger"
-                onClick={this.retornarListaProdutos}>
-                Cancelar
-              </Button>
-
-              {this.context.isManager && 
-                <Button bsStyle="success" fill type="submit"
-                    disabled={this.state.disabledButtons}>
-                    Gravar
-                </Button>
-              }
-            </AvForm>
-          </Col>
-        </Row>
+    const operations = props => (
+      <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+        <Button bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+          onClick={this.removeObjFrom('_tmpAvailabilities', props.item)}>
+          <span className="fa fa-times"></span>
+        </Button>
       </div>
     )
+
+    return <React.Fragment>
+      {this.context.isManager &&
+        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+          <Col md={2} style={{ marginTop: '-10px' }}>
+            <AvGroup>
+              <Label for="fromDay" >De</Label>
+              {this.field({
+                type: "select",
+                name: "fromDay",
+                children: <React.Fragment>
+                  <option>Selecionar</option>
+                  {DAYS.map((day, idx) => (
+                    <option value={idx}>{day}</option>
+                  ))}
+                </React.Fragment>
+              })}
+            </AvGroup>
+          </Col>
+          <Col md={2} style={{ marginTop: '-10px' }}>
+            <AvGroup>
+              <Label for="toDay" >Até</Label>
+              {this.field({
+                type: 'select',
+                name: 'toDay',
+                children: <React.Fragment>
+                  <option>Selecionar</option>
+                  {DAYS.map((day, idx) => (
+                    <option value={idx}>{day}</option>
+                  ))}
+                </React.Fragment>
+              })}
+            </AvGroup>
+          </Col>
+          <Col style={{ marginTop: '-10px' }} md={2}>
+            <AvGroup>
+              <Label for="fromHour" >Hora início</Label>
+              {this.field({
+                  type: "time",
+                  name: "fromHour",
+                })}
+            </AvGroup>
+          </Col>
+          <Col style={{ marginTop: '-10px' }} md={2}>
+            <AvGroup>
+              <Label for="toHour" >Hora fim</Label>
+              {this.field({
+                type: "time",
+                name: "toHour",
+              })}
+            </AvGroup>
+          </Col>
+
+          <Button bsStyle="info" fill
+            style={{ margin: '15px' }}
+            onClick={() => {
+              const {
+                fromDay,
+                toDay,
+                fromHour,
+                toHour,
+              } = this.state;
+
+              const availability = {
+                fromDay,
+                toDay,
+                fromHour,
+                toHour,
+              }
+              this.state._tmpAvailabilities.push(availability)
+              this.setState({ _tmpAvailabilities: this.state._tmpAvailabilities })
+            }}>
+            <span className="fa fa-plus"></span>
+            {' '}Adicionar
+          </Button>
+        </Row>
+      }
+      <Row style={{ paddingLeft: '15px', paddingRight: '15px' }}>
+        <Col style={{ marginTop: '-10px' }} md={8}>
+          <TableComponent
+              items={this.state._tmpAvailabilities.concat(...this.state.availabilities || [])}
+              headers={headers}
+              dataReducer={dataReducer}
+              OperationsComponent={this.context.isManager && operations} />
+        </Col>
+      </Row>
+    </React.Fragment>
   }
 
+  mediaTab = () => {
+    const headers = ["Nome"]
+    const dataReducer = media => [
+      media.name
+    ]
+
+    const operations = props => this.context.isManager &&
+      <React.Fragment>
+        {' '}
+        <Button bsStyle="danger" simple type="button" bsSize="xs"
+            onClick={this.removeObjFrom('_tmpMedias', props.item)}>
+          <span className="fa fa-times"></span>
+        </Button>
+      </React.Fragment> || 
+      <React.Fragment>
+        {' '}
+        <Button bsStyle="success" simple type="button" bsSize="xs">
+          <span className="fa fa-eye"></span>
+        </Button>
+      </React.Fragment> 
+
+    return <React.Fragment>
+      {this.context.isManager &&
+        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+          <Col md={4} style={{ marginTop: '-10px' }}>
+            <AvGroup>
+              <Label for="document" >Documentos</Label>
+              {this.field({
+                type: "file",
+                name: "file",
+                multiple: true,
+                onChange: e => {
+                  const newMedias = this.state._tmpMedias.concat(...e.target.files);
+                  this.setState({ _tmpMedias: newMedias })
+                }
+              })}
+            </AvGroup>
+          </Col>
+        </Row>
+      }
+      <Row style={{ paddingLeft: '15px', paddingRight: '10px' }}>
+        <Col style={{ marginTop: '-10px' }} md={8}>
+          <TableComponent 
+            items={this.state._tmpMedias.concat(...this.state.medias || [])}
+            headers={headers}
+            dataReducer={dataReducer}
+            OperationsComponent={operations}
+            />
+        </Col>
+      </Row>
+    </React.Fragment>
+  }
 }
 
 OutbuildingModel.contextType = UserAuthContext;
