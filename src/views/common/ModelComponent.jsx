@@ -1,7 +1,18 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { AvForm } from 'availity-reactstrap-validation';
-import { Row } from "reactstrap";
+import { 
+    Row, 
+    Card, 
+    Col, 
+    TabPane, 
+    TabContent, 
+    CardBody, 
+    Nav, 
+    NavItem, 
+    NavLink 
+} from "reactstrap";
+import classnames from "classnames";
 
 import Button from 'components/CustomButton/CustomButton.jsx';
 
@@ -21,6 +32,7 @@ class ModelComponent extends Component {
             _formState: FORM_STATE.IDDLE,
             _hasError: false,
             _createdModel: null,
+            _activeTab: 0,
 
             ...props.modelData,
         }
@@ -32,7 +44,11 @@ class ModelComponent extends Component {
             return (
                 <div disabled={isLoading} className="content">
                     <Row>
-                        {this.doRender()}
+                        <Col style={{ marginTop: '-10px' }} md={12}>
+                            <Card>
+                                {this.doRender()}
+                            </Card>
+                        </Col>
                     </Row>
                     {this.buttonsComponent()}          
                 </div>
@@ -50,7 +66,44 @@ class ModelComponent extends Component {
     }
 
     doRender = () => {
-        throw new Error('Missing model doRender implementation');
+        const tabComponents = this.tabs();
+        if (tabComponents.length === 0) {
+            throw new Error('Any tab component for model found.')
+        }
+        
+        if (tabComponents.constructor != Array) {
+            return (
+                <AvForm autoComplete="off">
+                    {tabComponents}
+                </AvForm>
+            );
+        }
+        
+        return <React.Fragment>
+            <CardBody style={{ padding: '10px', fontSize: 12 }}>
+                <Nav tabs>
+                    {tabComponents.map(({ name }, idx) => (
+                        <NavItem className={classnames({ active: this.state._activeTab === idx })}>
+                            <NavLink href="#" style={{ color: '#000' }}
+                                onClick={() => { this.toggleTab(idx); }}>{name}</NavLink>
+                        </NavItem>
+                    ))}
+                </Nav>
+            </CardBody>
+            {tabComponents.map(({ component }, idx) => (
+                <TabContent activeTab={this.state._activeTab}>
+                    <TabPane tabId={idx}>
+                        <AvForm autoComplete="off">
+                            {component}
+                        </AvForm>
+                    </TabPane>
+                </TabContent>    
+            ))}
+        </React.Fragment>
+    }
+
+    tabs = () => {
+        throw new Error('Missing model tabs implementation');
     }
 
     deduceNextLink = () => {
@@ -63,6 +116,12 @@ class ModelComponent extends Component {
         }
 
         return this.domain.itemPath(this.state._createdModel);
+    }
+
+    toggleTab = tab => {
+        if (this.state._activeTab !== tab) {
+          this.setState({ _activeTab: tab })
+        }
     }
 
     cancelLink = () => {
