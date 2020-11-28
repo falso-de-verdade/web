@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { AvForm } from 'availity-reactstrap-validation';
+import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { 
     Row, 
     Card, 
@@ -63,6 +63,21 @@ class ModelComponent extends Component {
 
     mapData = () => {
         throw new Error('Missing model mapData implementation');
+    }
+
+    disableFields = () => false
+
+    field = props => {
+        const { name } = props;
+        const value = this.state[name];
+
+        return <AvField 
+                    value={value || ''}
+                    id={name}
+                    disabled={this.disableFields()}
+                    onChange={this.setModelAttr(name)}
+                    {...props}
+                />
     }
 
     doRender = () => {
