@@ -73,22 +73,24 @@ class ModelComponent extends Component {
         throw new MissingModelImplementation(this, "mapData");
     }
 
-    fields = () => {
-        throw new MissingModelImplementation(this, "fields");
+    fieldProps = () => {
+        throw new MissingModelImplementation(this, "fieldProps");
     }
 
     disableFields = () => false
 
-    field = props => {
-        const { name } = props;
+    field = name => {
+        const fieldProps = this.fieldProps()[name];
+
         const value = this.state[name];
 
         return <AvField 
                     value={value || ''}
+                    name={name}
                     id={name}
                     disabled={this.disableFields()}
                     onChange={this.setModelAttr(name)}
-                    {...props}
+                    {...fieldProps}
                 />
     }
 
