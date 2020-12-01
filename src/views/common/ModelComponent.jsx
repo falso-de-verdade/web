@@ -22,6 +22,14 @@ const FORM_STATE = {
     WROTE: 2,
 }
 
+class MissingModelImplementation extends Error {
+    constructor(model, methodName) {
+        super(`${model.constructor.name} misses ` +
+              `an implementation on method: ${methodName}`)
+        this.name = "MissingModelImplementation";
+    }
+}
+
 class ModelComponent extends Component {
     constructor(props) {
         super(props);
@@ -39,6 +47,10 @@ class ModelComponent extends Component {
     }
 
     render = () => {
+        if (this.domain === undefined) {
+            throw new Error(`Missing ${this.constructor.name} data domain attribute.`);
+        }
+
         if (this.state._formState != FORM_STATE.WROTE) {
             const isLoading = this.state._formState == FORM_STATE.WAITING;
             return (
@@ -62,21 +74,31 @@ class ModelComponent extends Component {
     }
 
     mapData = () => {
-        throw new Error('Missing model mapData implementation');
+        throw new MissingModelImplementation(this, "mapData");
+    }
+
+    fieldProps = () => {
+        throw new MissingModelImplementation(this, "fieldProps");
+    }
+
+    onModelResponse = model => {
+        //
     }
 
     disableFields = () => false
 
-    field = props => {
-        const { name } = props;
+    field = name => {
+        const fieldProps = this.fieldProps()[name];
+
         const value = this.state[name];
 
         return <AvField 
                     value={value || ''}
+                    name={name}
                     id={name}
                     disabled={this.disableFields()}
                     onChange={this.setModelAttr(name)}
-                    {...props}
+                    {...fieldProps}
                 />
     }
 
@@ -118,7 +140,7 @@ class ModelComponent extends Component {
     }
 
     tabs = () => {
-        throw new Error('Missing model tabs implementation');
+        throw new MissingModelImplementation(this, "tabs");
     }
 
     deduceNextLink = () => {
@@ -159,6 +181,10 @@ class ModelComponent extends Component {
     }
 
     getModelAttr = attrName => this.state[attrName]
+
+    raiseForMissingMethod = methodName => {
+        throw new Error('Missing model tabs implementation');
+    }
 
     buildSubmitConfig = data => {
         if (this.isEditing) {
@@ -202,6 +228,10 @@ class ModelComponent extends Component {
             }
         </AvForm>
 
+    dispatchModelRedirect = () => {
+        this.setState({ _formState: FORM_STATE.WROTE })
+    }
+
     onFormSubmit = () => {
         let _createdModel = null;
         let _hasError = false;
@@ -213,7 +243,20 @@ class ModelComponent extends Component {
         }).catch(error => {
             _hasError = true;
         }).then(() => {
-            this.setState({ _formState: FORM_STATE.WROTE, _hasError, _createdModel })
+            const dispatchRedirect = _createdModel && !this.onModelResponse(_createdModel);
+            
+            let newState = {
+                _hasError,
+                _createdModel,
+            }
+            
+            if (_createdModel === null || dispatchRedirect) {
+                newState = {
+                    ...newState,
+                    _formState: FORM_STATE.WROTE
+                }
+            }
+            this.setState(newState)
         });
 
         this.setState({ _formState: FORM_STATE.WAITING });
