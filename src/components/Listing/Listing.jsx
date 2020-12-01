@@ -22,30 +22,43 @@ const Listing = ({ name,
 
     let [searchQuery, setSearchQuery] = React.useState('');
     let [isItemSelected, setHasSelectedItem] = React.useState(false);
+    const [lastError, setLastError] = React.useState(null);
     let [loading, setLoading] = React.useState(true);
 
     const itemsRef = React.useRef(null);
     const selectedItemRef = React.useRef(null);
+
+    const onError = action => {
+        return error => {
+            // got an error
+            setLastError(error);
+
+            // not longer waiting for something
+            setLoading(false);
+        }
+    }
     
     if (loading && itemsRef.current === null) {
         fetchItems().then(results => {
             itemsRef.current = results;
             setLoading(false);
-        });
+        }).catch(onError('fetching'));
     }
 
-    async function removeItem() {
-        setLoading(true);
-        await onItemRemoval(selectedItemRef.current);
-
-        // force re-fetching
-        itemsRef.current = null;
-
+    const removeItem = () => {
         // we are waiting
         setLoading(true);
-            
-        // reset selected item
-        setHasSelectedItem(false);
+
+        // try:
+        onItemRemoval(selectedItemRef.current).then(() => {
+            // force re-fetching
+            itemsRef.current = null;
+
+            setLoading(true);
+        }).catch(onError('removing')).then(() => {
+            // reset selected item
+            setHasSelectedItem(false);
+        });
     }
 
     return <React.Fragment>
