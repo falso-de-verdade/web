@@ -81,6 +81,10 @@ class ModelComponent extends Component {
         throw new MissingModelImplementation(this, "fieldProps");
     }
 
+    onModelResponse = model => {
+        //
+    }
+
     disableFields = () => false
 
     field = name => {
@@ -224,6 +228,10 @@ class ModelComponent extends Component {
             }
         </AvForm>
 
+    dispatchModelRedirect = () => {
+        this.setState({ _formState: FORM_STATE.WROTE })
+    }
+
     onFormSubmit = () => {
         let _createdModel = null;
         let _hasError = false;
@@ -235,7 +243,20 @@ class ModelComponent extends Component {
         }).catch(error => {
             _hasError = true;
         }).then(() => {
-            this.setState({ _formState: FORM_STATE.WROTE, _hasError, _createdModel })
+            const dispatchRedirect = _createdModel && !this.onModelResponse(_createdModel);
+            
+            let newState = {
+                _hasError,
+                _createdModel,
+            }
+            
+            if (_createdModel === null || dispatchRedirect) {
+                newState = {
+                    ...newState,
+                    _formState: FORM_STATE.WROTE
+                }
+            }
+            this.setState(newState)
         });
 
         this.setState({ _formState: FORM_STATE.WAITING });
