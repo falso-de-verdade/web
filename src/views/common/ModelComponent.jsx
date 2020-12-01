@@ -22,6 +22,14 @@ const FORM_STATE = {
     WROTE: 2,
 }
 
+class MissingModelImplementation extends Error {
+    constructor(model, methodName) {
+        super(`${model.constructor.name} misses ` +
+              `an implementation on method: ${methodName}`)
+        this.name = "MissingModelImplementation";
+    }
+}
+
 class ModelComponent extends Component {
     constructor(props) {
         super(props);
@@ -62,7 +70,11 @@ class ModelComponent extends Component {
     }
 
     mapData = () => {
-        throw new Error('Missing model mapData implementation');
+        throw new MissingModelImplementation(this, "mapData");
+    }
+
+    fields = () => {
+        throw new MissingModelImplementation(this, "fields");
     }
 
     disableFields = () => false
@@ -118,7 +130,7 @@ class ModelComponent extends Component {
     }
 
     tabs = () => {
-        throw new Error('Missing model tabs implementation');
+        throw new MissingModelImplementation(this, "tabs");
     }
 
     deduceNextLink = () => {
@@ -159,6 +171,10 @@ class ModelComponent extends Component {
     }
 
     getModelAttr = attrName => this.state[attrName]
+
+    raiseForMissingMethod = methodName => {
+        throw new Error('Missing model tabs implementation');
+    }
 
     buildSubmitConfig = data => {
         if (this.isEditing) {
