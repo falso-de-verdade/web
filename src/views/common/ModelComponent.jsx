@@ -47,6 +47,10 @@ class ModelComponent extends Component {
     }
 
     render = () => {
+        if (this.domain === undefined) {
+            throw new Error(`Missing ${this.constructor.name} data domain attribute.`);
+        }
+
         if (this.state._formState != FORM_STATE.WROTE) {
             const isLoading = this.state._formState == FORM_STATE.WAITING;
             return (
