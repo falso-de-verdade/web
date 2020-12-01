@@ -65,6 +65,58 @@ class OutbuildingModel extends ModelComponent {
     }
   ]
 
+  selectDayComponent = props => (
+    <React.Fragment>
+      <option>Selecionar</option>
+      {DAYS.map((day, idx) => (
+        <option value={idx}>{day}</option>
+      ))}
+    </React.Fragment>
+  ) 
+
+  fieldProps = () => {
+    return {
+      name: {
+        type: "text",
+        label: "Nome",
+      },
+      description: {
+        type: "textarea",
+        label: "Descrição",
+      },
+      capacity: {
+        type: "number",
+        label: "Lotação máxima",
+      },
+      condominiumId: {
+        type: "select",
+        label: "Condomínio",
+      },
+      fromDay: {
+        type: "select",
+        children: this.selectDayComponent(),
+      },
+      toDay: {
+        type: "select",
+        children: this.selectDayComponent(),
+      },
+      fromHour: {
+        type: "time",
+      },
+      toHour: {
+        type: "time",
+      },
+      selectedMedia: {
+        type: "file",
+        multiple: true,
+        onChange: e => {
+          const newMedias = this.state._tmpMedias.concat(...e.target.files);
+          this.setState({ _tmpMedias: newMedias })
+        } 
+      }
+    }
+  }
+
   disableFields = () => !this.context.isManager
 
   removeObjFrom = (key, item) => {
@@ -84,35 +136,19 @@ class OutbuildingModel extends ModelComponent {
       <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
         <Col style={{ marginTop: '-10px' }} md={4}>
           <AvGroup>
-            <Label for="name">Nome</Label>
-            {this.field({
-              name: "name",
-              type: "text"
-            })}
+            {this.field("name")}
           </AvGroup>
         </Col>
         <Col style={{ marginTop: '-10px' }} md={4}>
           <AvGroup>
-            <Label for="condominiumId" >Condomínio</Label>
-            {this.field({
-              name: "condominiumId",
-              children: <React.Fragment>
-                <option value="0">Condomínio Rio de Pedra</option>
-                <option value="1">Condomínio da Roçinha</option>
-              </React.Fragment>
-            })}
+            {this.field("condominiumId")}
           </AvGroup>
         </Col>
       </Row>
       <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
         <Col style={{ marginTop: '-10px' }} md={2}>
           <AvGroup>
-            <Label for="capacity" >Lotação Máxima</Label>
-            {this.field({
-              name: "capacity",
-              type: "number",
-              min: "1"
-            })}
+            {this.field("capacity")}
           </AvGroup>
         </Col>
 
@@ -153,50 +189,22 @@ class OutbuildingModel extends ModelComponent {
         <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
           <Col md={2} style={{ marginTop: '-10px' }}>
             <AvGroup>
-              <Label for="fromDay" >De</Label>
-              {this.field({
-                type: "select",
-                name: "fromDay",
-                children: <React.Fragment>
-                  <option>Selecionar</option>
-                  {DAYS.map((day, idx) => (
-                    <option value={idx}>{day}</option>
-                  ))}
-                </React.Fragment>
-              })}
+              {this.field("fromDay")}
             </AvGroup>
           </Col>
           <Col md={2} style={{ marginTop: '-10px' }}>
             <AvGroup>
-              <Label for="toDay" >Até</Label>
-              {this.field({
-                type: 'select',
-                name: 'toDay',
-                children: <React.Fragment>
-                  <option>Selecionar</option>
-                  {DAYS.map((day, idx) => (
-                    <option value={idx}>{day}</option>
-                  ))}
-                </React.Fragment>
-              })}
+              {this.field("toDay")}
             </AvGroup>
           </Col>
           <Col style={{ marginTop: '-10px' }} md={2}>
             <AvGroup>
-              <Label for="fromHour" >Hora início</Label>
-              {this.field({
-                  type: "time",
-                  name: "fromHour",
-                })}
+              {this.field("fromHour")}
             </AvGroup>
           </Col>
           <Col style={{ marginTop: '-10px' }} md={2}>
             <AvGroup>
-              <Label for="toHour" >Hora fim</Label>
-              {this.field({
-                type: "time",
-                name: "toHour",
-              })}
+              {this.field("toHour")}
             </AvGroup>
           </Col>
 
@@ -262,16 +270,7 @@ class OutbuildingModel extends ModelComponent {
         <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
           <Col md={4} style={{ marginTop: '-10px' }}>
             <AvGroup>
-              <Label for="document" >Documentos</Label>
-              {this.field({
-                type: "file",
-                name: "file",
-                multiple: true,
-                onChange: e => {
-                  const newMedias = this.state._tmpMedias.concat(...e.target.files);
-                  this.setState({ _tmpMedias: newMedias })
-                }
-              })}
+              {this.field("selectedMedia")}
             </AvGroup>
           </Col>
         </Row>
