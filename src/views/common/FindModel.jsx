@@ -2,6 +2,7 @@ import React from "react";
 
 const FindModel = ({ match, domain, ...props }) => {
     const [modelData, setModelData] = React.useState(null);
+    const [lastError, setLastError] = React.useState(null);
     const loadingRef = React.useRef(null);
 
     if (loadingRef.current === null) {
@@ -22,7 +23,15 @@ const FindModel = ({ match, domain, ...props }) => {
         domain.find(modelId).then(data => {
             loadingRef.current = false;
             setModelData(data);
+        }).catch(error => {
+            setLastError(error);
         });
+    }
+
+    if (lastError) {
+        return (
+            <div>{lastError.message}</div>
+        )
     }
 
     if (loadingRef.current) {
