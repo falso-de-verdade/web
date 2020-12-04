@@ -308,6 +308,11 @@ class ModelComponent extends Component {
       }
 
     buildFieldComponent = (name, fieldProps) => {
+        // return raw component
+        if (React.isValidElement(fieldProps)) {
+            return fieldProps;
+        }
+
         // fallback to AvField component
         if (fieldProps.as === undefined) {
             fieldProps = {
