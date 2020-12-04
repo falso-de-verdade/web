@@ -1,11 +1,35 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Row, Col } from "reactstrap";
+import { Modal } from "react-bootstrap";
 
+import { 
+    dataReducer as scheduleDataReducer,
+    Headers as scheduleHeaders,
+} from "./ScheduleList";
+import Button from "components/CustomButton/CustomButton";
 import { ModelComponent } from 'views/common';
 import ScheduleDomain from 'domains/schedule';
+import { TableComponent } from "components/Listing";
 import DayPicker from "react-day-picker";
 
 class ScheduleModel extends ModelComponent {
     domain = ScheduleDomain;
+
+    onModelResponse = (response, formValues) => {
+        if (response && !this.isEditing) {
+            const scheduleCollision = {
+                resident: 'João José',
+                dependency: 'Piscina Bloco A',
+                date: '02/13/2020',
+                hour: '25:01',
+                NumOccupants: 3,
+            }
+            return {
+                collision: scheduleCollision
+            }
+        }
+    }
 
     mapData = values => {
         const {
@@ -35,8 +59,8 @@ class ScheduleModel extends ModelComponent {
 
     renderModal = () => (
         <Modal
-            show={this.state.hasCollision}
-            aria-labelledby="contained-modal-title" >
+            show={!!this.state.collision}
+            aria-labelledby="contained-modal-title">
             <Modal.Header>
                 <Modal.Title>Conflito</Modal.Title>
             </Modal.Header>
@@ -44,26 +68,24 @@ class ScheduleModel extends ModelComponent {
             <Modal.Body>
                 <p className="text-center">
                     Lamentamos informar mas o agendamento solicitado com um já existente.
-                    Um ticket será aberto.
-            </p>
+                    Dados do agendamento existente.
+                </p>
                 <TableComponent
                     headers={scheduleHeaders}
-                    items={[this.collisionedSchedule]}
+                    items={[this.state.collision]}
                     dataReducer={scheduleDataReducer} />
             </Modal.Body>
 
             <Modal.Footer>
                 <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
                     <Col md={2}>
-                        <Link to={"ticket/teste1"}>
-                            <ButtonB pullLeft fill bsStyle="info">Ver ticket</ButtonB>
-                        </Link>
+                        <Button pullLeft fill bsStyle="info">Não quero continuar com esse agendamento</Button>
                     </Col>
 
                     <Col md={10}>
-                        <Link to={"schedule/teste1"}>
-                            <ButtonB fill>Entendi</ButtonB>
-                        </Link>
+                        <Button fill onClick={this.dispatchModelRedirect}>
+                            Entendi
+                        </Button>
                     </Col>
                 </Row>
             </Modal.Footer>

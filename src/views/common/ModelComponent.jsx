@@ -586,19 +586,29 @@ class ModelComponent extends Component {
         }).catch(error => {
             _hasError = true;
         }).then(() => {
-            const dispatchRedirect = _formResponse && !this.onModelResponse(_formResponse, values);
+            // maybe got a new state
+            let stateOverride = this.onModelResponse(_formResponse, values);
+
+            // whether should jump to next link
+            const shouldRedirect = _hasError || !stateOverride;
             
             let newState = {
                 _hasError,
                 _formResponse,
             }
-            
-            if (_formResponse === null || dispatchRedirect) {
+
+            if (shouldRedirect) {
                 newState = {
                     ...newState,
                     _formState: FORM_STATE.WROTE,
                 }
+            } else {
+                newState = {
+                    ...newState,
+                    ...stateOverride,
+                }
             }
+
             this.setState(newState)
         });
 
