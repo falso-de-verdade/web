@@ -33,6 +33,43 @@ class ScheduleModel extends ModelComponent {
         ]
     }
 
+    renderModal = () => (
+        <Modal
+            show={this.state.hasCollision}
+            aria-labelledby="contained-modal-title" >
+            <Modal.Header>
+                <Modal.Title>Conflito</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <p className="text-center">
+                    Lamentamos informar mas o agendamento solicitado com um já existente.
+                    Um ticket será aberto.
+            </p>
+                <TableComponent
+                    headers={scheduleHeaders}
+                    items={[this.collisionedSchedule]}
+                    dataReducer={scheduleDataReducer} />
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
+                    <Col md={2}>
+                        <Link to={"ticket/teste1"}>
+                            <ButtonB pullLeft fill bsStyle="info">Ver ticket</ButtonB>
+                        </Link>
+                    </Col>
+
+                    <Col md={10}>
+                        <Link to={"schedule/teste1"}>
+                            <ButtonB fill>Entendi</ButtonB>
+                        </Link>
+                    </Col>
+                </Row>
+            </Modal.Footer>
+        </Modal>
+    )
+
     storeTab = () => {
         return {
             name: "Cadastro",
@@ -82,6 +119,9 @@ class ScheduleModel extends ModelComponent {
                         type: "textarea",
                         label: "Observações"
                     }
+                },
+                {
+                    modal: this.renderModal()
                 }
             ]
         }
