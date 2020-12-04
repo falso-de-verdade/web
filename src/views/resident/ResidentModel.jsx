@@ -1,88 +1,63 @@
-import React, { Component } from "react";
-import { Row, Col, CardBody, Card, Label } from "reactstrap";
-import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
+import React from "react";
 
 import { ModelComponent } from '../common';
-import Button from "components/CustomButton/CustomButton.jsx";
+import ResidentDomain from 'domains/resident';
 
 class ResidentModel extends ModelComponent {
-  componentDidMount() { };
+  domain = ResidentDomain;
 
-  componentDidUpdate(prevProps) { };
+  // override to use custom name
+  listingResource = () => 'residents';
 
-  returnResidentList = (event) => {
-    event.preventDefault();
-    this.props.history.push('/admin/residents')
-  };
+  mapData = values => {
+    const {
+      email,
+      name,
+      location,
+    } = values;
 
-  render() {
-    const styleInput = {
-      fontSize: 12
+    return {
+      email,
+      name,
+      location,
     }
+  }
 
-    const styleLabel = {
-      fontSize: 11
+  tabAndFields = () => [
+    this.storeTab(),
+  ]
+
+  storeTab = () => {
+    return {
+      name: 'Cadastro',
+      rows: [
+        {
+          name: {
+            type: 'text',
+            label: 'Nome',
+            readOnly: true,
+            col: {
+              md: 6,
+            }
+          },
+          email: {
+            type: 'text',
+            label: 'Endereço de e-mail',
+            readOnly: true,
+          },
+        },
+        {
+          location: {
+            type: 'text',
+            label: 'Localização no condomínio',
+            col: {
+              md: 12
+            }
+          }
+        }
+      ]
     }
-
-    return (
-      <div className="content">
-        <Row>
-          <Col md={12}>
-            <div style={{ marginTop: '-50px' }}>
-              <h4>Atualização de cadastro</h4>
-            </div>
-          </Col>
-        </Row>
-        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-          <Col style={{ marginTop: '-10px' }} md={12}>
-            <Card>
-              <CardBody>
-                <AvForm autoComplete="off" ref="formUpdateResident" /* onSubmit={} */>
-                  <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                      <Col style={{ marginTop: '-10px' }} md={8}>
-                        <AvGroup>
-                          <Label for="name" style={styleLabel}>Nome completo</Label>
-                          <AvField type="text" name="nome" style={styleInput}
-                            value={this.state.name} disabled
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label for="email" style={styleLabel}>E-mail</Label>
-                          <AvField type="text" name="email" style={styleInput}
-                            value={this.state.email} disabled
-                          />
-                        </AvGroup>
-                      </Col>
-                  </Row>
-                  <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                      <Col style={{ marginTop: '-10px' }} md={8}>
-                        <AvGroup>
-                          <Label for="location" style={styleLabel}>Localização</Label>
-                          <AvField type="text" name="location" style={styleInput}
-                            value={this.state.location}
-                          />
-                        </AvGroup>
-                      </Col>
-                  </Row>
-                </AvForm>
-              </CardBody>
-            </Card>
-            <AvForm autoComplete="off" ref="formUpdateResident" /* onSubmit={} */>
-              <Button pullRight fill bsStyle="danger"
-                onClick={this.returnResidentList}>
-                Cancelar
-              </Button>
-
-              <Button bsStyle="success" fill type="submit"
-                disabled={this.state.disabledButtons}>
-                Gravar
-              </Button>
-            </AvForm>
-          </Col>
-        </Row>
-      </div>
-    );
-  };
-};
+  }
+}
 
 export default ResidentModel;
