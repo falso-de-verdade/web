@@ -1,356 +1,217 @@
-import React, { Component } from "react";
-//import { Modal } from "react-bootstrap";
+import React from "react";
 
-//import { Card } from "components/Card/Card.jsx";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
-
-import api from '../../services/api';
-
-import {
-  Row, Col, Label, Card, CardBody, TabPane, TabContent,
-  Nav, NavItem, NavLink, Table
-} from "reactstrap";
-import classnames from 'classnames';
-
-import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
-import InputCustom from '../../components/inputs/inputCustom';
-import ButtonB from "components/CustomButton/CustomButton.jsx";
-
+import Button from "components/CustomButton/CustomButton";
 import { ModelComponent } from "views/common";
-import { UserAuthContext } from "contexts";
+import OutbDomain from "domains/outbuilding";
+
+const DAYS = [
+  "Domingo",
+  "Segunda-feira",
+  "Terça-feira",
+  "Quarta-feira",
+  "Quinta-feira",
+  "Sexta-feira",
+  "Sábado"
+]
 
 class OutbuildingModel extends ModelComponent {
+  domain = OutbDomain;
 
-  notificationSystem = React.createRef();
+  disableFields = () => !this.context.isManager
 
-  constructor(props) {
-    super(props);
+  mapData = values => {
+    const {
+      name,
+      description,
+      capacity,
+    } = values;
 
-    this.state = {
-      ...this.state,
-      activeTab: '1',
-      modalOpen: true,
-      outbuilding: { ...props.outbuilding }
+    return {
+      name,
+      description,
+      capacity,
     }
   }
 
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      })
+  tabAndFields = () => [
+    this.storeTab(),
+    this.availabilityTab(),
+    this.mediaTab(),
+  ]
+
+  storeTab = () => {
+    return {
+      name: "Cadastro",
+      rows: [
+        {
+          name: {
+            type: "text",
+            label: "Nome",
+          },
+          condominiumId: {
+            type: "select",
+            label: "Condomínio",
+            required: false,
+            children: <React.Fragment>
+              <option>Selecionar</option>
+              <option value="0">São joao</option>
+            </React.Fragment>
+          },
+          capacity: {
+            type: "number",
+            label: "Lotação máxima",
+            helpMessage: "Número máximo de pessoas no ambiente",
+            min: 1,
+            col: {
+              xs: 4,
+            }
+          },
+        },
+        {
+          description: {
+            type: "textarea",
+            label: "Descrição",
+            col: {
+              xs: 16,
+              md: 12,
+              sm: 8,
+            }
+          },
+        }
+      ]
     }
   }
 
-  render() {
-    const isDisabled = !this.context.isManager;
+  selectDayComponent = props => (
+    <React.Fragment>
+      <option>Selecionar</option>
+      {DAYS.map((day, idx) => (
+        <option value={idx}>{day}</option>
+      ))}
+    </React.Fragment>
+  ) 
 
-    const styleInputVlr = {
-      height: '40px',
-      borderStyle: 'solid',
-      borderColor: '#d9d9d9',
-      borderRadius: '3px',
-      borderWidth: '1px',
-      textAlign: 'right',
-      fontSize: 13,
-      color: '#000',
-      paddingRight: '10px',
-      width: '100%'
+  availabilityTab = () => {
+    const headers = ["Dia(s) da semana", "Das", "Até"]
+
+    const dataReducer = availability => [
+      `${DAYS[availability.fromDay] || "Ausente"} - ${DAYS[availability.toDay] || "Ausente"}`,
+      availability.fromHour,
+      availability.toHour,
+    ]
+
+    const mapValues = values => {
+      const {
+        fromDay,
+        toDay,
+        fromHour,
+        toHour,
+      } = values;
+
+      return {
+        fromDay,
+        toDay,
+        fromHour,
+        toHour,
+      }
     }
 
-    const styleInput = {
-      fontSize: 12
+    const col = {
+      md: 2,
+      sm: 6,
     }
 
-    const styleInputUpper = {
-      fontSize: 12,
-      textTransform: 'uppercase'
+    const tabCfg = {
+      fromDay: {
+        type: "select",
+        children: this.selectDayComponent(),
+        col
+      },
+      toDay: {
+        type: "select",
+        required: false,
+        children: this.selectDayComponent(),
+        col
+      },
+      fromHour: {
+        type: "time",
+        col
+      },
+      toHour: {
+        type: "time",
+        col
+      },
+      addbutton: {
+        as: Button,
+        required: false,
+        bsStyle: "info",
+        type: "submit",
+        fill: true,
+        children: <React.Fragment>
+           <span className="fa fa-plus"></span>
+            Adicionar
+        </React.Fragment>,
+      }
     }
 
-    const styleLabel = {
-      fontSize: 11
+    return {
+      name: "Horários disponíveis",
+      provides: "availabilities",
+      isVirtual: true,
+      validate: values => values.length != 0,
+      rows: [
+        this.context.isManager && tabCfg
+      ],
+      mapValues,
+      headers,
+      dataReducer,
     }
-
-    return (
-      <div className="content">
-
-        <Row>
-          <Col style={{ marginTop: '-10px' }} md={12}>
-            <Card>
-              <CardBody style={{ padding: '10px', fontSize: 12 }}>
-                <Nav tabs>
-                  <NavItem className={classnames({ active: this.state.activeTab === '1' })}>
-                    <NavLink href="#" style={{ color: '#000' }}
-                      onClick={() => { this.toggle('1'); }}>Dados Cadastrais</NavLink>
-                  </NavItem>
-
-                  <NavItem className={classnames({ active: this.state.activeTab === '2' })}>
-                    <NavLink href="#" style={{ color: '#000' }}
-                      onClick={() => { this.toggle('2'); }}>Horários disponíveis</NavLink>
-                  </NavItem>
-                  <NavItem className={classnames({ active: this.state.activeTab === '3' })}>
-                    <NavLink href="#" style={{ color: '#000' }}
-                      onClick={() => { this.toggle('3'); }}>Mídia</NavLink>
-                  </NavItem>
-                </Nav>
-
-                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                  <TabPane tabId="1">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-                      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={4}>
-                          <AvGroup>
-                            <Label for="name" style={styleLabel}>Nome</Label>
-                            <AvField type="text" name="nome" style={styleInput}
-                              value={this.getModelAttr('name')}
-                              disabled={isDisabled}
-                              validate={{
-                                required: { value: true, errorMessage: 'Nome é obrigatório' }
-                              }}
-                            />
-                          </AvGroup>
-                        </Col>
-                        <Col style={{ marginTop: '-10px' }} md={4}>
-                          <AvGroup>
-                            <Label for="condominium" style={styleLabel}>Condomínio</Label>
-                            <AvField type="select" name="condominium" style={styleInput}
-                              value={this.getModelAttr('condominium')} 
-                              disabled={isDisabled} >
-                              <option value="0">Condomínio Rio de Pedra</option>
-                              <option value="1">Condomínio da Roçinha</option>
-                            </AvField>
-                          </AvGroup>
-                        </Col>
-                      </Row>
-                      <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={2}>
-                          <AvGroup>
-                            <Label for="maxCapacity" style={styleLabel}>Lotação Máxima</Label>
-                            <AvField type="number" name="maxCapacity" id="maxCapacity" min="1"
-                              style={styleInput}
-                              disabled={isDisabled}
-                              value={this.getModelAttr('maxCapacity')} />
-                          </AvGroup>
-                        </Col>
-
-                        <Col style={{ marginTop: '-10px' }} md={4}>
-                          <AvGroup>
-                            <Label for="location" style={styleLabel}>Localização</Label>
-                            <AvField type="text" name="location" id="location" style={styleInput}
-                              onChange={this.setModelAttr('location')}
-                              disabled={isDisabled}
-                              value={this.state.outbuilding.location}
-                              placeholder="Ex.: Bloco B" />
-                          </AvGroup>
-                        </Col>
-                      </Row>
-                    </AvForm>
-                  </TabPane>
-                </TabContent>
-
-
-                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                  <TabPane tabId="2">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-                      {this.context.isManager &&
-                        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                          <Col md={2} style={{ marginTop: '-10px' }}>
-                            <AvGroup>
-                              <Label for="fromDay" style={styleLabel}>De</Label>
-                              <AvField type="select" name="fromDay" style={styleInput}
-                                  value={this.getModelAttr('fromDay')} >
-                                <option value="0">Domingo</option>
-                                <option value="1">Segunda-feira</option>
-                                <option value="2">Terça-feira</option>
-                                <option value="3">Quarta-feira</option>
-                                <option value="4">Quinta-feira</option>
-                                <option value="5">Sexta-feira</option>
-                                <option value="6">Sábado</option>
-                              </AvField>
-                            </AvGroup>
-                          </Col>
-                          <Col md={2} style={{ marginTop: '-10px' }}>
-                            <AvGroup>
-                              <Label for="toDay" style={styleLabel}>Até</Label>
-                              <AvField type="select" name="toDay" style={styleInput}
-                                  value={this.getModelAttr('toDay')} >
-                                <option value="-1">Não selecionado</option>
-                                <option value="0">Domingo</option>
-                                <option value="1">Segunda-feira</option>
-                                <option value="2">Terça-feira</option>
-                                <option value="3">Quarta-feira</option>
-                                <option value="4">Quinta-feira</option>
-                                <option value="5">Sexta-feira</option>
-                                <option value="6">Sábado</option>
-                              </AvField>
-                            </AvGroup>
-                          </Col>
-                          <Col style={{ marginTop: '-10px' }} md={2}>
-                            <AvGroup>
-                              <Label for="fromHour" style={styleLabel}>Hora início</Label>
-                              <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
-                                value={this.getModelAttr('fromHour')}
-                                validate={{
-                                  required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
-                                }} />
-                            </AvGroup>
-                          </Col>
-                          <Col style={{ marginTop: '-10px' }} md={2}>
-                            <AvGroup>
-                              <Label for="toHour" style={styleLabel}>Hora fim</Label>
-                              <AvField type="time" name="toHour" id="toHour" style={styleInput}
-                                value={this.getModelAttr('toHour')}
-                                validate={{
-                                  required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
-                                }} />
-                            </AvGroup>
-                          </Col>
-
-                          <ButtonB onClick={() => this.setState({ isDisabledCFOP: false })} bsStyle="info" fill
-                            style={{ margin: '15px' }}>
-                            <span className="fa fa-plus"></span>
-                            {' '}Adicionar
-                          </ButtonB>
-                        </Row>
-                      }
-                      <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={6}>
-                          <Table stiped hover>
-                            <thead>
-                              <tr>
-                                <th>Dia(s) da semana</th>
-                                <th>Das</th>
-                                <th>Até</th>
-                                {this.context.isManager &&
-                                  <th className="text-center">Operações</th>
-                                }
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  Segunda - Sexta
-                                </td>
-                                <td>
-                                  14:00
-                                </td>
-                                <td>
-                                  20:00
-                                </td>
-                                <td className="text-center" width={140}>
-                                  {this.context.isManager &&
-                                    <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-
-                                      <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                      >
-                                        <span className="fa fa-pencil"></span>
-                                      </ButtonB>
-
-                                      {' '}
-                                      <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                        onClick={this.excluirCliente}>
-                                        <span className="fa fa-times"></span>
-                                      </ButtonB>
-
-                                    </div>
-                                  }
-                                </td>
-                              </tr>
-
-                            </tbody>
-                          </Table>
-                        </Col>
-                      </Row>
-                      <div className="clearfix" />
-                    </AvForm>
-                  </TabPane>
-                </TabContent>
-
-                <TabContent activeTab={this.state.activeTab} style={{ fontSize: 11 }}>
-                  <TabPane tabId="3">
-                    <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-                      {this.context.isManager &&
-                        <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                          <Col md={4} style={{ marginTop: '-10px' }}>
-                            <AvGroup>
-                              <Label for="fromDay" style={styleLabel}>Documentos</Label>
-                              <AvField type="file" name="fromDay" style={styleInput}
-                                //value={this.state.dadosClienteStatus}
-                                //disabled={this.state.disabledButtons}
-                                onChange={(e) => { this.setState({ dadosClienteStatus: e.target.value }) }}>
-                              </AvField>
-                            </AvGroup>
-                          </Col>
-                        </Row>
-                      }
-                      <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Col style={{ marginTop: '-10px' }} md={10}>
-                          <Table stiped hover>
-                            <thead>
-                              <tr>
-                                <th>Arquivo</th>
-                                <th className="text-center">Operações</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  C:\Users\Yan\Documentos\regras.pdf
-                                </td>
-                                <td className="text-center" width={140}>
-                                  <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
-                                    {this.context.isManager &&
-                                      <React.Fragment>
-                                        {' '}
-                                        <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                          onClick={this.excluirCliente}>
-                                          <span className="fa fa-times"></span>
-                                        </ButtonB>
-                                      </React.Fragment> || 
-                                      <React.Fragment>
-                                        {' '}
-                                        <ButtonB bsStyle="success" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                          onClick={this.excluirCliente}>
-                                          <span className="fa fa-eye"></span>
-                                        </ButtonB>
-                                      </React.Fragment> 
-                                    }
-                                  </div>
-                                </td>
-                              </tr>
-
-                            </tbody>
-                          </Table>
-                        </Col>
-                      </Row>
-                      <div className="clearfix" />
-                    </AvForm>
-                  </TabPane>
-                </TabContent>
-              </CardBody>
-            </Card>
-            <AvForm autoComplete="off" onSubmit={this.operacaoProduto}>
-              <Button pullRight fill bsStyle="danger"
-                onClick={this.retornarListaProdutos}>
-                Cancelar
-              </Button>
-
-              {this.context.isManager && 
-                <Button bsStyle="success" fill type="submit"
-                    disabled={this.state.disabledButtons}>
-                    Gravar
-                </Button>
-              }
-            </AvForm>
-          </Col>
-        </Row>
-      </div>
-    )
   }
 
+  mediaTab = () => {
+    const headers = ["Nome"]
+    const dataReducer = media => [
+      media.name
+    ]
+
+    const tabCfg = {
+      selectedMedia: {
+        type: "file",
+        multiple: true,
+        required: false,
+        onChange: async(e) => {
+          // get current form reference
+          const currentForm = this.currentForm();
+
+          // get a copy of the FileList
+          const files = e.target.files;
+
+          // patch input with files
+          currentForm._inputs.selectedMedia.getValue = () => files;
+
+          // submit form
+          await currentForm.submit();
+        }
+      }
+    }
+
+    const mapValues = values => {
+      return [...values.selectedMedia];
+    }
+
+    return {
+      name: "Mídias",
+      provides: "medias",
+      isVirtual: true,
+      validate: values => true,
+      rows: [
+        this.context.isManager && tabCfg
+      ],
+      mapValues,
+      headers,
+      dataReducer,
+    }
+  }
 }
-
-OutbuildingModel.contextType = UserAuthContext;
 
 export default OutbuildingModel;
