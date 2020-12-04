@@ -10,13 +10,11 @@ class CondominiumModel extends ModelComponent {
         const {
             name,
             address,
-            notes,
         } = values;
 
         return {
             name,
             address,
-            notes,
         }
     }
 
@@ -42,17 +40,6 @@ class CondominiumModel extends ModelComponent {
                         col: {
                             md: 8,
                         },
-                    },
-                },
-                {
-                    notes: {
-                        type: "textarea",
-                        label: "Anotações",
-                        col: {
-                            xs: 16,
-                            md: 12,
-                            sm: 8,
-                        }
                     },
                 }
             ]
