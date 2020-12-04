@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FindModel } from "views/common";
-import ScheduleDomain from "domains/user";
+import ScheduleDomain from "domains/schedule";
 
 import ScheduleModel from "./ScheduleModel";
 

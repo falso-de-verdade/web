@@ -1,238 +1,153 @@
-import React, { Component } from 'react';
-import Button from 'components/CustomButton/CustomButton.jsx';
-import api from '../../services/api';
-import {
-    Row, Col, Label, Card, CardBody, Nav
-} from 'reactstrap';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Row, Col } from "reactstrap";
 import { Modal } from "react-bootstrap";
-import classnames from 'classnames';
-import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
-import DayPicker from "react-day-picker";
-import "react-day-picker/lib/style.css";
-import { Link } from "react-router-dom";
 
-import { ModelComponent } from "views/common";
-import { UserAuthContext } from "contexts";
+import { 
+    dataReducer as scheduleDataReducer,
+    Headers as scheduleHeaders,
+} from "./ScheduleList";
+import Button from "components/CustomButton/CustomButton";
+import { ModelComponent } from 'views/common';
+import ScheduleDomain from 'domains/schedule';
 import { TableComponent } from "components/Listing";
-import ButtonB from "components/CustomButton/CustomButton.jsx";
-
-const scheduleHeaders = [
-    "Morador",
-    "Dependência",
-    "Data",
-    "Horário",
-    "Qtd. de ocupantes"
-]
-
-const scheduleDataReducer = schedule => [
-    schedule.resident.name,
-    schedule.outbuilding.name,
-    schedule.date,
-    schedule.timeRange,
-    schedule.peopleCount,
-]
+import DayPicker from "react-day-picker";
 
 class ScheduleModel extends ModelComponent {
-    static contextType = UserAuthContext;
+    domain = ScheduleDomain;
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            ...this.state,
-            activeTab: '1',
-            modalOpen: true,
-            hasCollision: false,
+    onModelResponse = (response, formValues) => {
+        if (response && !this.isEditing) {
+            const scheduleCollision = {
+                resident: 'João José',
+                dependency: 'Piscina Bloco A',
+                date: '02/13/2020',
+                hour: '25:01',
+                NumOccupants: 3,
+            }
+            return {
+                collision: scheduleCollision
+            }
         }
-
-        this.collisionedSchedule = null;
     }
 
-    // TODO use a better method to test which operation this model is in
-    isViewing = () => this.state.outbuildingId !== undefined
+    mapData = values => {
+        const {
+            outbuildingId,
+            day,
+            occupants,
+            fromHour,
+            toHour,
+            notes
+        } = values;
 
-    handleSubmit = e => {
-        this.collisionedSchedule = {
-            resident: {
-                name: "Yan"
-            },
-            outbuilding: {
-                name: "Salão de festas"
-            },
-            date: "19/04/2020",
-            timeRange: "21:00 ás 23:00",
-            peopleCount: 20,
+        return {
+            outbuildingId,
+            day,
+            occupants,
+            fromHour,
+            toHour,
+            notes
         }
-
-        this.setState({ hasCollision: true })
     }
 
-    render() {
-        const styleInput = {
-            fontSize: 12,
-            height: '38px'
-        }
+    tabAndFields = () => {
+        return [
+            this.storeTab(),
+        ]
+    }
 
-        const styleInputUpper = {
-            fontSize: 12,
-            textTransform: 'uppercase'
-        }
+    renderModal = () => (
+        <Modal
+            show={!!this.state.collision}
+            aria-labelledby="contained-modal-title">
+            <Modal.Header>
+                <Modal.Title>Conflito</Modal.Title>
+            </Modal.Header>
 
-        const styleLabel = {
-            fontSize: 11
-        }
-        return (
-            <div className="content">
-                <Row>
-                    <Col md={12}>
+            <Modal.Body>
+                <p className="text-center">
+                    Lamentamos informar mas o agendamento solicitado com um já existente.
+                    Dados do agendamento existente.
+                </p>
+                <TableComponent
+                    headers={scheduleHeaders}
+                    items={[this.state.collision]}
+                    dataReducer={scheduleDataReducer} />
+            </Modal.Body>
 
-                        <Card>
-                            <CardBody>
+            <Modal.Footer>
+                <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
+                    <Col md={2}>
+                        <Button pullLeft fill bsStyle="info">Não quero continuar com esse agendamento</Button>
+                    </Col>
 
-                                <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formSchedule">
-                                    <Row style={{ paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
-                                        {this.context.isManager && this.state.resident &&
-                                            <Col md={3}>
-                                                <AvGroup>
-                                                    <Label for="residentName" style={styleLabel}>Morador</Label>
-                                                    <AvField 
-                                                        type="text" 
-                                                        name="residentName" 
-                                                        id="residentName" 
-                                                        style={styleInput}
-                                                        disabled={this.isViewing()}
-                                                        value={this.state.resident.name} />
-                                                </AvGroup>
-                                            </Col>
-                                        }
-
-                                        <Col md={3}>
-                                            <AvGroup>
-                                                <Label for="outbuildingId" style={styleLabel}>Dependência</Label>
-                                                <AvField type="select" name="outbuildingId" id="outbuildingId" style={styleInput}
-                                                    value={this.getModelAttr('outbuildingId')}
-                                                    disabled={this.isViewing()}
-                                                    validate={{
-                                                        required: { value: true, errorMessage: 'Campo "Nome" obrigatório' },
-                                                    }} >
-                                                    <option value="0">Salão de jogos - Bloco B</option>
-                                                    <option value="1">Piscina</option>
-                                                </AvField>
-                                            </AvGroup>
-                                        </Col>
-                                        <Col md={6} >
-                                            <AvGroup>                                                
-                                                <DayPicker 
-                                                    selectedDays={this.getModelAttr('day')}
-                                                    onDayClick={this.isViewing() ? null : this.setModelAttrValue('day')} />
-                                            </AvGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
-                                        <Col style={{ marginTop: '-10px' }} md={2}>
-                                            <AvGroup>
-                                                <Label for="fromHour" style={styleLabel}>Hora início</Label>
-                                                <AvField type="time" name="fromHour" id="fromHour" style={styleInput}
-                                                    disabled={this.isViewing()}
-                                                    validate={{
-                                                        required: { value: true, errorMessage: 'Campo "Hora início" obrigatório' },
-                                                    }} />
-                                            </AvGroup>
-                                        </Col>
-                                        <Col style={{ marginTop: '-10px' }} md={2}>
-                                            <AvGroup>
-                                                <Label for="toHour" style={styleLabel}>Hora fim</Label>
-                                                <AvField type="time" name="toHour" id="toHour" style={styleInput}
-                                                    disabled={this.isViewing()}
-                                                    validate={{
-                                                        required: { value: true, errorMessage: 'Campo "Hora fim" obrigatório' },
-                                                    }} />
-                                            </AvGroup>
-                                        </Col>
-                                        <Col md={3} style={{ marginTop: '-10px' }}>
-                                            <AvGroup>
-                                                <Label for="peopleCount" style={styleLabel}>Quantidade de ocupantes</Label>
-                                                <AvField type="number" name="peopleCount" id="peopleCount" 
-                                                    min={1}
-                                                    style={styleInput}
-                                                    disabled={this.isViewing()}
-                                                    value={this.getModelAttr('peopleCount')} 
-                                                    placeholder="Ocupação total">
-                                                </AvField>
-                                            </AvGroup>
-                                        </Col>
-                                    </Row>
-
-                                    <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
-                                        <Col md={12} style={{ marginTop: '-10px' }}>
-                                            <AvGroup>
-                                                <Label for="notes" style={styleLabel}>Observações</Label>
-                                                <AvField type="textarea" rows={5} name="notes" id="notes"
-                                                    disabled={this.isViewing()}
-                                                    value={this.getModelAttr('notes')} />
-                                            </AvGroup>
-                                        </Col>
-                                    </Row>
-                                </AvForm>
-                                <div className="clearfix" />
-                            </CardBody>
-                        </Card>
-                        <AvForm autoComplete="off" onSubmit={this.operacaoTransportadora} ref="formSchedule">
-                            <Button pullRight fill bsStyle="danger"
-                                onClick={this.retornarListaTransportadora}>
-                                Cancelar
-                            </Button>
-
-                            <Button 
-                                bsStyle="success" 
-                                fill 
-                                type="submit"
-                                onClick={this.handleSubmit} >
-                                Gravar
-                            </Button>
-                        </AvForm>
+                    <Col md={10}>
+                        <Button fill onClick={this.dispatchModelRedirect}>
+                            Entendi
+                        </Button>
                     </Col>
                 </Row>
+            </Modal.Footer>
+        </Modal>
+    )
 
-                {/**confirma exclusao */}
-                <Modal
-                    show={this.state.hasCollision}
-                    aria-labelledby="contained-modal-title">
-                    <Modal.Header>
-                        <Modal.Title>Conflito</Modal.Title>
-                    </Modal.Header>
+    storeTab = () => {
+        return {
+            name: "Cadastro",
+            rows: [
+                {
+                    outbuildingId: {
+                        type: "select",
+                        label: "Dependência",
+                        children:
+                            <React.Fragment>
+                                <option>Selecionar</option>
+                                <option value="0">São joao</option>
+                            </React.Fragment>
+                    },
+                    date: {
+                        type: "date",
+                        label: "Dia do agendamento"
+                    },
 
-                    <Modal.Body>
-                        <p className="text-center">
-                            Lamentamos informar mas o agendamento solicitado com um já existente.
-                            Um ticket será aberto.
-                        </p>
-                        <TableComponent 
-                            headers={scheduleHeaders}
-                            items={[this.collisionedSchedule]}
-                            dataReducer={scheduleDataReducer} />
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
-                            <Col md={2}>
-                                <Link to={"ticket/teste1"}>
-                                    <ButtonB pullLeft fill bsStyle="info">Ver ticket</ButtonB>
-                                </Link>
-                            </Col>
-                            
-                            <Col md={10}>
-                                <Link to={"schedule/teste1"}>
-                                    <ButtonB fill>Entendi</ButtonB>
-                                </Link>
-                            </Col>
-                        </Row>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-        )
+                    /*day: {
+                        as: DayPicker,
+                        label: "dia",
+                        required: false,
+                        col: {
+                            md: 8
+                        }
+                        selectedDays={this.getModelAttr('day')},
+                        onDayClick={this.isViewing() ? null : this.setModelAttrValue('day')}
+                    } */
+                },
+                {
+                    fromHour: {
+                        type: "time",
+                        label: "Hora início"
+                    },
+                    toHour: {
+                        type: "time",
+                        label: "Hora fim"
+                    },
+                    occupants: {
+                        type: "text",
+                        label: "Quantidade de ocupantes"
+                    }
+                },
+                {
+                    notes: {
+                        type: "textarea",
+                        label: "Observações"
+                    }
+                },
+                {
+                    modal: this.renderModal()
+                }
+            ]
+        }
     }
-
 }
 
 export default ScheduleModel;

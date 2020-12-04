@@ -86,4 +86,8 @@ const ScheduleList = ({ }) => (
     </UserAuthContext.Consumer>
 )
 
-export default ScheduleList;
+export {
+    ScheduleList,
+    dataReducer,
+    Headers,
+};
