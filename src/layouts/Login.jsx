@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import Button from 'components/CustomButton/CustomButton.jsx';
-import { Row, Col, Container } from 'reactstrap';
-import { Modal } from "react-bootstrap";
+import { Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
 
 import InputPasswordCustom from '../components/inputs/inputCustom'
 import InputCustom from '../components/inputs/inputCustom'
 import Logo from '../assets/img/logomarca.svg'
+import Button from 'components/CustomButton/CustomButton.jsx';
 import AuthRedirect from "components/AuthRedirect/AuthRedirect";
+import { Modal } from "components/Modal";
 
 class Login extends Component {
     constructor(props) {
@@ -56,6 +56,28 @@ class Login extends Component {
             user: { isManager: true, name: "Síndico" } 
         })
     }
+
+    modalButtons = () =>
+        <React.Fragment>
+            <Col md={2}>
+                <Button
+                    bsStyle="primary"
+                    onClick={this.handleResidentRole}
+                    fill
+                >
+                    Morador
+                </Button>{" "}
+            </Col>
+
+            <Button
+                bsStyle="secondary"
+                onClick={this.handleManagerRole}
+                fill
+                pullRight
+            >
+                Síndico
+            </Button>{" "}
+        </React.Fragment>
 
     render() {
         if (this.state.succeeded) {
@@ -135,40 +157,11 @@ class Login extends Component {
 
                 <Modal
                     show={this.state.hasMultipleRoles}
-                    aria-labelledby="contained-modal-title"
+                    title="Perfis"
+                    buttons={this.modalButtons()}
+                    bodyText="Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar."
                     backdrop="static"
-                >
-                    <Modal.Header>
-                        <Modal.Title>Perfis</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <p className="text-center">
-                            Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar.
-                        </p>
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Col md={2}>
-                            <Button
-                                bsStyle="primary"
-                                onClick={this.handleResidentRole}
-                                fill
-                            >
-                                Morador
-                            </Button>{" "}
-                        </Col>
-
-                        <Button
-                            bsStyle="secondary"
-                            onClick={this.handleManagerRole}
-                            fill
-                            pullRight
-                        >
-                            Síndico
-                        </Button>{" "}
-                    </Modal.Footer>
-                </Modal>
+                    />
             </div>
         );
     };

@@ -5,7 +5,7 @@ import CollisionDomain from 'domains/collision';
 import { TableComponent } from 'components/Listing'
 import { dataReducer, Headers } from '../schedule/ScheduleList'
 import ButtonB from "components/CustomButton/CustomButton";
-import { Modal } from 'react-bootstrap';
+import { ModalWithListing } from "components/Modal";
 
 class CollisionModel extends ModelComponent {
     domain = CollisionDomain;
@@ -40,30 +40,28 @@ class CollisionModel extends ModelComponent {
         </div>
     )
 
+    modalButtons = () =>
+        <React.Fragment>
+            <ButtonB fill bsStyle="danger">Resolver</ButtonB>
+
+            <ButtonB 
+                fill 
+                onClick={() => this.setState({ schedule: !this.state.schedule })}
+            >
+                Cancelar
+            </ButtonB>
+        </React.Fragment>
+
     renderModal = () => (
-        <Modal
+        <ModalWithListing
             show={this.state.schedule}
-            aria-labelledby="contained-modal-title">
-            <Modal.Header>
-                <Modal.Title>Resolver ticket</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-                <p className="text-center">
-                    Confirma a resolução do ticket para o seguinte morador ?
-            </p>
-                <TableComponent
-                    headers={Headers}
-                    items={[this.state.schedule]}
-                    dataReducer={dataReducer} />
-            </Modal.Body>
-
-            <Modal.Footer>
-                <ButtonB fill bsStyle="danger">Resolver</ButtonB>
-
-                <ButtonB fill onClick={() => this.setState({ schedule: !this.state.schedule })}>Cancelar</ButtonB>
-            </Modal.Footer>
-        </Modal>
+            title="Resolver ticket"
+            bodyText="Confirma a resolução do ticket para o seguinte morador?"
+            buttons={this.modalButtons()}
+            headers={Headers}
+            items={[this.state.schedule]}
+            dataReducer={dataReducer}
+            />
     )
 
     storeTab = () => {

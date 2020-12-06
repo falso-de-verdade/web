@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Row, Col } from "reactstrap";
-import { Modal } from "react-bootstrap";
 
 import { 
     dataReducer as scheduleDataReducer,
@@ -10,7 +8,7 @@ import {
 import Button from "components/CustomButton/CustomButton";
 import { ModelComponent } from 'views/common';
 import ScheduleDomain from 'domains/schedule';
-import { TableComponent } from "components/Listing";
+import { ModalWithListing } from "components/Modal";
 import DayPicker from "react-day-picker";
 
 class ScheduleModel extends ModelComponent {
@@ -58,39 +56,32 @@ class ScheduleModel extends ModelComponent {
     }
 
     renderModal = () => (
-        <Modal
-            show={!!this.state.collision}
-            aria-labelledby="contained-modal-title">
-            <Modal.Header>
-                <Modal.Title>Conflito</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-                <p className="text-center">
-                    Lamentamos informar mas o agendamento solicitado com um já existente.
-                    Dados do agendamento existente.
-                </p>
-                <TableComponent
-                    headers={scheduleHeaders}
-                    items={[this.state.collision]}
-                    dataReducer={scheduleDataReducer} />
-            </Modal.Body>
-
-            <Modal.Footer>
-                <Row style={{ paddingLeft: '10px', paddingRight: '10px' }} >
-                    <Col md={2}>
-                        <Button pullLeft fill bsStyle="info">Não quero continuar com esse agendamento</Button>
-                    </Col>
-
-                    <Col md={10}>
-                        <Button fill onClick={this.dispatchModelRedirect}>
-                            Entendi
-                        </Button>
-                    </Col>
-                </Row>
-            </Modal.Footer>
-        </Modal>
+        <ModalWithListing
+            show={this.state.collision}
+            title="Conflito"
+            bodyText={[
+                "Lamentamos informar mas o agendamento solicitado com um já existente.",
+                "Dados do agendamento existente.",
+            ]}
+            buttons={this.modalButtons()}
+            headers={scheduleHeaders}
+            items={[this.state.collision]}
+            dataReducer={scheduleDataReducer}
+            />
     )
+
+    modalButtons = () =>
+        <Row>
+            <Col md={2}>
+                <Button pullLeft fill bsStyle="info">Não quero continuar com esse agendamento</Button>
+            </Col>
+
+            <Col md={10}>
+                <Button fill onClick={this.dispatchModelRedirect}>
+                    Entendi
+                </Button>
+            </Col>
+        </Row>
 
     storeTab = () => {
         return {

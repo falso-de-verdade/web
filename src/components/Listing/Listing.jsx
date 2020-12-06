@@ -1,11 +1,12 @@
 import React from "react";
 
-import { Modal, Table, FormControl } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { Row, Col, Spinner } from "reactstrap";
 
 import ButtonB from "components/CustomButton/CustomButton.jsx";
 import Card from "components/Card/Card";
+import { ModalWithListing } from "components/Modal";
 import TableComponent from "./TableComponent";
 
 const Listing = ({ name, 
@@ -60,6 +61,17 @@ const Listing = ({ name,
             setHasSelectedItem(false);
         });
     }
+
+    const modalButtons =
+        <React.Fragment>
+            <ButtonB fill bsStyle="danger" onClick={removeItem}>
+                Excluir
+            </ButtonB>
+
+            <ButtonB fill onClick={e => setHasSelectedItem(false)}>
+                Cancelar
+            </ButtonB>
+        </React.Fragment>
 
     return <React.Fragment>
         <div style={{ display: loading ? "block" : "none" }}>
@@ -127,31 +139,15 @@ const Listing = ({ name,
                 <span className="fa fa-caret-right"></span>
             </ButtonB>
 
-            {/**confirma exclusao */}
-            <Modal
+            <ModalWithListing
                 show={isItemSelected}
-                aria-labelledby="contained-modal-title">
-                <Modal.Header>
-                    <Modal.Title>Excluir {name}</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <p className="text-center">
-                        Confirma a exclusão do item selecionado ?
-                    </p>
-                    <TableComponent 
-                        headers={headers}
-                        items={[selectedItemRef.current]}
-                        dataReducer={dataReducer} />
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <ButtonB fill bsStyle="danger" onClick={removeItem}>Excluir</ButtonB>
-
-                    <ButtonB fill onClick={e => setHasSelectedItem(false)}>Cancelar</ButtonB>
-                </Modal.Footer>
-            </Modal>
-
+                title={`Excluir ${name}`}
+                bodyText="Confirma a exclusão do item selecionado?"
+                buttons={modalButtons}
+                headers={headers}
+                items={[selectedItemRef.current]}
+                dataReducer={dataReducer}
+                />
         </div>
     </React.Fragment>
 }
