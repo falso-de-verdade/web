@@ -1,16 +1,12 @@
-import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import React from "react";
 
-import { Row, Col, Alert } from 'reactstrap';
-import { AvForm } from 'availity-reactstrap-validation';
+import { Col } from 'reactstrap';
 
 import Logo from '../assets/img/logomarca.svg'
 import Button from 'components/CustomButton/CustomButton.jsx';
 import AuthRedirect from "components/AuthRedirect/AuthRedirect";
-import AvField from "components/inputs/inputCustom";
 import { Modal } from "components/Modal";
-import { send } from "services/api";
-
+import SignInComponent from "components/SignIn/SignInComponent";
 
 const styleContent = {
     width: '100%',
@@ -22,74 +18,45 @@ const styleContent = {
     justifyContent: 'space-between',
 };
 
-const colStyleBox = {
-    padding: '16px', 
-    boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', 
-    backgroundColor: ' #4091ff', 
-    borderRadius: '6px',
-}
-
-const signin = (email, password) => {
-    return send({
-        method: 'post',
-        url: '/signin',
-        data: {
-            email,
-            password,
-        },
-    })
-}
-
 const Login = ({}) => {
-    const [isLoading, setLoading] = React.useState(false);
-    const [role, setRole] = React.useState(null);
     const [hasMultipleRoles, setHasMultiplesRoles] = React.useState(false);
     const [user, setUser] = React.useState(null);
 
-    const isInvalidCreds = React.useRef(false);
+    const reuseSubmitRef = React.useRef(null);
+    const roleRef = React.useRef(undefined);
 
-    const onValidSubmit = (_, values) => {
-        const {
-            email,
-            password,
-        } = values;
-
-        // reset invalid creds
-        isInvalidCreds.current = false;
-
-        // we are loading
-        setLoading(true);
-
-        signin(email, password).then(response => {
-            // TODO handle user login
-            console.log(response);
-        }).catch(({ response }) => {
-            // network error, or some unknow shit
-            if (response === undefined) {
-                return;
+    const onError = (response, submit) => {
+        if (response.status == 422) {
+            const code = response.data._error.code;
+            if (code == 0) {
+                reuseSubmitRef.current = submit;
+                setHasMultiplesRoles(true);
             }
+        }
+    }
 
-            const status = response.status;
+    const onSuccess = (data, response) => {
+        console.log(response);
+    }
 
-            if (status == 401) {
-                isInvalidCreds.current = true;
-            } else if (status == 422) {
-                const code = response.data._error.code;
-                if (code == 0) {
-                    setHasMultiplesRoles(true);
-                }
-            }
-        }).then(() => {
-            setLoading(false);
-        })
+    const submitWithRole = role => {
+        roleRef.current = role;
+
+        const submitFunction = reuseSubmitRef.current;
+        if (!submitFunction) {
+            throw Error("Unable to complete login with multiple roles.");
+        }
+        
+        // try submit again
+        submitFunction()
     }
 
     const setResidentRole = () => {
-        setRole('resident');
+        submitWithRole('resident')
     }
 
     const setManagerRole = () => {
-        setRole('manager');
+        submitWithRole('manager');
     }
 
     const modalButtons = () =>
@@ -118,59 +85,14 @@ const Login = ({}) => {
         return <AuthRedirect user={user} />
     }
 
-    // TODO improve user experience
-    if (isInvalidCreds.current) {
-        alert('E-mail ou senha inválidos.')
-    }
-
     return (
-        <div disabled={isLoading} className="content" style={styleContent}>
-            <Col md={8}>
-                <div style={colStyleBox}>
-                    <AvForm onValidSubmit={onValidSubmit}>
-                        <Row>
-                            <Col md={12}>
-                                <AvField
-                                    type="email"
-                                    descricao="E-mail"
-                                    name="email"
-                                    id="email"
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={12} style={{ marginTop: '-10px' }}>
-                                <AvField
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    descricao="Senha"
-                                    value={isInvalidCreds.current ? "" : undefined}
-                                />
-                            </Col>
-                        </Row>
-                        <Row style={{ padding: '15px' }}>
-                            <Col md={6}>
-                                <Button
-                                    type="submit"
-                                    bsStyle="success" fill>
-                                    <span className="fa fa-sign-in"></span>
-                                    {' '}Entrar
-                                </Button>
-                            </Col>
-                            <Col md={6}>
-                                <Link to="/manager-signup">
-                                    <Button
-                                        bsStyle="warning" fill pullRight>
-                                        <span className="fa fa-sign-up"></span>
-                                        {' '}Criar conta
-                                    </Button>
-                                </Link>
-                            </Col>
-                        </Row>
-                    </AvForm>
-                </div>
-            </Col>
+        <div className="content" style={styleContent}>
+            <SignInComponent 
+                withRole={() => roleRef.current}
+                onSigninSuccess={onSuccess}
+                onSigninError={onError}
+                />
+
             <img src={Logo} alt="logomarca"></img>
 
             <Modal

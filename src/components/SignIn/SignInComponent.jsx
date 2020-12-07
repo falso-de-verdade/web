@@ -3,36 +3,97 @@ import { Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
 
 import Button from 'components/CustomButton/CustomButton.jsx';
-import InputCustom from 'components/inputs/inputCustom';
+import AvField from "components/inputs/inputCustom";
+import { send } from "services/api";
 
-const SignInComponent = props => {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+const colStyleBox = {
+    padding: '16px', 
+    boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', 
+    backgroundColor: ' #4091ff', 
+    borderRadius: '6px',
+}
+
+const signin = data => {
+    return send({
+        method: 'post',
+        url: '/signin',
+        data,
+    })
+}
+
+const SignInComponent = ({ withRole, 
+                            onSigninSuccess, 
+                            onSigninError,
+                            buttons,
+                            colSize,
+                        }) => {
+    const [isLoading, setLoading] = React.useState(false);
+
+    const isInvalidCreds = React.useRef(false);
+
+    const onValidSubmit = (_, values) => {
+        const {
+            email,
+            password,
+        } = values;
+        
+        // signin data
+        const data = { email, password, role: withRole() };
+
+        // reset invalid creds
+        isInvalidCreds.current = false;
+
+        // we are loading
+        setLoading(true);
+
+        signin(data).then(response => {
+            onSigninSuccess(data, response);
+        }).catch(({ response }) => {
+            // network error, or some unknow shit
+            if (response === undefined) {
+                return;
+            }
+
+            const status = response.status;
+
+            if (status == 401) {
+                isInvalidCreds.current = true;
+            } else {
+                const submitHelper = () => onValidSubmit(_, values);
+                onSigninError(response, submitHelper);
+            }
+        }).then(() => {
+            setLoading(false);
+        })
+    }
+
+    // TODO improve user experience
+    if (isInvalidCreds.current) {
+        alert('E-mail ou senha inválidos.')
+    }
 
     return (
-        <Col md={props.colSize || 8}>
-            <div style={{ padding: '16px', boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', backgroundColor: ' #4091ff', borderRadius: '6px' }}>
-                <AvForm autoComplete="off" onSubmit={() => props.onSubmit(email, password)}>
-                    <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+        <Col md={colSize || 8}>
+            <div style={colStyleBox}>
+                <AvForm onValidSubmit={onValidSubmit}>
+                    <Row>
                         <Col md={12}>
-                            <InputCustom
+                            <AvField
                                 type="email"
                                 descricao="E-mail"
                                 name="email"
                                 id="email"
-                                value={email}
-                                onChange={(e) => { setEmail(e.target.value) }}
                             />
                         </Col>
                     </Row>
-                    <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                    <Row>
                         <Col md={12} style={{ marginTop: '-10px' }}>
-                            <InputCustom
+                            <AvField
                                 type="password"
                                 id="password"
                                 name="password"
                                 descricao="Senha"
-                                onChange={(e) => { setPassword(e.target.value) }}
+                                value={isInvalidCreds.current ? "" : undefined}
                             />
                         </Col>
                     </Row>
@@ -45,7 +106,7 @@ const SignInComponent = props => {
                                 {' '}Entrar
                             </Button>
                         </Col>
-                        {props.operations && props.operations}
+                        {buttons && buttons}
                     </Row>
                 </AvForm>
             </div>
