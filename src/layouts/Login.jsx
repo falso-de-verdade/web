@@ -1,68 +1,103 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Alert } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
 
-import InputPasswordCustom from '../components/inputs/inputCustom'
-import InputCustom from '../components/inputs/inputCustom'
 import Logo from '../assets/img/logomarca.svg'
 import Button from 'components/CustomButton/CustomButton.jsx';
 import AuthRedirect from "components/AuthRedirect/AuthRedirect";
+import AvField from "components/inputs/inputCustom";
 import { Modal } from "components/Modal";
-
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            user: null,
-            lembrarDados: false,
-            hasMultipleRoles: false
-        };
+import { send } from "services/api";
 
 
-    };
+const styleContent = {
+    width: '100%',
+    maxWidth: '1120px',
+    height: '100vh',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+};
 
-    /**
-     * Execute the login operation after validation
-     */
-    handleLogin = () => {
-        console.log(`email: ${this.state.email}`)
-        console.log(`password: ${this.state.password}`)
+const colStyleBox = {
+    padding: '16px', 
+    boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', 
+    backgroundColor: ' #4091ff', 
+    borderRadius: '6px',
+}
 
-        const user = {
-            email: "exsample@test.com",
-        }
+const signin = (email, password) => {
+    return send({
+        method: 'post',
+        url: '/signin',
+        data: {
+            email,
+            password,
+        },
+    })
+}
 
-        this.setState({ user, hasMultipleRoles: true })
-    };
+const Login = ({}) => {
+    const [isLoading, setLoading] = React.useState(false);
+    const [role, setRole] = React.useState(null);
+    const [hasMultipleRoles, setHasMultiplesRoles] = React.useState(false);
+    const [user, setUser] = React.useState(null);
 
-    toggleChangeLembrarDados = () => {
-        this.setState({ lembrarDados: !this.state.lembrarDados });
-    };
+    const isInvalidCreds = React.useRef(false);
 
-    handleResidentRole = () => {
-        this.setState({ 
-            succeeded: true, 
-            user: { name: "Morador", isManager: false } 
+    const onValidSubmit = (_, values) => {
+        const {
+            email,
+            password,
+        } = values;
+
+        // reset invalid creds
+        isInvalidCreds.current = false;
+
+        // we are loading
+        setLoading(true);
+
+        signin(email, password).then(response => {
+            // TODO handle user login
+            console.log(response);
+        }).catch(({ response }) => {
+            // network error, or some unknow shit
+            if (response === undefined) {
+                return;
+            }
+
+            const status = response.status;
+
+            if (status == 401) {
+                isInvalidCreds.current = true;
+            } else if (status == 422) {
+                const code = response.data._error.code;
+                if (code == 0) {
+                    setHasMultiplesRoles(true);
+                }
+            }
+        }).then(() => {
+            setLoading(false);
         })
     }
 
-    handleManagerRole = () => {
-        this.setState({ 
-            succeeded: true, 
-            user: { isManager: true, name: "Síndico" } 
-        })
+    const setResidentRole = () => {
+        setRole('resident');
     }
 
-    modalButtons = () =>
+    const setManagerRole = () => {
+        setRole('manager');
+    }
+
+    const modalButtons = () =>
         <React.Fragment>
             <Col md={2}>
                 <Button
                     bsStyle="primary"
-                    onClick={this.handleResidentRole}
+                    onClick={setResidentRole}
                     fill
                 >
                     Morador
@@ -71,7 +106,7 @@ class Login extends Component {
 
             <Button
                 bsStyle="secondary"
-                onClick={this.handleManagerRole}
+                onClick={setManagerRole}
                 fill
                 pullRight
             >
@@ -79,92 +114,75 @@ class Login extends Component {
             </Button>{" "}
         </React.Fragment>
 
-    render() {
-        if (this.state.succeeded) {
-            return <AuthRedirect user={this.state.user} />
-        };
+    if (user) {
+        return <AuthRedirect user={user} />
+    }
 
-        const styleInput = {
-            fontSize: 12,
-            height: '38px'
-        };
+    // TODO improve user experience
+    if (isInvalidCreds.current) {
+        alert('E-mail ou senha inválidos.')
+    }
 
-        const styleLabel = {
-            fontSize: 11
-        };
-
-        const styleContent = {
-            width: '100%',
-            maxWidth: '1120px',
-            height: '100vh',
-            margin: '0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-        };
-
-        return (
-            <div className="content" style={styleContent}>
-                <Col md={6}>
-                    <div style={{ padding: '16px', boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', backgroundColor: ' #4091ff', borderRadius: '6px' }}>
-                        <AvForm autoComplete="off" ref="formLogin" onSubmit={this.handleLogin}>
-                            <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                                <Col md={12}>
-                                    <InputCustom
-                                        type="email"
-                                        descricao="E-mail"
-                                        name="email"
-                                        id="email"
-                                        value={this.state.email}
-                                        onChange={(e) => { this.setState({ email: e.target.value }) }}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                                <Col md={12} style={{ marginTop: '-10px' }}>
-                                    <InputPasswordCustom
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        descricao="Senha"
-                                        onChange={(e) => { this.setState({ password: e.target.value }) }}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row style={{ padding: '15px' }}>
-                                <Col md={6}>
+    return (
+        <div disabled={isLoading} className="content" style={styleContent}>
+            <Col md={8}>
+                <div style={colStyleBox}>
+                    <AvForm onValidSubmit={onValidSubmit}>
+                        <Row>
+                            <Col md={12}>
+                                <AvField
+                                    type="email"
+                                    descricao="E-mail"
+                                    name="email"
+                                    id="email"
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={12} style={{ marginTop: '-10px' }}>
+                                <AvField
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    descricao="Senha"
+                                    value={isInvalidCreds.current ? "" : undefined}
+                                />
+                            </Col>
+                        </Row>
+                        <Row style={{ padding: '15px' }}>
+                            <Col md={6}>
+                                <Button
+                                    type="submit"
+                                    bsStyle="success" fill>
+                                    <span className="fa fa-sign-in"></span>
+                                    {' '}Entrar
+                                </Button>
+                            </Col>
+                            <Col md={6}>
+                                <Link to="/manager-signup">
                                     <Button
-                                        type="submit"
-                                        bsStyle="success" fill>
-                                        <span className="fa fa-sign-in"></span>
-                                        {' '}Entrar
+                                        bsStyle="warning" fill pullRight>
+                                        <span className="fa fa-sign-up"></span>
+                                        {' '}Criar conta
                                     </Button>
-                                </Col>
-                                <Col md={6}>
-                                    <Link to="/manager-signup">
-                                        <Button
-                                            bsStyle="warning" fill pullRight>
-                                            <span className="fa fa-sign-up"></span>
-                                            {' '}Criar conta
-                                        </Button>
-                                    </Link>
-                                </Col>
-                            </Row>
-                        </AvForm>
-                    </div>
-                </Col>
-                <img src={Logo} alt="logomarca"></img>
+                                </Link>
+                            </Col>
+                        </Row>
+                    </AvForm>
+                </div>
+            </Col>
+            <img src={Logo} alt="logomarca"></img>
 
-                <Modal
-                    show={this.state.hasMultipleRoles}
-                    title="Perfis"
-                    buttons={this.modalButtons()}
-                    bodyText="Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar."
-                    backdrop="static"
-                    />
-            </div>
-        );
-    };
-};
+            <Modal
+                show={hasMultipleRoles}
+                title="Perfis"
+                buttons={modalButtons()}
+                bodyText="Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar."
+                backdrop="static"
+                />
+        </div>
+    );
+}
+
 
 export default Login;
