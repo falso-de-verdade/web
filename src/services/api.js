@@ -1,3 +1,5 @@
+import { getCurrentJWT } from "./auth";
+
 const axios = require('axios');
 
 const configure = alert => {
@@ -43,9 +45,28 @@ const onResponseErr = (alert, error) => {
     // alert.show('error')
 }
 
+const maybeAddAuthorization = config => {
+    // retrieve save credentials
+    const jwt = getCurrentJWT();
+
+    // maybe add access token into 
+    if (jwt !== null) {
+        const headers = config.headers || {};
+        const newHeaders = {
+            "Authorization": `Bearer ${jwt.accessToken}`,
+            ...headers,
+        }
+
+        // overwrite headers
+        config.headers = newHeaders;
+    }
+}
+
 async function send(config, 
                     parseItems = false, 
                     isItem = false) {
+
+    maybeAddAuthorization(config);
     const promise = axios(config);
     if (!parseItems) {
         return promise;
