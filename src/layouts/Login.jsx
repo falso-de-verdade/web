@@ -6,7 +6,7 @@ import Logo from '../assets/img/logomarca.svg'
 import Button from 'components/CustomButton/CustomButton.jsx';
 import AuthRedirect from "components/AuthRedirect/AuthRedirect";
 import { Modal } from "components/Modal";
-import SignInComponent from "components/SignIn/SignInComponent";
+import { SignInComponent } from "components/SignIn";
 
 const styleContent = {
     width: '100%',
@@ -92,7 +92,6 @@ const Login = ({}) => {
         </React.Fragment>
 
     if (jwt) {
-        console.log('redirecting');
         return <AuthRedirect jwt={jwt} />
     }
 
