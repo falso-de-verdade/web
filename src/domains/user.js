@@ -1,13 +1,13 @@
 import { DataDomain } from ".";
-import { send } from "services/api";
+import { sendAndParse } from "services/api";
 
 
 class UserDomain extends DataDomain {
     me = () =>
-        send({
+        sendAndParse({
             method: 'get',
             url: `${this.resource}/me`
-        })
+        }, true)
 }
 
 
