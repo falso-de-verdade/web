@@ -44,16 +44,16 @@ class Login extends Component {
     };
 
     handleResidentRole = () => {
-        this.setState({ 
-            succeeded: true, 
-            user: { name: "Morador", isManager: false } 
+        this.setState({
+            succeeded: true,
+            user: { name: "Morador", isManager: false }
         })
     }
 
     handleManagerRole = () => {
-        this.setState({ 
-            succeeded: true, 
-            user: { isManager: true, name: "Síndico" } 
+        this.setState({
+            succeeded: true,
+            user: { isManager: true, name: "Síndico" }
         })
     }
 
@@ -144,7 +144,7 @@ class Login extends Component {
                                     <Link to="/manager-signup">
                                         <Button
                                             bsStyle="warning" fill pullRight>
-                                            <span className="fa fa-sign-up"></span>
+                                            <span className="fa fa-user-plus"></span>
                                             {' '}Criar conta
                                         </Button>
                                     </Link>
@@ -161,7 +161,7 @@ class Login extends Component {
                     buttons={this.modalButtons()}
                     bodyText="Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar."
                     backdrop="static"
-                    />
+                />
             </div>
         );
     };
