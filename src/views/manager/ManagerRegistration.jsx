@@ -17,7 +17,7 @@ const onRegister = (name, email, password, history) => {
 
 const BackOperations = props => {
   return (
-    <Col md={10}>
+    <Col md={6} style={{ marginTop: '-10px' }}>
       <Link to="/login">
         <Button bsStyle="warning" fill pullRight>Voltar</Button>
       </Link>
