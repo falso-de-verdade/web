@@ -27,7 +27,7 @@ const signupButton = props =>
 
 const Login = ({}) => {
     const [hasMultipleRoles, setHasMultiplesRoles] = React.useState(false);
-    const [user, setUser] = React.useState(null);
+    const [jwt, setJWT] = React.useState(null);
 
     const reuseSubmitRef = React.useRef(null);
     const roleRef = React.useRef(undefined);
@@ -43,7 +43,10 @@ const Login = ({}) => {
     }
 
     const onSuccess = (data, response) => {
-        console.log(response);
+        console.log(response, data);
+
+        // the response payload contains jwt credentials
+        setJWT(response.data);
     }
 
     const submitWithRole = role => {
@@ -88,8 +91,9 @@ const Login = ({}) => {
             </Button>{" "}
         </React.Fragment>
 
-    if (user) {
-        return <AuthRedirect user={user} />
+    if (jwt) {
+        console.log('redirecting');
+        return <AuthRedirect jwt={jwt} />
     }
 
     return (

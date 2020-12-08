@@ -1,4 +1,14 @@
 import { DataDomain } from ".";
+import { send } from "services/api";
 
 
-export default new DataDomain('user');
+class UserDomain extends DataDomain {
+    me = () =>
+        send({
+            method: 'get',
+            url: `${this.resource}/me`
+        })
+}
+
+
+export default new UserDomain('user');
