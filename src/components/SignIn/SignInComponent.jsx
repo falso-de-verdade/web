@@ -98,14 +98,12 @@ const SignInComponent = ({ withRole,
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={6}>
-                            <Button
-                                type="submit"
-                                bsStyle="success" fill>
-                                <span className="fa fa-sign-in"></span>
-                                {' '}Entrar
-                            </Button>
-                        </Col>
+                        <Button
+                            type="submit"
+                            bsStyle="success" fill>
+                            <span className="fa fa-sign-in"></span>
+                            {' '}Entrar
+                        </Button>
                         {buttons && buttons}
                     </Row>
                 </AvForm>

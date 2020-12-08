@@ -1,5 +1,5 @@
 import React from "react";
-
+import {  Link } from "react-router-dom";
 import { Col } from 'reactstrap';
 
 import Logo from '../assets/img/logomarca.svg'
@@ -17,6 +17,13 @@ const styleContent = {
     alignItems: 'center',
     justifyContent: 'space-between',
 };
+
+const signupButton = props =>
+    <Link to="/manager-signup">
+        <Button bsStyle="warning" fill pullRight>
+            Criar conta
+        </Button>
+    </Link>
 
 const Login = ({}) => {
     const [hasMultipleRoles, setHasMultiplesRoles] = React.useState(false);
@@ -91,6 +98,7 @@ const Login = ({}) => {
                 withRole={() => roleRef.current}
                 onSigninSuccess={onSuccess}
                 onSigninError={onError}
+                buttons={signupButton()}
                 />
 
             <img src={Logo} alt="logomarca"></img>
