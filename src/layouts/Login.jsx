@@ -6,7 +6,7 @@ import Logo from '../assets/img/logomarca.svg'
 import Button from 'components/CustomButton/CustomButton.jsx';
 import AuthRedirect from "components/AuthRedirect/AuthRedirect";
 import { Modal } from "components/Modal";
-import SignInComponent from "components/SignIn/SignInComponent";
+import { SignInComponent } from "components/SignIn";
 
 const styleContent = {
     width: '100%',
@@ -27,7 +27,7 @@ const signupButton = props =>
 
 const Login = ({}) => {
     const [hasMultipleRoles, setHasMultiplesRoles] = React.useState(false);
-    const [user, setUser] = React.useState(null);
+    const [jwt, setJWT] = React.useState(null);
 
     const reuseSubmitRef = React.useRef(null);
     const roleRef = React.useRef(undefined);
@@ -43,7 +43,10 @@ const Login = ({}) => {
     }
 
     const onSuccess = (data, response) => {
-        console.log(response);
+        console.log(response, data);
+
+        // the response payload contains jwt credentials
+        setJWT(response.data);
     }
 
     const submitWithRole = role => {
@@ -88,8 +91,8 @@ const Login = ({}) => {
             </Button>{" "}
         </React.Fragment>
 
-    if (user) {
-        return <AuthRedirect user={user} />
+    if (jwt) {
+        return <AuthRedirect jwt={jwt} />
     }
 
     return (

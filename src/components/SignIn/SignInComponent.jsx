@@ -2,23 +2,15 @@ import React from "react";
 import { Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
 
+import { signIn } from "./index";
 import Button from 'components/CustomButton/CustomButton.jsx';
 import AvField from "components/inputs/inputCustom";
-import { send } from "services/api";
 
 const colStyleBox = {
     padding: '16px', 
     boxShadow: '0 0 100px rgba(21, 50, 90, 0.7)', 
     backgroundColor: ' #4091ff', 
     borderRadius: '6px',
-}
-
-const signin = data => {
-    return send({
-        method: 'post',
-        url: '/signin',
-        data,
-    })
 }
 
 const SignInComponent = ({ withRole, 
@@ -46,7 +38,7 @@ const SignInComponent = ({ withRole,
         // we are loading
         setLoading(true);
 
-        signin(data).then(response => {
+        signIn(data).then(response => {
             onSigninSuccess(data, response);
         }).catch(({ response }) => {
             // network error, or some unknow shit

@@ -3,11 +3,16 @@ import { Row, Col, Container, FormGroup, Spinner } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { AvForm } from 'availity-reactstrap-validation';
 
-import SignInComponent from "components/SignIn/SignInComponent";
+import { 
+  SignInComponent, 
+  signIn,
+} from "components/SignIn";
 import Button from "components/CustomButton/CustomButton.jsx";
 import InputCustom from '../../components/inputs/inputCustom';
 import { Modal } from "components/Modal";
 import { send } from "services/api";
+import AuthRedirect from "components/AuthRedirect/AuthRedirect";
+
 
 const styleContent = {
   width: '100%',
@@ -32,6 +37,8 @@ const SignUpComponent = ({ onUserFromAccount,
                             role }) => {
   const [showSignInModal, setShowSignInModal] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
+  const [isLoggingIn, setLoggingIn] = React.useState(false);
+  const [jwt, setJWT] = React.useState(null);
   const [registeredData, setRegisteredData] = React.useState(null);
 
   const history = useHistory();
@@ -46,6 +53,22 @@ const SignUpComponent = ({ onUserFromAccount,
 
   const handleRegisteredUser = () => {
     onRegisteredAccount(registeredData);
+    
+    // parse data
+    const {
+      email,
+      password,
+    } = registeredData;
+
+    setLoggingIn(true);
+    signIn({ email, password, role })
+      .then(response => {
+        setJWT(response.data);
+      })
+      .catch(response => {
+        console.log(response);
+      })
+      .then(() => setLoggingIn(false));
   }
 
   const onRegisterSubmit = (_, values) => {
@@ -86,6 +109,19 @@ const SignUpComponent = ({ onUserFromAccount,
   }
 
   const hideSignInModal = () => setShowSignInModal(false);
+
+  if (isLoggingIn) {
+    return (
+      <div>
+        Logando...
+      </div>
+    )
+  }
+
+  // log user in
+  if (jwt) {
+    return <AuthRedirect jwt={jwt} />
+  }
 
   return (
     <div className="content" style={styleContent}>
