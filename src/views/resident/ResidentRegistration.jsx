@@ -7,15 +7,6 @@ import SignUpComponent from "components/SignUp/SignUpComponent";
 import Button from "components/CustomButton/CustomButton.jsx";
 import { ModalWithListing } from "components/Modal";
 
-const onManagerFromAccount = (user, history) => {
-  console.log(user);
-  // history.push("/admin/dashboard");
-}
-
-const onRegister = (name, email, password, history) => {
-  console.log(name, email, password);
-}
-
 const condominiumHeaders = [
   "Nome",
   "Endereço",
@@ -41,6 +32,15 @@ const ResidentRegistration = props => {
 
   const hideCondoModal = () => setShowCondoModal(false);
 
+  const onManagerFromAccount = (user, history) => {
+    console.log(user);
+    // history.push("/admin/dashboard");
+  }
+
+  const loginFromRegistered = data => {
+    console.log(data);
+  }
+ 
   const modalButtons =
     <React.Fragment>
       <Col md={2}>
@@ -61,9 +61,10 @@ const ResidentRegistration = props => {
     </React.Fragment>
 
   return <React.Fragment>
-      <SignUpComponent 
+      <SignUpComponent
+          role="resident"
           onUserFromAccount={onManagerFromAccount} 
-          onRegister={onRegister}
+          onRegisteredAccount={loginFromRegistered}
           image={Subscriber}
           />
 

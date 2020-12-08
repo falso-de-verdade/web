@@ -1,39 +1,41 @@
-import React, { Component } from "react";
-import { Col } from "reactstrap";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import Subscriber from '../../assets/img/subscriber.svg'
 import Button from "components/CustomButton/CustomButton.jsx";
 import SignUpComponent from "components/SignUp/SignUpComponent";
-
-const onResidentFromAccount = (user, history) => {
-  console.log(user);
-  // history.push("/admin/dashboard");
-}
-
-const onRegister = (name, email, password, history) => {
-  console.log(name, email, password);
-}
+import { Modal } from "components/Modal";
 
 const BackOperations = props => {
   return (
-    <Col md={10}>
-      <Link to="/login">
-        <Button bsStyle="warning" fill pullRight>Voltar</Button>
-      </Link>
-    </Col>
+    <Link to="/login">
+      <Button bsStyle="warning" fill pullRight>Voltar</Button>
+    </Link>
   )
 }
 
 const ManagerRegistration = props => {
-  return (
+  const history = useHistory();
+
+  const onResidentFromAccount = user => {
+    console.log(user);
+    // history.push("/admin/dashboard");
+  }
+
+  const loginFromRegistered = data => {
+    // TODO login user after registered
+    console.log(data);
+  }
+
+  return <React.Fragment>
     <SignUpComponent 
+      role={"manager"}
       onUserFromAccount={onResidentFromAccount} 
-      onRegister={onRegister}
+      onRegisteredAccount={loginFromRegistered}
       image={Subscriber}
       operations={<BackOperations />}
       />
-  );
+  </React.Fragment>
 }
 
 export default ManagerRegistration;

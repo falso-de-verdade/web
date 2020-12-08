@@ -28,14 +28,10 @@ class InputCustom extends Component {
                 <AvGroup>
                     <Label for={this.props.id} style={styleLabel}>{this.props.descricao}</Label>
                     <AvField
-                        type={this.props.type}
                         style={styleInput}
                         name={this.props.id} 
-                        id={this.props.id} 
                         disabled={this.props.disabledButtons}
-                        value={this.props.value}
-                        onChange={this.props.onChange}
-                        />
+                        {...this.props}/>
                 </AvGroup>
             </div>
         )
