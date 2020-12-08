@@ -52,7 +52,6 @@ class AdminNavbarLinks extends Component {
                   //value={this.state.inputLocalizarStatus}
                   onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
                   <option value="">Selecione o condomínio</option>
-                  <optgroup label="Condomínios"></optgroup>
                   <option value="1">Condomínio Villa Flor</option>
                   <option value="2">Condomínio St Flor</option>
                   <option value="3">Condomínio Maré Azul VI</option>
