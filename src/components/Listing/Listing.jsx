@@ -46,20 +46,25 @@ const Listing = ({ name,
         }).catch(onError('fetching'));
     }
 
+    const refresh = () => {
+        // force re-fetching
+        itemsRef.current = null;
+
+        setLoading(true);
+    }
+
     const removeItem = () => {
         // we are waiting
         setLoading(true);
 
         // try:
-        onItemRemoval(selectedItemRef.current).then(() => {
-            // force re-fetching
-            itemsRef.current = null;
-
-            setLoading(true);
-        }).catch(onError('removing')).then(() => {
-            // reset selected item
-            setHasSelectedItem(false);
-        });
+        onItemRemoval(selectedItemRef.current)
+            .then(refresh)
+            .catch(onError('removing'))
+            .then(() => {
+                // reset selected item
+                setHasSelectedItem(false);
+            });
     }
 
     const modalButtons =
@@ -99,6 +104,14 @@ const Listing = ({ name,
                         bsStyle="info"
                         onClick={() => searchOne(searchQuery, history)} >
                         <span className="fa fa-search"></span>Localizar
+                    </ButtonB>
+
+                    <ButtonB 
+                        bsStyle="info" 
+                        fill 
+                        style={{ margin: "15px" }}
+                        onClick={refresh}>
+                        <i class="fa fa-refresh"></i>
                     </ButtonB>
 
                     {addLink && 
