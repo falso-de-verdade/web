@@ -1,5 +1,5 @@
 import React from "react";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Col } from 'reactstrap';
 
 import Logo from '../assets/img/logomarca.svg'
@@ -21,11 +21,12 @@ const styleContent = {
 const signupButton = props =>
     <Link to="/manager-signup">
         <Button bsStyle="warning" fill pullRight>
-            Criar conta
+            <span className="fa fa-user-plus"></span>
+            {' '}Criar conta
         </Button>
     </Link>
 
-const Login = ({}) => {
+const Login = ({ }) => {
     const [hasMultipleRoles, setHasMultiplesRoles] = React.useState(false);
     const [jwt, setJWT] = React.useState(null);
 
@@ -56,7 +57,7 @@ const Login = ({}) => {
         if (!submitFunction) {
             throw Error("Unable to complete login with multiple roles.");
         }
-        
+
         // try submit again
         submitFunction()
     }
@@ -97,12 +98,12 @@ const Login = ({}) => {
 
     return (
         <div className="content" style={styleContent}>
-            <SignInComponent 
+            <SignInComponent
                 withRole={() => roleRef.current}
                 onSigninSuccess={onSuccess}
                 onSigninError={onError}
                 buttons={signupButton()}
-                />
+            />
 
             <img src={Logo} alt="logomarca"></img>
 
@@ -112,7 +113,7 @@ const Login = ({}) => {
                 buttons={modalButtons()}
                 bodyText="Esta conta possui os perfis de síndico e morador. Escolha qual deseja usar."
                 backdrop="static"
-                />
+            />
         </div>
     );
 }
