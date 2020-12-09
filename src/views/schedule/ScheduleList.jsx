@@ -7,19 +7,19 @@ import { Listing } from "components/Listing";
 import ScheduleDomain from "domains/schedule";
 
 const dataReducer = shedule => [
-    shedule.resident,
-    shedule.dependency,
-    shedule.date,
-    shedule.hour,
-    shedule.NumOccupants,
+    shedule.resident.name,
+    shedule.outbuilding.name,
+    shedule.day,
+    `${shedule.fromHour} até ${shedule.toHour}`,
+    shedule.occupants,
 ]
 
 const Headers = [
     "Morador",
-    "dependência",
-    "data",
-    "horário",
-    "QTD. de ocupantes"
+    "Dependência",
+    "Data",
+    "Horário",
+    "Número de ocupantes"
 ]
 
 const searchOne = (query, history) => {
@@ -68,6 +68,13 @@ const Operations = ({ item, selectItem }) => (
     </div>
 )
 
+const fetchItems = () => 
+    ScheduleDomain.list({
+        params: {
+            embedded: '{"resident":1,"outbuilding":1}',
+        },
+    })
+
 const ScheduleList = ({ }) => (
     <UserAuthContext.Consumer>
         {
@@ -79,7 +86,7 @@ const ScheduleList = ({ }) => (
                 searchOne={searchOne}
                 onItemClick={onView}
                 onItemRemoval={ScheduleDomain.remove}
-                fetchItems={ScheduleDomain.list}
+                fetchItems={fetchItems}
                 OperationsComponent={Operations}
                 addLink={!user.isManager && ScheduleDomain.resource} />
         }

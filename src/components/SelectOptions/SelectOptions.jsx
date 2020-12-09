@@ -1,6 +1,9 @@
 import React from "react";
 
-const SelectOptions = ({ domain, nameResolver, defaultOptions }) => {
+const SelectOptions = ({ domain, 
+                         nameResolver, 
+                         defaultOptions,
+                         selected, }) => {
     const [listing, setListing] = React.useState(null);
 
     if (defaultOptions === undefined) {
@@ -17,7 +20,12 @@ const SelectOptions = ({ domain, nameResolver, defaultOptions }) => {
                 <option key={idx} {...props}>{text}</option>
             )}
             {listing.map((item, idx) =>
-                <option key={idx} value={item._id}>{nameResolver(item)}</option>
+                <option 
+                    selected={selected && item._id == selected} 
+                    key={idx} 
+                    value={item._id}>
+                    {nameResolver(item)}
+                </option>
             )}
         </React.Fragment>
     }

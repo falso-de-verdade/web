@@ -9,6 +9,8 @@ import Button from "components/CustomButton/CustomButton";
 import { ModelComponent } from 'views/common';
 import ScheduleDomain from 'domains/schedule';
 import { ModalWithListing } from "components/Modal";
+import SelectOptions from "components/SelectOptions/SelectOptions";
+import OutbDomain from "domains/outbuilding";
 import DayPicker from "react-day-picker";
 
 class ScheduleModel extends ModelComponent {
@@ -31,7 +33,7 @@ class ScheduleModel extends ModelComponent {
 
     mapData = values => {
         const {
-            outbuildingId,
+            outbuilding,
             day,
             occupants,
             fromHour,
@@ -40,8 +42,8 @@ class ScheduleModel extends ModelComponent {
         } = values;
 
         return {
-            outbuildingId,
             day,
+            outbuilding,
             occupants,
             fromHour,
             toHour,
@@ -88,16 +90,17 @@ class ScheduleModel extends ModelComponent {
             name: "Cadastro",
             rows: [
                 {
-                    outbuildingId: {
+                    outbuilding: {
                         type: "select",
                         label: "Dependência",
                         children:
-                            <React.Fragment>
-                                <option>Selecionar</option>
-                                <option value="0">São joao</option>
-                            </React.Fragment>
+                            <SelectOptions 
+                                domain={OutbDomain}
+                                nameResolver={outb => outb.name}
+                                selected={this.isEditing && this.originalData['outbuilding']}
+                            />
                     },
-                    date: {
+                    day: {
                         type: "date",
                         label: "Dia do agendamento"
                     },
@@ -123,7 +126,7 @@ class ScheduleModel extends ModelComponent {
                         label: "Hora fim"
                     },
                     occupants: {
-                        type: "text",
+                        type: "number",
                         label: "Quantidade de ocupantes"
                     }
                 },
