@@ -9,6 +9,7 @@ import OutbuildingDomain from "domains/outbuilding";
 const dataReducer = outb => [
   outb.name,
   outb.capacity,
+  outb.condominium.name
 ]
 
 const Headers = [
@@ -16,6 +17,7 @@ const Headers = [
   // "Disponibilidade", 
   "Capacidade", 
   // "Local",
+  "Condomínio"
 ]
 
 const searchOne = (query, history) => {

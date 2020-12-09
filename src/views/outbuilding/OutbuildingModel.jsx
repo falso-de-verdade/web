@@ -3,6 +3,8 @@ import React from "react";
 import Button from "components/CustomButton/CustomButton";
 import { ModelComponent } from "views/common";
 import OutbDomain from "domains/outbuilding";
+import CondoDomian from "domains/condominium";
+import SelectedOptions from "components/SelectOptions/SelectOptions";
 
 const DAYS = [
   "Domingo",
@@ -24,17 +26,19 @@ class OutbuildingModel extends ModelComponent {
       name,
       description,
       capacity,
+      condominium
     } = values;
 
     return {
       name,
       description,
       capacity,
+      condominium
     }
   }
 
   tabAndFields = () => {
-    console.log(OutbDomain.list());
+    //console.log(OutbDomain.list());
     return [
       this.storeTab(),
       this.availabilityTab(),
@@ -51,14 +55,17 @@ class OutbuildingModel extends ModelComponent {
             type: "text",
             label: "Nome",
           },
-          condominiumId: {
+          condominium: {
             type: "select",
             label: "Condomínio",
             required: false,
-            children: <React.Fragment>
-              <option>Selecionar</option>
-              <option value="0">São joao</option>
-            </React.Fragment>
+            children:
+              <React.Fragment>
+                <SelectedOptions
+                  domain={CondoDomian}
+                  nameResolver={condo => condo.name}
+                />
+              </React.Fragment>
           },
           capacity: {
             type: "number",
