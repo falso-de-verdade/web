@@ -24,7 +24,15 @@ import { NavLink } from "react-router-dom";
 import { UserAuthContext } from "contexts";
 import Button from "components/CustomButton/CustomButton.jsx";
 import InputCustom from "components/inputs/inputCustom";
+import SelectOptions from "components/SelectOptions/SelectOptions";
+import CondoDomain from "domains/condominium";
 
+const condoSelectAll = [
+  { 
+    text: "Todos os condomínios",
+    value: "all",
+  }
+]
 
 class AdminNavbarLinks extends Component {
 
@@ -51,11 +59,11 @@ class AdminNavbarLinks extends Component {
                 <AvField type="select" name="select"
                   //value={this.state.inputLocalizarStatus}
                   onChange={(e) => { this.setState({ inputLocalizarStatus: e.target.value }) }}>
-                  <option value="">Selecione o condomínio</option>
-                  <optgroup label="Condomínios"></optgroup>
-                  <option value="1">Condomínio Villa Flor</option>
-                  <option value="2">Condomínio St Flor</option>
-                  <option value="3">Condomínio Maré Azul VI</option>
+                  <SelectOptions
+                    domain={CondoDomain}
+                    nameResolver={condo => condo.name}
+                    defaultOptions={condoSelectAll}
+                   />
                 </AvField>
               </AvForm>
             </Col>
