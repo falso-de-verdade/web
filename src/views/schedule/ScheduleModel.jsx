@@ -18,16 +18,16 @@ class ScheduleModel extends ModelComponent {
 
     onModelResponse = (response, formValues) => {
         if (response && !this.isEditing) {
-            const scheduleCollision = {
-                resident: 'João José',
-                dependency: 'Piscina Bloco A',
-                date: '02/13/2020',
-                hour: '25:01',
-                NumOccupants: 3,
-            }
-            return {
-                collision: scheduleCollision
-            }
+            // const scheduleCollision = {
+            //     resident: 'João José',
+            //     dependency: 'Piscina Bloco A',
+            //     date: '02/13/2020',
+            //     hour: '25:01',
+            //     NumOccupants: 3,
+            // }
+            // return {
+            //     collision: scheduleCollision
+            // }
         }
     }
 
