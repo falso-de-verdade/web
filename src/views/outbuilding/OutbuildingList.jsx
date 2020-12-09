@@ -66,6 +66,13 @@ const Operations = ({ item, selectItem }) => (
   </div>
 )
 
+const fetchItems = () =>
+  OutbuildingDomain.list({
+    params: {
+      embedded: '{"condominium":1}'
+    }
+  })
+
 const OutbuildingList = ({}) => (
   <UserAuthContext.Consumer>
     {
@@ -77,7 +84,7 @@ const OutbuildingList = ({}) => (
                 searchOne={searchOne} 
                 onItemClick={onView}
                 onItemRemoval={OutbuildingDomain.remove}
-                fetchItems={OutbuildingDomain.list} 
+                fetchItems={fetchItems} 
                 OperationsComponent={Operations} 
                 addLink={user.isManager && OutbuildingDomain.resource}/>
     }
