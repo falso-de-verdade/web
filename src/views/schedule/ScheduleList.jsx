@@ -81,7 +81,7 @@ const ScheduleList = ({ }) => (
                 onItemRemoval={ScheduleDomain.remove}
                 fetchItems={ScheduleDomain.list}
                 OperationsComponent={Operations}
-                addLink={user.isManager && ScheduleDomain.resource} />
+                addLink={!user.isManager && ScheduleDomain.resource} />
         }
     </UserAuthContext.Consumer>
 )
