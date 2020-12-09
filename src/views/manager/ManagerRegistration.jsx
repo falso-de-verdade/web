@@ -8,9 +8,11 @@ import { Modal } from "components/Modal";
 
 const BackOperations = props => {
   return (
-    <Link to="/login">
-      <Button bsStyle="warning" fill pullRight>Voltar</Button>
-    </Link>
+    <Col md={6} style={{ marginTop: '-10px' }}>
+      <Link to="/login">
+        <Button bsStyle="warning" fill pullRight>Voltar</Button>
+      </Link>
+    </Col>
   )
 }
 

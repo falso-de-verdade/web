@@ -26,7 +26,7 @@ import { CondominiumList, CondominiumModel, FindCondominium } from "views/condom
 
 import { ScheduleModel, ScheduleList, FindSchedule } from "views/schedule";
 
-import Diversos from "views/diversos";
+//import Diversos from "views/diversos";
 import { CollisionList, CollisionModel, FindCollision } from "views/collision";
 import { TicketList, FindTicket } from "views/ticket";
 
@@ -140,13 +140,13 @@ const dashboardRoutes = [
     redirect: true
   },
 
-  {
+/*   {
     path: "/diversos",
     name: "Diversos",
     icon: "pe-7s-more",
     layout: "/admin",
     component: Diversos
-  },
+  }, */
 
   {
     path: "/meetings",

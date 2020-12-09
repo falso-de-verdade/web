@@ -33,11 +33,14 @@ class OutbuildingModel extends ModelComponent {
     }
   }
 
-  tabAndFields = () => [
-    this.storeTab(),
-    this.availabilityTab(),
-    this.mediaTab(),
-  ]
+  tabAndFields = () => {
+    console.log(OutbDomain.list());
+    return [
+      this.storeTab(),
+      this.availabilityTab(),
+      this.mediaTab(),
+    ]
+  }
 
   storeTab = () => {
     return {
@@ -89,7 +92,7 @@ class OutbuildingModel extends ModelComponent {
         <option value={idx}>{day}</option>
       ))}
     </React.Fragment>
-  ) 
+  )
 
   availabilityTab = () => {
     const headers = ["Dia(s) da semana", "Das", "Até"]
@@ -148,7 +151,7 @@ class OutbuildingModel extends ModelComponent {
         type: "submit",
         fill: true,
         children: <React.Fragment>
-           <span className="fa fa-plus"></span>
+          <span className="fa fa-plus"></span>
             Adicionar
         </React.Fragment>,
       }
@@ -179,7 +182,7 @@ class OutbuildingModel extends ModelComponent {
         type: "file",
         multiple: true,
         required: false,
-        onChange: async(e) => {
+        onChange: async (e) => {
           // get current form reference
           const currentForm = this.currentForm();
 

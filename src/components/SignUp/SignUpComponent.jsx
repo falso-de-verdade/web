@@ -25,9 +25,9 @@ const styleContent = {
 };
 
 const handleLogin = (email, password) => {
-    return {
-        name: "Usuário"
-    }
+  return {
+    name: "Usuário"
+  }
 }
 
 const SignUpComponent = ({ onUserFromAccount,
@@ -146,6 +146,7 @@ const SignUpComponent = ({ onUserFromAccount,
                   required />
               </Col>
             </Row>
+
             <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
               <Col md={12} style={{ marginTop: '-10px' }}>
                 <InputCustom
@@ -172,11 +173,12 @@ const SignUpComponent = ({ onUserFromAccount,
                   {operations && operations}
               </FormGroup>
             </Row>
-            <Row style={{ padding: '15px' }}>
-              <Col md={8}>
-                <Button bsStyle="info" fill pullRight
+
+            <Row style={{ padding: '10px' }}>
+              <Col md={12} style={{ marginTop: '-10px' }}>
+                <Button bsStyle="info" fill
                   onClick={() => setShowSignInModal(true)}>
-                    Usar conta existente
+                  Usar conta existente
                 </Button>
               </Col>
             </Row>
