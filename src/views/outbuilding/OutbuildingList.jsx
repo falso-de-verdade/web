@@ -9,6 +9,7 @@ import OutbuildingDomain from "domains/outbuilding";
 const dataReducer = outb => [
   outb.name,
   outb.capacity,
+  outb.condominium.name
 ]
 
 const Headers = [
@@ -16,6 +17,7 @@ const Headers = [
   // "Disponibilidade", 
   "Capacidade", 
   // "Local",
+  "Condomínio"
 ]
 
 const searchOne = (query, history) => {
@@ -64,6 +66,13 @@ const Operations = ({ item, selectItem }) => (
   </div>
 )
 
+const fetchItems = () =>
+  OutbuildingDomain.list({
+    params: {
+      embedded: '{"condominium":1}'
+    }
+  })
+
 const OutbuildingList = ({}) => (
   <UserAuthContext.Consumer>
     {
@@ -75,7 +84,7 @@ const OutbuildingList = ({}) => (
                 searchOne={searchOne} 
                 onItemClick={onView}
                 onItemRemoval={OutbuildingDomain.remove}
-                fetchItems={OutbuildingDomain.list} 
+                fetchItems={fetchItems} 
                 OperationsComponent={Operations} 
                 addLink={user.isManager && OutbuildingDomain.resource}/>
     }

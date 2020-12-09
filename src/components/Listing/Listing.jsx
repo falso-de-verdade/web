@@ -9,16 +9,16 @@ import Card from "components/Card/Card";
 import { ModalWithListing } from "components/Modal";
 import TableComponent from "./TableComponent";
 
-const Listing = ({ name, 
-                   title, 
-                   addLink, 
-                   searchOne, 
-                   headers,
-                   onItemClick,
-                   onItemRemoval,
-                   fetchItems, 
-                   dataReducer,
-                   OperationsComponent }) => {
+const Listing = ({ name,
+    title,
+    addLink,
+    searchOne,
+    headers,
+    onItemClick,
+    onItemRemoval,
+    fetchItems,
+    dataReducer,
+    OperationsComponent }) => {
     let history = useHistory();
 
     let [searchQuery, setSearchQuery] = React.useState('');
@@ -38,7 +38,7 @@ const Listing = ({ name,
             setLoading(false);
         }
     }
-    
+
     if (loading && itemsRef.current === null) {
         fetchItems().then(results => {
             itemsRef.current = results;
@@ -93,52 +93,53 @@ const Listing = ({ name,
                         style={{ marginBottom: '15px' }}
                         type="text"
                         onChange={e => setSearchQuery(e.target.value)}
-                        onKeyUp={(stroke) => stroke.key == 'Enter' ? 
-                                searchOne(searchQuery, history) : ''}
+                        onKeyUp={(stroke) => stroke.key == 'Enter' ?
+                            searchOne(searchQuery, history) : ''}
                         placeholder={`Localizar ${name}`}
                     />
                 </Col>
 
-                <Col md={8} style={{ marginBottom: '5px', paddingLeft: 0 }}>
+                <Col md={8} style={{ marginBottom: '5px', paddingLeft: 0, marginTop: '-15px' }}>
                     <ButtonB
                         bsStyle="info"
                         onClick={() => searchOne(searchQuery, history)} >
                         <span className="fa fa-search"></span>Localizar
                     </ButtonB>
 
-                    <ButtonB 
-                        bsStyle="info" 
-                        fill 
+                    <ButtonB
+                        bsStyle="info"
+                        fill
                         style={{ margin: "15px" }}
                         onClick={refresh}>
                         <i class="fa fa-refresh"></i>
                     </ButtonB>
 
-                    {addLink && 
+                    {addLink &&
                         <Link to={`${addLink}`}>
-                            <ButtonB bsStyle="info" fill pullRight style={{ marginLeft: '10px' }}>
+                            <ButtonB bsStyle="info" fill pullRight  style={{ margin: "15px" }}>
                                 <span className="fa fa-plus"></span>
                             </ButtonB>
                         </Link>
                     }
                 </Col>
+
             </Row>
 
             <Row style={{ paddingTop: '0px' }}>
                 <Col md={12}>
-                <Card
-                    title={title}
-                    ctAllIcons
-                    content={<TableComponent 
-                                headers={headers}
-                                items={itemsRef.current}
-                                onItemClick={values => onItemClick(values, history)}
-                                dataReducer={dataReducer}
-                                setSelectedItem={item => {
-                                    selectedItemRef.current = item;
-                                    setHasSelectedItem(true);
-                                }}
-                                OperationsComponent={OperationsComponent} />} />
+                    <Card
+                        title={title}
+                        ctAllIcons
+                        content={<TableComponent
+                            headers={headers}
+                            items={itemsRef.current}
+                            onItemClick={values => onItemClick(values, history)}
+                            dataReducer={dataReducer}
+                            setSelectedItem={item => {
+                                selectedItemRef.current = item;
+                                setHasSelectedItem(true);
+                            }}
+                            OperationsComponent={OperationsComponent} />} />
                 </Col>
             </Row>
 
@@ -160,7 +161,7 @@ const Listing = ({ name,
                 headers={headers}
                 items={[selectedItemRef.current]}
                 dataReducer={dataReducer}
-                />
+            />
         </div>
     </React.Fragment>
 }
