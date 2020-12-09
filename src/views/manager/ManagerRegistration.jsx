@@ -5,6 +5,7 @@ import Subscriber from '../../assets/img/subscriber.svg'
 import Button from "components/CustomButton/CustomButton.jsx";
 import SignUpComponent from "components/SignUp/SignUpComponent";
 import { Modal } from "components/Modal";
+import { Col } from "react-bootstrap";
 
 const BackOperations = props => {
   return (
