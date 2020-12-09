@@ -6,39 +6,49 @@ class DataDomain {
         this.resource = resource;
     }
 
-    list = config =>
-        sendAndParse({
+    list(config) {
+        return sendAndParse({
             method: 'get',
             url: this.resource,
             ...config,
         })
+    }
     
-    remove = item => this._withItem({
-        item,
-        method: 'delete'
-    })
+    remove(item) {
+        return this._withItem({
+            item,
+            method: 'delete'
+        })
+    }
 
-    create = data => sendAndParse({
-        data,
-        method: 'post',
-        url: this.resource,
-    }, true)
+    create(data) {
+        return sendAndParse({
+            data,
+            method: 'post',
+            url: this.resource,
+        }, true)
+    }
 
-    update = item => 
-        this._withItem({
+    update(item) {
+        return this._withItem({
             item: item,
             data: { ...item, _etag: undefined },
             method: 'patch',
         })
+    }
 
-    find = id => sendAndParse({
-        method: 'get',
-        url: this.itemPath({
-            _id: id
-        }),
-    }, true)
+    find(id) {
+        return sendAndParse({
+            method: 'get',
+            url: this.itemPath({
+                _id: id
+            }),
+        }, true)
+    }
 
-    itemPath = item => `${this.resource}/${item._id}`
+    itemPath(item) {
+        return `${this.resource}/${item._id}`;   
+    }
 
     _withItem = ({ item, ...config }) =>
         send({
