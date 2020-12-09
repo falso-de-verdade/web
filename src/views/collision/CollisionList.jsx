@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-
 import { Listing } from "components/Listing";
 import ButtonB from "components/CustomButton/CustomButton";
+import CollisionDomain from "domains/collision";
 
 const Headers = [
     "Dependência",
@@ -11,61 +11,19 @@ const Headers = [
 ];
 
 const dataReducer = collision => (
-   [
-       collision.outbuilding.name,
-       collision.date,
-       collision.tickets.length
-   ] 
+    [
+        //collision.outbuilding.name,
+        collision.date,
+        //collision.tickets.length
+    ]
 )
 
 const searchOne = (query, history) => {
     console.log(`Procurando ${query} ...`);
 }
 
-const onRemoval = (collision) => {
-    console.log(`Removing: ${collision.id}`);
-} 
-
 const onView = (collision, history) => {
-    history.push(`collision/${collision.id}`);
-}
-
-async function fakeItems() {
-    // await new Promise(r => setTimeout(r, 2000));
-    return [
-        {
-            id: "teste1",
-            outbuilding: {
-                id: "teste",
-                name: "Piscina",
-            },
-            date: "30/09/2020",
-            tickets: [
-                {
-                    resident: {
-                        name: "Yan"
-                    },
-                    timeRange: "14:30 ás 15:00",
-                    peopleCount: 20
-                },
-                {
-                    resident: {
-                        name: "Maria"
-                    },
-                    timeRange: "14:45 ás 15:45",
-                    peopleCount: 8
-                },
-                {
-                    resident: {
-                        name: "Maria"
-                    },
-                    timeRange: "14:45 ás 15:45",
-                    peopleCount: 8
-                }
-            ]
-        },
-        
-    ];
+    history.push(CollisionDomain.itemPath(collision));
 }
 
 const Operations = ({ item, setSelectedItem }) => (
@@ -76,23 +34,23 @@ const Operations = ({ item, setSelectedItem }) => (
                 simple type="button" style={{ padding: '3px' }}>
                 <span className="fa fa-eye"></span>
             </ButtonB>
-        </Link>                            
+        </Link>
     </div>
 )
 
-const CollisionList = ({}) => {
+const CollisionList = ({ }) => {
 
-    return <Listing 
-            name="conflito" 
-            title="Lista de conflitos"
-            addLink="collision"
-            headers={Headers}
-            dataReducer={dataReducer}
-            searchOne={searchOne} 
-            onItemClick={onView}
-            onItemRemoval={onRemoval}
-            fetchItems={fakeItems} 
-            OperationsComponent={Operations} />
+    return <Listing
+        name="conflito"
+        title="Lista de conflitos"
+        headers={Headers}
+        dataReducer={dataReducer}
+        searchOne={searchOne}
+        onItemClick={onView}
+        onItemRemoval={CollisionDomain.remove}
+        fetchItems={CollisionDomain.list}
+        OperationsComponent={Operations}
+    />
 }
 
 export default CollisionList;
