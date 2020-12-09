@@ -3,8 +3,8 @@ import { Row, Col, Container, FormGroup, Spinner } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { AvForm } from 'availity-reactstrap-validation';
 
-import { 
-  SignInComponent, 
+import {
+  SignInComponent,
   signIn,
 } from "components/SignIn";
 import Button from "components/CustomButton/CustomButton.jsx";
@@ -31,10 +31,10 @@ const handleLogin = (email, password) => {
 }
 
 const SignUpComponent = ({ onUserFromAccount,
-                            operations,
-                            image,
-                            onRegisteredAccount,
-                            role }) => {
+  operations,
+  image,
+  onRegisteredAccount,
+  role }) => {
   const [showSignInModal, setShowSignInModal] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
   const [isLoggingIn, setLoggingIn] = React.useState(false);
@@ -44,16 +44,16 @@ const SignUpComponent = ({ onUserFromAccount,
   const history = useHistory();
 
   const onSigninSubmit = (email, password) => {
-      const user = handleLogin(email, password);
+    const user = handleLogin(email, password);
 
-      if (user !== false) {
-          onUserFromAccount(user, history);
-      }
+    if (user !== false) {
+      onUserFromAccount(user, history);
+    }
   }
 
   const handleRegisteredUser = () => {
     onRegisteredAccount(registeredData);
-    
+
     // parse data
     const {
       email,
@@ -73,7 +73,7 @@ const SignUpComponent = ({ onUserFromAccount,
 
   const onRegisterSubmit = (_, values) => {
     setLoading(true);
-    
+
     const {
       name,
       email,
@@ -98,7 +98,7 @@ const SignUpComponent = ({ onUserFromAccount,
       if (response === undefined) {
         return;
       }
-  
+
       if (response.status == 422) {
         alert('Dados inválidos');
       }
@@ -165,17 +165,20 @@ const SignUpComponent = ({ onUserFromAccount,
                   required />
               </Col>
             </Row>
-            <Row style={{ padding: '15px' }}>
+
+            <Row style={{ paddingLeft: '10px', paddingRight: '10px' }}>
               <FormGroup>
+                <Col md={6} >
                   <Button type="submit" bsStyle="success" fill>
                     Salvar
                   </Button>
-                  {operations && operations}
+                </Col>
+                {operations && operations}
               </FormGroup>
             </Row>
 
             <Row style={{ padding: '10px' }}>
-              <Col md={12} style={{ marginTop: '-10px' }}>
+              <Col md={12}>
                 <Button bsStyle="info" fill
                   onClick={() => setShowSignInModal(true)}>
                   Usar conta existente
@@ -195,26 +198,26 @@ const SignUpComponent = ({ onUserFromAccount,
             Continuar
           </Button>
         }
-        />
+      />
 
       <Modal
-          show={showSignInModal}
-          title="Login"
-          bodyText=""
-          onHide={hideSignInModal}
+        show={showSignInModal}
+        title="Login"
+        bodyText=""
+        onHide={hideSignInModal}
       >
         <Container>
           <Row style={{ marginLeft: "-30px" }}>
             <SignInComponent
               colSize={6}
-              onSubmit={onSigninSubmit} 
+              onSubmit={onSigninSubmit}
               operations={
-                  <Button
-                      fill 
-                      pullRight 
-                      bsStyle="danger" 
-                      onClick={hideSignInModal}>
-                      Cancelar
+                <Button
+                  fill
+                  pullRight
+                  bsStyle="danger"
+                  onClick={hideSignInModal}>
+                  Cancelar
                   </Button>
               } />
           </Row>

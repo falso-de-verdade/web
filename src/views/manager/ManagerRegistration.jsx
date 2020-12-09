@@ -9,7 +9,7 @@ import { Col } from "react-bootstrap";
 
 const BackOperations = props => {
   return (
-    <Col md={6} style={{ marginTop: '-10px' }}>
+    <Col md={6}>
       <Link to="/login">
         <Button bsStyle="warning" fill pullRight>Voltar</Button>
       </Link>
@@ -31,13 +31,13 @@ const ManagerRegistration = props => {
   }
 
   return <React.Fragment>
-    <SignUpComponent 
+    <SignUpComponent
       role={"manager"}
-      onUserFromAccount={onResidentFromAccount} 
+      onUserFromAccount={onResidentFromAccount}
       onRegisteredAccount={loginFromRegistered}
       image={Subscriber}
       operations={<BackOperations />}
-      />
+    />
   </React.Fragment>
 }
 
