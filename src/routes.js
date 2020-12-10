@@ -18,8 +18,6 @@
 
 import { ResidentList, FindResident } from "views/resident";
 
-//import ResidentRegistration from 'views/moradores/ResidentRegistration.jsx';
-
 import { OutbuildingList, OutbuildingModel, FindOutbuilding } from "views/outbuilding";
 
 import { CondominiumList, CondominiumModel, FindCondominium } from "views/condominium";
@@ -103,24 +101,6 @@ const dashboardRoutes = [
     redirect: true,
     requiresManager: true
   },
-
-  /*  {
-     path: "/ResidentRegistration/:id",
-     name: "Morador",
-     icon: "pe-7s-user",
-     component: ResidentRegistration,
-     layout: "/admin",
-     redirect: true
-   },
- 
-   {
-     path: "/ResidentRegistration",
-     name: "Morador",
-     icon: "pe-7s-user",
-     component: ResidentRegistration,
-     layout: "/admin",
-     redirect: true
-   }, */
 
   /**rota dependencias */
   {

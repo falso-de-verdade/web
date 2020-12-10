@@ -54,7 +54,7 @@ const App = () => {
         <Route path="/logout" render={props => <LogoutLayout {...props} />} />
         <Route path="/login" render={props => <LoginLayout {...props} />} />
         <Route path="/manager-signup" render={props => <ManagerRegistration {...props} />} />
-        <Route path="/ResidentRegistration" render={props => <ResidentRegistration {...props} />} />
+        <Route path="/invite/:token" render={props => <ResidentRegistration {...props} />} />
 
         <Redirect exact from="/" to="/login" />
       </Switch>
