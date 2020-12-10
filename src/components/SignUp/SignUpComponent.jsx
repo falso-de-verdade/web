@@ -31,10 +31,11 @@ const handleLogin = (email, password) => {
 }
 
 const SignUpComponent = ({ onUserFromAccount,
-  operations,
-  image,
-  onRegisteredAccount,
-  role }) => {
+                          operations,
+                          image,
+                          onRegisteredAccount,
+                          role,
+                          withRegisterData }) => {
   const [showSignInModal, setShowSignInModal] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
   const [isLoggingIn, setLoggingIn] = React.useState(false);
@@ -85,6 +86,9 @@ const SignUpComponent = ({ onUserFromAccount,
       email,
       password,
     }
+
+    // maybe pass data to custom handler
+    withRegisterData && withRegisterData(data);
 
     send({
       data,

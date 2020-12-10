@@ -4,9 +4,11 @@ import ButtonB from "components/CustomButton/CustomButton.jsx";
 import { UserAuthContext } from "contexts";
 import Listing from "components/Listing/Listing";
 import CondominiumDomain from "domains/condominium"
-import { Modal } from "components/Modal";
+import { ModalWithListing } from "components/Modal";
 import { Col } from 'reactstrap';
 import Button from 'components/CustomButton/CustomButton.jsx';
+import { sendAndParse } from "services/api";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const dataReducer = condo => [
     condo.name,
@@ -26,30 +28,42 @@ const onView = (condo, history) => {
     history.push(CondominiumDomain.itemPath(condo));
 }
 
+const generateInviteLink = condominium =>
+    sendAndParse({
+        method: 'post',
+        url: '/invite',
+        data: { condominium },
+    }, true)
+
 const Operations = ({ item, selectItem }) => {
     const [isModal, setIsModal] = useState(false);
+    const [invite, setInvite] = useState(null);
+    const [isLoading, setLoading] = useState(false);
+
+    const hideModal = () => setIsModal(false);
+    const showModal = () => setIsModal(true);
+
+    const createInvite = () => {
+        generateInviteLink(item['_id'])
+            .then(result => {
+                setInvite(result.link);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+            .then(() => setLoading(false));
+        showModal();
+        setLoading(true);
+    }
 
     const modalButtons = () =>
-        <React.Fragment>
-            <Col md={2}>
-                <Button
-                    bsStyle="primary"
-                    //onClick={setResidentRole}
-                    fill
-                >
-                    Copiar link
-            </Button>{" "}
-            </Col>
-
+        <CopyToClipboard text={invite} onCopy={hideModal}>
             <Button
-                bsStyle="secondary"
-                onClick={() => setIsModal(false)}
-                fill
-                pullRight
-            >
-                Cancelar
-        </Button>{" "}
-        </React.Fragment>
+                bsStyle="primary"
+                fill>
+                Copiar link
+            </Button>
+        </CopyToClipboard>
 
     return (
         <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
@@ -73,7 +87,7 @@ const Operations = ({ item, selectItem }) => {
                             </ButtonB>
 
                             <ButtonB bsStyle="warning" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                                onClick={() => setIsModal(true)}>
+                                onClick={createInvite}>
                                 <span className="fa fa-user-plus"></span>
                             </ButtonB>
                         </React.Fragment>
@@ -90,12 +104,14 @@ const Operations = ({ item, selectItem }) => {
                 }}
             </UserAuthContext.Consumer>
 
-            <Modal
+            <ModalWithListing
                 show={isModal}
                 title="Convidar morador"
                 buttons={modalButtons()}
                 bodyText="Copie o link para convidar moradores para o condomínio selecionado."
-                backdrop="static"
+                dataReducer={dataReducer}
+                headers={Headers}
+                items={[item]}
             />
         </div>
     )
