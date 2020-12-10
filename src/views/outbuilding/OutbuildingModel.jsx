@@ -95,7 +95,7 @@ class OutbuildingModel extends ModelComponent {
 
   selectDayComponent = props => (
     <React.Fragment>
-      <option>Selecionar</option>
+      <option value="">Não selecionado</option>
       {DAYS.map((day, idx) => (
         <option value={idx}>{day}</option>
       ))}
@@ -120,8 +120,8 @@ class OutbuildingModel extends ModelComponent {
       } = values;
 
       return {
+        toDay: toDay || undefined,
         fromDay,
-        toDay,
         fromHour,
         toHour,
       }
