@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { AvForm, AvField, AvGroup, AvFeedback } from 'availity-reactstrap-validation';
 import { 
     Row, 
@@ -27,6 +27,7 @@ const FORM_STATE = {
     IDDLE: 0,
     WAITING: 1,
     WROTE: 2,
+    FETCHING_LINK: 3,
 }
 
 class MissingModelImplementation extends Error {
@@ -57,6 +58,7 @@ class ModelComponent extends Component {
             _formState: FORM_STATE.IDDLE,
             _hasError: false,
             _formResponse: null,
+            _itemLink: null,
             _activeTab: 0,
         }
     }
@@ -64,6 +66,12 @@ class ModelComponent extends Component {
     render = () => {
         if (this.domain === undefined) {
             throw new Error(`Missing ${this.constructor.name} data domain attribute.`);
+        }
+
+        const state = this.state._formState;
+
+        if (this.state._itemLink) {
+            return <Redirect to={this.state._itemLink} />
         }
 
         if (this.state._formState != FORM_STATE.WROTE) {
@@ -83,7 +91,10 @@ class ModelComponent extends Component {
         }
         
         const nextLink = this.deduceNextLink();
-        this.props.history.push(nextLink);
+        if (nextLink) {
+            return <Redirect to={nextLink} />
+        }
+        
         // return useless data, required
         return (<div></div>)
     }
@@ -152,8 +163,28 @@ class ModelComponent extends Component {
             return this.listingResource();
         }
 
-        return this.domain.itemPath(this.state._formResponse);
+        this.fetchItemLink();
     }
+
+    fetchItemLink = () => {
+        let _hasError = false;
+        let _itemLink = null;
+
+        this.retrieveCreatedItem(this.state._formResponse)
+            .then(item => {
+                _itemLink = this.domain.itemPath(item);
+            })
+            .catch(error => {
+                _hasError = true;        
+            })
+            .then(() => {
+                this.setState({ _formState: FORM_STATE.WROTE, 
+                                _hasError,
+                                _itemLink, });
+            })
+    }
+
+    retrieveCreatedItem = async(item) => item
 
     mapModelData = () => this.originalData
 
