@@ -3,8 +3,13 @@ import React from "react";
 const SelectOptions = ({ domain, 
                          nameResolver, 
                          defaultOptions,
-                         selected, }) => {
+                         selected, 
+                         idResolver}) => {
     const [listing, setListing] = React.useState(null);
+
+    if (idResolver === undefined) {
+        idResolver = item => item._id
+    }
 
     if (defaultOptions === undefined) {
         defaultOptions = [
@@ -19,13 +24,16 @@ const SelectOptions = ({ domain,
             {defaultOptions.map(({ text, ...props }, idx) =>
                 <option key={idx} {...props}>{text}</option>
             )}
-            {listing.map((item, idx) =>
-                <option 
-                    selected={selected && item._id == selected} 
+            {listing.map((item, idx) => {
+                const id = idResolver(item);
+
+                return <option 
+                    selected={selected && id == selected} 
                     key={idx} 
-                    value={item._id}>
+                    value={id}>
                     {nameResolver(item)}
                 </option>
+            }
             )}
         </React.Fragment>
     }

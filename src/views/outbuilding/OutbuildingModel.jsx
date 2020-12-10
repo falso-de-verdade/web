@@ -3,8 +3,8 @@ import React from "react";
 import Button from "components/CustomButton/CustomButton";
 import { ModelComponent } from "views/common";
 import OutbDomain from "domains/outbuilding";
-import CondoDomian from "domains/condominium";
-import SelectedOptions from "components/SelectOptions/SelectOptions";
+import CondoDomain from "domains/condominium";
+import SelectOptions from "components/SelectOptions/SelectOptions";
 
 const DAYS = [
   "Domingo",
@@ -47,7 +47,10 @@ class OutbuildingModel extends ModelComponent {
     ]
   }
 
+
   storeTab = () => {
+    const data = this.mapModelData()
+
     return {
       name: "Cadastro",
       rows: [
@@ -62,9 +65,11 @@ class OutbuildingModel extends ModelComponent {
             required: false,
             children:
               <React.Fragment>
-                <SelectedOptions
-                  domain={CondoDomian}
-                  nameResolver={condo => condo.name}
+                <SelectOptions
+                  domain={CondoDomain}
+                  nameResolver={({ condominium }) => condominium.name}
+                  idResolver={({ condominium }) => condominium._id }
+                  selected={data && data.condominium}
                 />
               </React.Fragment>
           },
