@@ -7,15 +7,17 @@ import UserDomain from "domains/user";
 
 
 const dataReducer = resident => [
+  resident._created,
   resident.name,
   resident.email,
+  resident.location,
 ]
 
 const Headers = [
-  // "Data de Entrada", 
+  "Data de Entrada", 
   "Nome", 
   "E-mail", 
-  // "Localizaçao",
+  "Localizaçao",
 ]
 
 const searchOne = (query, history) => {
