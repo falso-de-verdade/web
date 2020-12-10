@@ -26,6 +26,18 @@ class CondominiumModel extends ModelComponent {
         }
     }
 
+    retrieveCreatedItem = async(condo) => {
+        const condos = await this.domain.list({
+            params: {
+                where: {
+                    condominium: condo['_id'],
+                },
+            },
+        });
+        
+        return condos[0];
+    }
+
     tabAndFields = () => {
         return [
             this.storeTab(),
