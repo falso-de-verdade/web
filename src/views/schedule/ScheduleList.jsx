@@ -68,10 +68,12 @@ const Operations = ({ item, selectItem }) => (
     </div>
 )
 
-const fetchItems = () => 
+const fetchItems = (config) =>
     ScheduleDomain.list({
+        ...config,
         params: {
             embedded: '{"resident":1,"outbuilding":1}',
+            ...config.params,
         },
     })
 
