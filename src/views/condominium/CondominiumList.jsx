@@ -42,8 +42,10 @@ const Operations = ({ item, selectItem }) => {
     const hideModal = () => setIsModal(false);
     const showModal = () => setIsModal(true);
 
+    const { condominium } = item;
+
     const createInvite = () => {
-        generateInviteLink(item['_id'])
+        generateInviteLink(condominium['_id'])
             .then(result => {
                 setInvite(result.link);
             })
