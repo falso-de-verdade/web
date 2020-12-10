@@ -16,7 +16,7 @@
 
 */
 import React, { Component } from "react";
-import { NavItem, Nav, NavDropdown, MenuItem, ModalHeader, ModalBody, Modal } from "react-bootstrap";
+import { NavItem, Nav, NavDropdown, MenuItem, ModalHeader, ModalBody, Modal, NavbarBrand } from "react-bootstrap";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Row, Col } from "reactstrap";
 import { NavLink } from "react-router-dom";
@@ -28,7 +28,7 @@ import SelectOptions from "components/SelectOptions/SelectOptions";
 import CondoDomain from "domains/condominium";
 
 const condoSelectAll = [
-  { 
+  {
     text: "Todos os condomínios",
     value: "all",
   }
@@ -52,7 +52,7 @@ class AdminNavbarLinks extends Component {
 
     return (
       <div>
-        <Nav pullRight>
+        <Nav pullRight fluid>
           <NavItem>
             <Col md={12} style={{ marginBottom: '5px', paddingLeft: 0 }}>
               <AvForm autoComplete="off" ref="formLocalizar">
@@ -63,7 +63,7 @@ class AdminNavbarLinks extends Component {
                     domain={CondoDomain}
                     nameResolver={condo => condo.name}
                     defaultOptions={condoSelectAll}
-                   />
+                  />
                 </AvField>
               </AvForm>
             </Col>
@@ -72,21 +72,23 @@ class AdminNavbarLinks extends Component {
             <UserAuthContext.Consumer>
               {user => (
                 <p>
-                  {user.name}
+                  Olá, {user.name}
                 </p>
               )}
             </UserAuthContext.Consumer>
           </NavItem>
           <NavItem
             onSelect={() => this.toggleModal()}>
-            <span className="fa fa-cog fa-spin"></span>
+            <span className="fa fa-cog"></span>
             {' '}Minha conta
           </NavItem>
-          <NavLink
-            to="/logout" >
-            <span className="fa fa-sign-out"></span>
-            {' '}Log out
+          <NavItem>
+            <NavLink
+              to="/logout" >
+              <span className="fa fa-sign-out"></span>
+              {' '}Log out
           </NavLink>
+          </NavItem>
         </Nav>
 
         <Modal show={this.state.isModal} >

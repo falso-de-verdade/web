@@ -6,13 +6,18 @@ class DataDomain {
         this.resource = resource;
     }
 
-    list = config =>
-        sendAndParse({
+    list = config => {
+        let render = sendAndParse;
+        if (config && config.noparse === true) {
+            render = send;
+        }
+        return render({
             method: 'get',
             url: this.resource,
             ...config,
         })
-    
+    }
+
     remove = item => this._withItem({
         item,
         method: 'delete'
@@ -24,7 +29,7 @@ class DataDomain {
         url: this.resource,
     }, true)
 
-    update = item => 
+    update = item =>
         this._withItem({
             item: item,
             data: { ...item, _etag: undefined },
@@ -46,7 +51,7 @@ class DataDomain {
             headers: {
                 'If-Match': item._etag
             },
-            ...config, 
+            ...config,
         })
 }
 

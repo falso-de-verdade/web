@@ -25,6 +25,7 @@ const Listing = ({ name,
     let [isItemSelected, setHasSelectedItem] = React.useState(false);
     const [lastError, setLastError] = React.useState(null);
     let [loading, setLoading] = React.useState(true);
+    const [page, setPage] = React.useState(1);
 
     const itemsRef = React.useRef(null);
     const selectedItemRef = React.useRef(null);
@@ -40,8 +41,9 @@ const Listing = ({ name,
     }
 
     if (loading && itemsRef.current === null) {
-        fetchItems().then(results => {
-            itemsRef.current = results;
+        fetchItems({ params: { max_results: 10, page: page }, noparse: true }).then(results => {
+            const data = results.data;
+            itemsRef.current = data._items;
             setLoading(false);
         }).catch(onError('fetching'));
     }
@@ -65,6 +67,16 @@ const Listing = ({ name,
                 // reset selected item
                 setHasSelectedItem(false);
             });
+    }
+
+    const nextPage = () => {
+        setPage(page + 1);
+        refresh();
+    }
+
+    const prevPage = () => {
+        setPage(page - 1);
+        refresh();
     }
 
     const modalButtons =
@@ -116,7 +128,7 @@ const Listing = ({ name,
 
                     {addLink &&
                         <Link to={`${addLink}`}>
-                            <ButtonB bsStyle="info" fill pullRight  style={{ margin: "15px" }}>
+                            <ButtonB bsStyle="info" fill pullRight style={{ margin: "15px" }}>
                                 <span className="fa fa-plus"></span>
                             </ButtonB>
                         </Link>
@@ -143,12 +155,15 @@ const Listing = ({ name,
                 </Col>
             </Row>
 
-            <ButtonB>
+            <ButtonB
+                disabled={page == 1}
+                onClick={prevPage}>
                 Anterior
                 <span className="fa fa-caret-left"></span>
             </ButtonB>
             {' '}
-            <ButtonB>
+            <ButtonB
+                onClick={nextPage}>
                 Próximo
                 <span className="fa fa-caret-right"></span>
             </ButtonB>

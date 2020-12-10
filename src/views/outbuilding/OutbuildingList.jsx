@@ -13,9 +13,9 @@ const dataReducer = outb => [
 ]
 
 const Headers = [
-  "Nome", 
+  "Nome",
   // "Disponibilidade", 
-  "Capacidade", 
+  "Capacidade",
   // "Local",
   "Condomínio"
 ]
@@ -37,7 +37,7 @@ const Operations = ({ item, selectItem }) => (
         if (user.isManager) {
           return <React.Fragment>
             <Link to={link}>
-              <ButtonB 
+              <ButtonB
                 bsStyle="success" bsSize="xs"
                 simple type="button" style={{ padding: '3px' }}>
                 <span className="fa fa-pencil"></span>
@@ -54,7 +54,7 @@ const Operations = ({ item, selectItem }) => (
 
         return (
           <Link to={link}>
-            <ButtonB 
+            <ButtonB
               bsStyle="success" bsSize="xs"
               simple type="button" style={{ padding: '3px' }}>
               <span className="fa fa-eye"></span>
@@ -66,27 +66,29 @@ const Operations = ({ item, selectItem }) => (
   </div>
 )
 
-const fetchItems = () =>
+const fetchItems = (config) =>
   OutbuildingDomain.list({
+    ...config,
     params: {
-      embedded: '{"condominium":1}'
+      embedded: '{"condominium":1}',
+      ...config.params,
     }
   })
 
-const OutbuildingList = ({}) => (
+const OutbuildingList = ({ }) => (
   <UserAuthContext.Consumer>
     {
-      user => <Listing 
-                name="dependência" 
-                title="Lista de dependências"
-                headers={Headers}
-                dataReducer={dataReducer}
-                searchOne={searchOne} 
-                onItemClick={onView}
-                onItemRemoval={OutbuildingDomain.remove}
-                fetchItems={fetchItems} 
-                OperationsComponent={Operations} 
-                addLink={user.isManager && OutbuildingDomain.resource}/>
+      user => <Listing
+        name="dependência"
+        title="Lista de dependências"
+        headers={Headers}
+        dataReducer={dataReducer}
+        searchOne={searchOne}
+        onItemClick={onView}
+        onItemRemoval={OutbuildingDomain.remove}
+        fetchItems={fetchItems}
+        OperationsComponent={Operations}
+        addLink={user.isManager && OutbuildingDomain.resource} />
     }
   </UserAuthContext.Consumer>
 )
