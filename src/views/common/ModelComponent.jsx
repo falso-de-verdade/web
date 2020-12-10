@@ -228,10 +228,14 @@ class ModelComponent extends Component {
                     <span className="fa fa-times"></span>
                 </Button>
 
+            let showOperations = hideOperations === undefined ? 
+                                !this.disableFields() :
+                                hideOperations;
+
             const table = {
                 as: TableComponent,
                 items: getItems(),
-                OperationsComponent: !hideOperations && operations,
+                OperationsComponent: showOperations && operations,
                 headers,
                 dataReducer,
                 col: {

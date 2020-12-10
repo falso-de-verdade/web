@@ -47,8 +47,6 @@ class OutbuildingModel extends ModelComponent {
     ]
   }
 
-  disableFields = () => this.isEditing;
-
   storeTab = () => {
     const data = this.mapModelData()
 
@@ -179,7 +177,6 @@ class OutbuildingModel extends ModelComponent {
       rows: [
         this.context.isManager && tabCfg
       ],
-      hideOperations: this.disableFields(),
       mapValues,
       headers,
       dataReducer,
