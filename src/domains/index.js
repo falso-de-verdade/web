@@ -79,9 +79,14 @@ class DataDomain {
 }
 
 class AggregatedDomain extends DataDomain {
-    constructor(resource, aggregation_resource) {
+    constructor(resource, 
+                aggregation_resource, 
+                field = '_id',
+                hasMany = false) {
         super(resource);
         this.aggregation_resource = aggregation_resource;
+        this.agg_field = field;
+        this.hasMany = hasMany;
     }
 
     list(config) {
@@ -112,12 +117,15 @@ class AggregatedDomain extends DataDomain {
             
             ...this.mergeParams({
                 where: {
-                    _id: id,
+                    [this.agg_field]: id,
                 },
             }, config)
         }
 
         const response = await super.find(id, config);
+        if (this.hasMany) {
+            return response._items;
+        }
         return response._items[0];
     }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FindModel } from "views/common";
-import CollisionDomain from "domains/user";
+import CollisionDomain from "domains/collisionitem";
 
 import CollisionModel from "./CollisionModel";
 

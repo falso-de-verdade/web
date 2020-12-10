@@ -3,20 +3,13 @@ import { Link } from "react-router-dom";
 import { Listing } from "components/Listing";
 import ButtonB from "components/CustomButton/CustomButton";
 import CollisionDomain from "domains/collision";
+import { 
+    dataReducer as scheduleDataReducer, 
+    Headers } from "views/schedule/ScheduleList";
 
-const Headers = [
-    "Dependência",
-    "Data",
-    "Qtd. de tickets"
-];
 
-const dataReducer = collision => (
-    [
-        //collision.outbuilding.name,
-        collision.date,
-        //collision.tickets.length
-    ]
-)
+const dataReducer = ({ schedule }) => 
+    scheduleDataReducer(schedule)
 
 const searchOne = (query, history) => {
     console.log(`Procurando ${query} ...`);

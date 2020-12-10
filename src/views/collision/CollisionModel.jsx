@@ -2,13 +2,24 @@ import React from 'react';
 
 import { ModelComponent } from 'views/common';
 import CollisionDomain from 'domains/collision';
-import { TableComponent } from 'components/Listing'
-import { dataReducer, Headers } from '../schedule/ScheduleList'
+import { TableComponent } from 'components/Listing';
+import { 
+    dataReducer as scheduleDataReducer, 
+    Headers } from '../schedule/ScheduleList'
 import ButtonB from "components/CustomButton/CustomButton";
 import { ModalWithListing } from "components/Modal";
 
+
+const dataReducer = ({ schedule }) =>
+    scheduleDataReducer(schedule);
+
 class CollisionModel extends ModelComponent {
     domain = CollisionDomain;
+
+    constructor(props) {
+        super(props);
+        this.schedule = null;
+    }
 
     mapData = values => {
         const {
@@ -40,13 +51,24 @@ class CollisionModel extends ModelComponent {
         </div>
     )
 
+    resolveCollision = () => {
+        this.domain.remove(this.schedule['collision'])
+            .then(() => {
+                this.props.history.push(`../${this.listingResource()}`);
+            }).catch(error => {
+                console.log(error);
+            });
+    }
+
     modalButtons = () =>
         <React.Fragment>
-            <ButtonB fill bsStyle="danger">Resolver</ButtonB>
+            <ButtonB fill bsStyle="danger" onClick={this.resolveCollision}>
+                Resolver
+            </ButtonB>
 
             <ButtonB 
                 fill 
-                onClick={() => this.setState({ schedule: !this.state.schedule })}
+                onClick={() => this.setState({ hasSchedule: false })}
             >
                 Cancelar
             </ButtonB>
@@ -54,15 +76,17 @@ class CollisionModel extends ModelComponent {
 
     renderModal = () => (
         <ModalWithListing
-            show={this.state.schedule}
+            show={this.state.hasSchedule}
             title="Resolver ticket"
             bodyText="Confirma a resolução do ticket para o seguinte morador?"
             buttons={this.modalButtons()}
             headers={Headers}
-            items={[this.state.schedule]}
+            items={[this.schedule]}
             dataReducer={dataReducer}
             />
     )
+
+    disableFields = () => true
 
     storeTab = () => {
         return {
@@ -74,8 +98,14 @@ class CollisionModel extends ModelComponent {
                         headers: Headers,
                         dataReducer: dataReducer,
                         OperationsComponent: this.TicketOperations,
-                        items: this.originalData,
-                        setSelectedItem: (schedule) => this.setState({ schedule })
+                        items: this.mapModelData(),
+                        setSelectedItem: schedule => {
+                            this.schedule = schedule;
+                            this.setState({ hasSchedule: true })
+                        },
+                        col: {
+                            md: 12
+                        }
                     },
                     modal: this.renderModal()
                 }
