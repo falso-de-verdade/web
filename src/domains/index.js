@@ -6,6 +6,7 @@ class DataDomain {
         this.resource = resource;
         this.list = this.list.bind(this);
         this.find = this.find.bind(this);
+        this.remove = this.remove.bind(this);
     }
 
     onList = config => config
@@ -23,10 +24,12 @@ class DataDomain {
         })
     }
 
-    remove = item => this._withItem({
-        item,
-        method: 'delete'
-    })
+    remove(item) {
+        return this._withItem({
+            item,
+            method: 'delete'
+        });
+    }
 
     create = data => sendAndParse({
         data,
@@ -87,6 +90,20 @@ class AggregatedDomain extends DataDomain {
             ...config, 
         }
         return super.list(config);
+    }
+
+    remove(item){
+        const oldResource = this.resource;
+
+        // temp change
+        this.resource = this.aggregation_resource;
+
+        const promise = super.remove(item);
+
+        // flip resource back
+        this.resource = oldResource;
+
+        return promise;
     }
 
     async find(id, config) {
