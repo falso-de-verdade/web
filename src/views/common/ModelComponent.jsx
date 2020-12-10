@@ -430,7 +430,7 @@ class ModelComponent extends Component {
 
     isCreationDone = () => this.creatingStep == this.tabAndFields().length - 1
 
-    deduceButtonText = () => {
+    deduceSubmitButtonText = () => {
         if (this.isEditing) {
             return 'Salvar';
         }
@@ -442,17 +442,25 @@ class ModelComponent extends Component {
         return 'Próximo'
     }
 
+    deduceCancelButtonText = () => {
+        if (this.isEditing) {
+            return 'Voltar';
+        }
+
+        return 'Cancelar';
+    }
+
     buttonsComponent = hideSaveButton => 
         <FormGroup>
             <Link to={this.cancelLink()}>
                 <Button fill pullRight bsStyle="danger" >
-                    Cancelar
+                    {this.deduceCancelButtonText()}
                 </Button>
             </Link>
             
             {!hideSaveButton && 
                 <Button fill bsStyle="success" onClick={this.maybeSubmit}>
-                    {this.deduceButtonText()}
+                    {this.deduceSubmitButtonText()}
                 </Button>
             }
         </FormGroup>
