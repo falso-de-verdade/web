@@ -37,32 +37,32 @@ const Operations = ({ item, selectItem }) => (
                 const link = ScheduleDomain.itemPath(item);
 
                 if (user.isManager) {
-                    return <React.Fragment>
+                    return (
                         <Link to={link}>
                             <ButtonB
                                 bsStyle="success" bsSize="xs"
                                 simple type="button" style={{ padding: '3px' }}>
-                                <span className="fa fa-pencil"></span>
+                                <span className="fa fa-eye"></span>
                             </ButtonB>
                         </Link>
-
-                        {' '}
-                        <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
-                            onClick={selectItem}>
-                            <span className="fa fa-times"></span>
-                        </ButtonB>
-                    </React.Fragment>;
+                    )
                 }
 
-                return (
+                return <React.Fragment>
                     <Link to={link}>
                         <ButtonB
                             bsStyle="success" bsSize="xs"
                             simple type="button" style={{ padding: '3px' }}>
-                            <span className="fa fa-eye"></span>
+                            <span className="fa fa-pencil"></span>
                         </ButtonB>
                     </Link>
-                )
+
+                    {' '}
+                    <ButtonB bsStyle="danger" simple type="button" bsSize="xs" style={{ padding: '3px' }}
+                        onClick={selectItem}>
+                        <span className="fa fa-times"></span>
+                    </ButtonB>
+                </React.Fragment>;
             }}
         </UserAuthContext.Consumer>
     </div>

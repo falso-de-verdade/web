@@ -31,6 +31,8 @@ class ScheduleModel extends ModelComponent {
         }
     }
 
+    disableFields = () => this.context.isManager;
+
     mapData = values => {
         const {
             outbuilding,

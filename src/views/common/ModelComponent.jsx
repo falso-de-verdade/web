@@ -77,7 +77,7 @@ class ModelComponent extends Component {
                             </Card>
                         </Col>
                     </Row>
-                    {this.buttonsComponent()}
+                    {this.buttonsComponent(this.disableFields())}
                 </div>
             );
         }
@@ -331,7 +331,7 @@ class ModelComponent extends Component {
                         required
                         name={name}
                         id={name}
-                        disabled={this.disableFields()}
+                        readOnly={this.disableFields()}
                         {...fieldProps}
                         label={null}
                         />
