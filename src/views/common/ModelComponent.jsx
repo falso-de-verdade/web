@@ -111,7 +111,7 @@ class ModelComponent extends Component {
         //
     }
 
-    disableFields = () => false
+    disableFields = () => !this.context.isManager;
 
     doRender = settings => {
         // remove empty values
