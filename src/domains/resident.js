@@ -1,4 +1,4 @@
-import { DataDomain } from ".";
+import { AggregatedDomain } from ".";
 
 
-export default new DataDomain('user');
+export default new AggregatedDomain('user', 'resident');

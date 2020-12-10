@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 
 import { Listing } from "components/Listing";
 import ButtonB from "components/CustomButton/CustomButton.jsx";
-import UserDomain from "domains/user";
+import ResidentDomain from "domains/resident";
 
 
-const dataReducer = resident => [
-  resident._created,
-  resident.name,
-  resident.email,
-  resident.location,
+const dataReducer = ({ user }) => [
+  user._created,
+  user.name,
+  user.email,
+  user.location,
 ]
 
 const Headers = [
@@ -25,7 +25,7 @@ const searchOne = (query, history) => {
 }
 
 const onView = (resident, history) => {
-  history.push(`resident/${resident._id}`);
+  history.push(ResidentDomain.itemPath(resident));
 }
 
 const Operations = ({ item, selectItem }) => (
@@ -52,8 +52,8 @@ const ResidentList = ({}) => {
           dataReducer={dataReducer}
           searchOne={searchOne} 
           onItemClick={onView}
-          onItemRemoval={UserDomain.remove}
-          fetchItems={UserDomain.list} 
+          onItemRemoval={ResidentDomain.remove}
+          fetchItems={ResidentDomain.list} 
           OperationsComponent={Operations} />
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FindModel } from "views/common";
-import UserDomain from "domains/user";
+import ResidentDomain from "domains/resident";
 
 import ResidentModel from "./ResidentModel";
 
@@ -16,7 +16,7 @@ import ResidentModel from "./ResidentModel";
 const FindResident = props => (
     <FindModel 
         component={ResidentModel}
-        domain={UserDomain}
+        domain={ResidentDomain}
         {...props}
         />
 )
