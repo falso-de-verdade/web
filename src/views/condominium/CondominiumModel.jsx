@@ -18,6 +18,14 @@ class CondominiumModel extends ModelComponent {
         }
     }
 
+    mapModelData = () => {
+        // console.log(this.originalData);
+        if (this.isEditing) {
+            const { condominium } = this.originalData;
+            return condominium;
+        }
+    }
+
     tabAndFields = () => {
         return [
             this.storeTab(),

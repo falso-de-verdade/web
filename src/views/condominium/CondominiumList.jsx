@@ -5,14 +5,13 @@ import { UserAuthContext } from "contexts";
 import Listing from "components/Listing/Listing";
 import CondominiumDomain from "domains/condominium"
 import { ModalWithListing } from "components/Modal";
-import { Col } from 'reactstrap';
 import Button from 'components/CustomButton/CustomButton.jsx';
 import { sendAndParse } from "services/api";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-const dataReducer = condo => [
-    condo.name,
-    condo.addres,
+const dataReducer = ({ condominium }) => [
+    condominium.name,
+    condominium.address,
 ]
 
 const Headers = [
@@ -24,8 +23,8 @@ const searchOne = (query, history) => {
     console.log(`Procurando ${query}`)
 }
 
-const onView = (condo, history) => {
-    history.push(CondominiumDomain.itemPath(condo));
+const onView = (condorole, history) => {
+    history.push(CondominiumDomain.itemPath(condorole));
 }
 
 const generateInviteLink = condominium =>
