@@ -28,6 +28,19 @@ const withErrHandler = (alert, handler) => {
 }
 
 const onRequest = request => {
+    if (request.method === 'get' && request.params !== undefined) {
+        Object.keys(request.params)
+            .map(key => {
+                const value = request.params[key];
+
+                // transform into JSON when not string
+                if (value.constructor != String) {
+                    const parsedQs = JSON.stringify(value);
+                    request.params[key] = parsedQs;
+                }
+            });
+    }
+
     return request;
 }
 

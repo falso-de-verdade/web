@@ -4,9 +4,14 @@ import { send, sendAndParse } from "services/api";
 class DataDomain {
     constructor(resource) {
         this.resource = resource;
+        this.list = this.list.bind(this);
+        this.find = this.find.bind(this);
     }
 
-    list = config => {
+    onList = config => config
+    onFind = config => this.onList(config)
+
+    list(config) {
         let render = sendAndParse;
         if (config && config.noparse === true) {
             render = send;
@@ -14,7 +19,7 @@ class DataDomain {
         return render({
             method: 'get',
             url: this.resource,
-            ...config,
+            ...this.onFind(config),
         })
     }
 
@@ -36,14 +41,29 @@ class DataDomain {
             method: 'patch',
         })
 
-    find = id => sendAndParse({
-        method: 'get',
-        url: this.itemPath({
-            _id: id
-        }),
-    }, true)
+    find(id, config) {
+        return sendAndParse({
+            method: 'get',
+            url: this.itemPath({
+                _id: id
+            }),
+            ...this.onFind(config),
+        }, true)
+    }
 
     itemPath = item => `${this.resource}/${item._id}`
+
+    mergeParams = (params, config = {}) => {
+        // fail-safe method to merge query string parameters
+        return {
+            ...config,
+
+            params: {
+                ...params, 
+                ...config.params,
+            },
+        }
+    }
 
     _withItem = ({ item, ...config }) =>
         send({
@@ -55,6 +75,37 @@ class DataDomain {
         })
 }
 
+class AggregatedDomain extends DataDomain {
+    constructor(resource, aggregation_resource) {
+        super(resource);
+        this.aggregation_resource = aggregation_resource;
+    }
+
+    list(config) {
+        config = {
+            url: this.aggregation_resource,
+            ...config, 
+        }
+        return super.list(config);
+    }
+
+    async find(id, config) {
+        config = {
+            url: this.aggregation_resource,
+            
+            ...this.mergeParams({
+                where: {
+                    _id: id,
+                },
+            }, config)
+        }
+
+        const response = await super.find(id, config);
+        return response._items[0];
+    }
+}
+
 export {
-    DataDomain
+    DataDomain,
+    AggregatedDomain,
 }

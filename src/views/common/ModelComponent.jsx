@@ -155,6 +155,8 @@ class ModelComponent extends Component {
         return this.domain.itemPath(this.state._formResponse);
     }
 
+    mapModelData = () => this.originalData
+
     buildFormComponent = (tabData, idx) => {
         const children = () => {
             const parsedData = tabData.rows.filter(value => !!value);
@@ -170,7 +172,7 @@ class ModelComponent extends Component {
 
         // default form properties
         let formProps = {
-            model: this.originalData, 
+            model: this.mapModelData(), 
             onValidSubmit: this.commonOnValidSubmit,
         }
 
@@ -378,10 +380,11 @@ class ModelComponent extends Component {
 
     buildSubmitConfig = data => {
         if (this.isEditing) {
+            const model = this.mapModelData();
             return {
                 data: {
-                    _id: this.originalData._id,
-                    _etag: this.originalData._etag,
+                    _id: model._id,
+                    _etag: model._etag,
                     ...data,
                 },
                 handler: this.domain.update,
