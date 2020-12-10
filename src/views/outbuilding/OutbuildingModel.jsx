@@ -26,19 +26,20 @@ class OutbuildingModel extends ModelComponent {
       name,
       description,
       capacity,
-      condominium
+      condominium,
+      availabilities,
     } = values;
 
     return {
       name,
       description,
       capacity,
-      condominium
+      condominium,
+      availabilities,
     }
   }
 
   tabAndFields = () => {
-    //console.log(OutbDomain.list());
     return [
       this.storeTab(),
       this.availabilityTab(),
