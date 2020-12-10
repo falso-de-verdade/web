@@ -231,7 +231,7 @@ class ModelComponent extends Component {
             const table = {
                 as: TableComponent,
                 items: getItems(),
-                OperationsComponent: hideOperations || operations,
+                OperationsComponent: !hideOperations && operations,
                 headers,
                 dataReducer,
                 col: {
@@ -364,7 +364,7 @@ class ModelComponent extends Component {
                         required
                         name={name}
                         id={name}
-                        readOnly={this.disableFields()}
+                        disabled={this.disableFields()}
                         {...fieldProps}
                         label={null}
                         />
