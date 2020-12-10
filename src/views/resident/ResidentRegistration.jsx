@@ -28,6 +28,7 @@ const modalBodyText = [
 ]
 
 const ResidentRegistration = props => {
+  const token = props.match.params.token;
   const [showCondoModal, setShowCondoModal] = React.useState(true);
 
   const hideCondoModal = () => setShowCondoModal(false);
@@ -40,12 +41,12 @@ const ResidentRegistration = props => {
   const loginFromRegistered = data => {
     console.log(data);
   }
- 
+
   const modalButtons =
     <React.Fragment>
       <Col md={2}>
-        <Button 
-          bsStyle="success" 
+        <Button
+          bsStyle="success"
           onClick={hideCondoModal}
           fill
           pullLeft>
@@ -61,23 +62,23 @@ const ResidentRegistration = props => {
     </React.Fragment>
 
   return <React.Fragment>
-      <SignUpComponent
-          role="resident"
-          onUserFromAccount={onManagerFromAccount} 
-          onRegisteredAccount={loginFromRegistered}
-          image={Subscriber}
-          />
+    <SignUpComponent
+      role="resident"
+      onUserFromAccount={onManagerFromAccount}
+      onRegisteredAccount={loginFromRegistered}
+      image={Subscriber}
+    />
 
-      <ModalWithListing 
-          show={showCondoModal}
-          title="Condomínio"
-          bodyText={modalBodyText}
-          buttons={modalButtons}
-          items={[targetCondominium]}
-          headers={condominiumHeaders}
-          dataReducer={condominiumDataReducer}
-        />
-    </React.Fragment>
+    <ModalWithListing
+      show={showCondoModal}
+      title="Condomínio"
+      bodyText={modalBodyText}
+      buttons={modalButtons}
+      items={[targetCondominium]}
+      headers={condominiumHeaders}
+      dataReducer={condominiumDataReducer}
+    />
+  </React.Fragment>
 }
 
 export default ResidentRegistration;
